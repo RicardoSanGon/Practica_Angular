@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('model_description');
             $table->float('model_price');
             $table->boolean('model_status')->default(true);
+            $table->integer('model_stock');
             $table->foreignId('brand_id')->references('id')->on('brands');
         });
     }

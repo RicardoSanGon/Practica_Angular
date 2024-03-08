@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->string('password', 100);
             $table->boolean('status')->default(false);
-            $table->integer('code')->nullable();
+            $table->string('code')->nullable();
             $table->foreignId('role_id')->references('id')->on('rols');
         });
     }

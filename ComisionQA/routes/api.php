@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/create/user',[UsersController::class,'store']);
+
+Route::get('/verificar_email/{token}',[UsersController::class,'verification_email'])
+    ->name('verificar')
+    ->middleware('signed');
+
+Route::post('/login',[UsersController::class,'log_in']);

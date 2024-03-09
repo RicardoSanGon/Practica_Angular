@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('admission_date');
             $table->string('stock');
-            $table->foreignId('model_id')->references('id')->on('models');
+            $table->foreignId('vehicle_model_id')->references('id')->on('vehicle_models');
             $table->foreignId('supplier_id')->references('id')->on('suppliers');
         });
     }

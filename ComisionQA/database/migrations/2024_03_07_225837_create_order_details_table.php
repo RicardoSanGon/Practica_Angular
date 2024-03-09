@@ -19,7 +19,7 @@ return new class extends Migration
             $table->float('price');
             $table->enum('status',['pendiente','aceptado','cancelado'])->default('pendiente');
             $table->string('delery_date');
-            $table->foreignId('model_id')->references('id')->on('models');
+            $table->foreignId('vehicle_model_id')->references('id')->on('vehicle_models');
             $table->foreignId('order_id')->references('id')->on('orders');
         });
     }

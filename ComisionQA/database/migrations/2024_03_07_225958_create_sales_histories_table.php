@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('sale_date');
             $table->float('total_amount');
             $table->integer('quantity');
-            $table->foreignId('model_id')->references('id')->on('models');
+            $table->foreignId('vehicle_model_id')->references('id')->on('vehicle_models');
             $table->foreignId('customer_id')->references('id')->on('customers');
             $table->foreignId('detail_id')->references('id')->on('order_details');
         });

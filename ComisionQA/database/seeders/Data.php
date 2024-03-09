@@ -10,6 +10,7 @@ use App\Models\Brand;
 use App\Models\Model;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Data extends Seeder
 {
@@ -72,7 +73,7 @@ class Data extends Seeder
         $volkswagenId = DB::table('brands')->where('brand_name', 'Volkswagen')->first()->id;
 
 
-        DB::table('models')->insert([
+        DB::table('vehicle_models')->insert([
             ['model_name'=>'Audi A4', 'brand_id'=>$audiId, 'model_year'=>2023, 'model_description'=>'Audi A4 description', 'model_price'=>30000,'model_stock'=>10],
             ['model_name'=>'BMW X3', 'brand_id'=>$bmwId, 'model_year'=>2023, 'model_description'=>'BMW X3 description', 'model_price'=>30000,'model_stock'=>10],
             ['model_name'=>'BMW X5', 'brand_id'=>$bmwId, 'model_year'=>2023, 'model_description'=>'BMW X5 description', 'model_price'=>30000,'model_stock'=>10],
@@ -104,6 +105,10 @@ class Data extends Seeder
             ['supplier_name'=>'Supplier 1', 'supplier_email'=>'info@supplier1.com', 'supplier_phone'=>'1234567890'],
             ['supplier_name'=>'Supplier 2', 'supplier_email'=>'info@supplier2.com', 'supplier_phone'=>'0987654321'],
             ['supplier_name'=>'Supplier 3', 'supplier_email'=>'info@supplier3.com', 'supplier_phone'=>'1122334455'],
+            ]);
+
+        DB::table('users')->insert([
+            ['name'=>'admin', 'email'=>'admin@gmail.com', 'password'=>Hash::make('admin'), 'role_id'=>1,'status'=>true],
             ]);
     }
 }

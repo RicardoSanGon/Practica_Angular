@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendCode;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -59,7 +60,27 @@ class UsersController extends Controller
         } catch (JWTException $e) {
             return response()->json(['msg' => 'no se pudo crear el token'], 500);
         }
-        return response()->json(['token'=>$token]);
+        $code=random_int(100000,999999);
+        $user=User::where('email',$request->email)->first();
+        $user->code=Hash::make($code);
+        $user->save();
+        Mail::to($request->email)->send(new SendCode($user->name,$code));
+        return response()->json(['token'=>$token,'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion'],202);
+    }
+
+    public function codeverification(Request $request)
+    {
+        $validaciones=Validator::make($request->all(),[
+            'code'=>'required|integer|digits:6'
+        ]);
+        if($validaciones->fails()){
+            return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
+        }
+        $user=User::findOrFail($this->getUserIdFromToken($request->header('Authorization')));
+        if(Hash::check($request->code,$user->code)){
+            return response()->json(["msg"=>"Verificacion Correcta"],200);
+        }
+        return response()->json(["msg"=>"Codigo incorrecto"],400);
     }
 
     public function verification_email($token)
@@ -102,11 +123,11 @@ class UsersController extends Controller
             'email' => 'sometimes|email|regex:/(.*@.{2,}\..{2,3})$/',
             'password' => 'sometimes|string|min:8|max:255'
         ]);
-    
+
         if($validaciones->fails()){
             return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
         }
-    
+
         try {
             $user = User::findOrFail($id);
             if($request->has('name')) {
@@ -119,8 +140,8 @@ class UsersController extends Controller
                 $user->password = Hash::make($request->password);
             }
             $user->save();
-    
-    
+
+
             return response()->json(["msg" => "Actualización Correcta"], 200);
         } catch (Exception $e) {
             return response()->json($e, 400);

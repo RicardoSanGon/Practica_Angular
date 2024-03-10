@@ -22,6 +22,8 @@ Route::get('/verificar_email/{token}',[UsersController::class,'verification_emai
     ->middleware('signed');
 
 Route::post('/login',[UsersController::class,'log_in']);
+Route::post('/verification/code',[UsersController::class,'codeverification'])
+->middleware('auth:jwt');
 
 //PRUEBA
 Route::put('/edit/{id}', [UsersController::class, 'update']);

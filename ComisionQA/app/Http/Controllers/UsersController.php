@@ -94,4 +94,49 @@ class UsersController extends Controller
 
         return $payload['sub'];
     }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(),[
+            'name' => 'sometimes|string|alpha|max:255|min:3',
+            'email' => 'sometimes|email|regex:/(.*@.{2,}\..{2,3})$/',
+            'password' => 'sometimes|string|min:8|max:255'
+        ]);
+    
+        if($validaciones->fails()){
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+    
+        try {
+            $user = User::findOrFail($id);
+            if($request->has('name')) {
+                $user->name = $request->name;
+            }
+            if($request->has('email')) {
+                $user->email = $request->email;
+            }
+            if($request->has('password')) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
+    
+    
+            return response()->json(["msg" => "Actualización Correcta"], 200);
+        } catch (Exception $e) {
+            return response()->json($e, 400);
+        }
+    }
+
+    public function delete(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->status = false;
+            $user->save();
+
+            return response()->json(["msg" => "Usuario desactivado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json($e, 400);
+        }
+    }
 }

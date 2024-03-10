@@ -22,3 +22,7 @@ Route::get('/verificar_email/{token}',[UsersController::class,'verification_emai
     ->middleware('signed');
 
 Route::post('/login',[UsersController::class,'log_in']);
+
+//PRUEBA
+Route::put('/edit/{id}', [UsersController::class, 'update']);
+Route::delete('/delete/{id}', [UsersController::class, 'delete']);

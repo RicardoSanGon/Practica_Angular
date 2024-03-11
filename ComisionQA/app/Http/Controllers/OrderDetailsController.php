@@ -10,6 +10,8 @@ use App\Models\Vehicle_Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrdenAceptadaMail;
 
 class OrderDetailsController extends Controller
 {
@@ -95,27 +97,42 @@ class OrderDetailsController extends Controller
         ],201);
     }
 
-    public function changeStatusDetail(Request $request,$id)
+    public function changeStatusDetail(Request $request, $id)
     {
-        $validaciones=Validator::make($request->all(),[
-            'status'=>'required|string|in:aceptado,cancelado'
+        $validaciones = Validator::make($request->all(), [
+            'status' => 'required|string|in:aceptado,cancelado',
         ]);
+
         if ($validaciones->fails()) {
-            return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
         }
-        $detail=Order_Detail::find($id);
-        if($detail===null){
-            return response()->json(["msg"=>"El detalle no existe"],400);
+
+        $detail = Order_Detail::find($id);
+
+        if ($detail === null) {
+            return response()->json(["msg" => "El detalle no existe"], 400);
         }
-        $detail->status=$request->status;
-        try{
+
+        $previousStatus = $detail->status;
+        $detail->status = $request->status;
+
+        try {
             $detail->save();
+
+            // Verifica si el nuevo estado es 'aceptado' y el estado anterior no lo era
+            if ($detail->status === 'aceptado' && $previousStatus !== 'aceptado') {
+                // Envía el correo electrónico al cliente asociado
+                $customer = $detail->order->customer;
+
+                if ($customer) {
+                    // Utiliza la clase Mail para enviar el correo electrónico
+                    Mail::to($customer->email)->send(new OrdenAceptadaMail($detail));
+                }
+            }
+
+            return response()->json(["msg" => "Registro correcto"], 201);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo cambiar el estado del detalle", "Error" => $e], 500);
         }
-        catch(Exception $e){
-            return response()->json(["msg"=>"No se pudo cambiar el estado del detalle","Error"=>$e],500);
-        }
-        return response()->json([
-            "msg" => "Registro correcto"
-        ],201);
     }
 }

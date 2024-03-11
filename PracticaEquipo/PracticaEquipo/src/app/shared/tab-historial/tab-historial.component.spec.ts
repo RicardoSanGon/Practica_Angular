@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InterfazAdminComponent } from './interfaz-admin.component';
+import { TabHistorialComponent } from './tab-historial.component';
 
-describe('InterfazAdminComponent', () => {
-  let component: InterfazAdminComponent;
-  let fixture: ComponentFixture<InterfazAdminComponent>;
+describe('TabHistorialComponent', () => {
+  let component: TabHistorialComponent;
+  let fixture: ComponentFixture<TabHistorialComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InterfazAdminComponent]
+      imports: [TabHistorialComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(InterfazAdminComponent);
+    fixture = TestBed.createComponent(TabHistorialComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

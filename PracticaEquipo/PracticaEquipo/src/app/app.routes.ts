@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-<<<<<<< HEAD
 /*  {
     path: '',
     loadComponent: () =>
@@ -9,8 +8,6 @@ export const routes: Routes = [
         (c) => c.LogInComponent
       ),
   }, */
-=======
->>>>>>> d6ff5ff9a5d074228aeb236c478aa5bc76aa94aa
   {
     path: 'reg-Proveedores',
     loadComponent: () =>
@@ -35,13 +32,8 @@ export const routes: Routes = [
   {
     path: 'reg-Marcas',
     loadComponent: () =>
-<<<<<<< HEAD
       import('../app/shared/reg-marca/reg-marca.component').then(
         (c) => c.RegMarcaComponent
-=======
-      import('../app/shared/reg-modelo/reg-modelo.component').then(
-        (c) => c.RegModeloComponent
->>>>>>> d6ff5ff9a5d074228aeb236c478aa5bc76aa94aa
       ),
   },
   {

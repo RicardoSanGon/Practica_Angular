@@ -9,11 +9,23 @@ import { RegInventarioComponent } from './shared/reg-inventario/reg-inventario.c
 import { RegMarcaComponent } from './shared/reg-marca/reg-marca.component';
 import { RegModeloComponent } from './shared/reg-modelo/reg-modelo.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { HttpClient,provideHttpClient,withInterceptors} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, LogInComponent, SignInComponent, InterfazAdminComponent, RegMarcaComponent, RegModeloComponent, RegClienteComponent, RegProveedorComponent, RegInventarioComponent, RouterLink],
+  imports: [RouterOutlet,
+    NavbarComponent,
+    LogInComponent,
+    SignInComponent,
+    InterfazAdminComponent,
+    RegMarcaComponent,
+    RegModeloComponent,
+    RegClienteComponent,
+    RegProveedorComponent,
+    RegInventarioComponent,
+    RouterLink,
+  HttpClient],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

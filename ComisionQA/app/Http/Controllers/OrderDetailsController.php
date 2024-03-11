@@ -87,6 +87,32 @@ class OrderDetailsController extends Controller
                 }
 
             }
+            $order->status='enviada';
+            $order->save();
+        }
+        return response()->json([
+            "msg" => "Registro correcto"
+        ],201);
+    }
+
+    public function changeStatusDetail(Request $request,$id)
+    {
+        $validaciones=Validator::make($request->all(),[
+            'status'=>'required|string|in:aceptado,cancelado'
+        ]);
+        if ($validaciones->fails()) {
+            return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
+        }
+        $detail=Order_Detail::find($id);
+        if($detail===null){
+            return response()->json(["msg"=>"El detalle no existe"],400);
+        }
+        $detail->status=$request->status;
+        try{
+            $detail->save();
+        }
+        catch(Exception $e){
+            return response()->json(["msg"=>"No se pudo cambiar el estado del detalle","Error"=>$e],500);
         }
         return response()->json([
             "msg" => "Registro correcto"

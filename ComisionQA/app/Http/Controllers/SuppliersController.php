@@ -15,8 +15,7 @@ class SuppliersController extends Controller
         $validaciones=Validator::make($request->all(),[
             'supplier_name'=>'required|string|alpha|max:255|min:3',
             'supplier_email'=>'required|email|unique:users|regex:/(.*@.{2,}\..{2,3})$/',
-            'supplier_phone'=>'required|unique:suppliers|numeric|regex:/^[0-9]+$/',
-            'password'=>'required|string|min:8|max:255'
+            'supplier_phone'=>'required|unique:suppliers|numeric|regex:/^[0-9]+$/'
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
@@ -25,7 +24,6 @@ class SuppliersController extends Controller
         $supplier->supplier_name=$request->supplier_name;
         $supplier->supplier_email=$request->supplier_email;
         $supplier->supplier_phone=$request->supplier_phone;
-        $supplier->password=Hash::make($request->password);
 
         try{
             $supplier->save();

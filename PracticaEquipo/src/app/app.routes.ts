@@ -1,6 +1,13 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+/*  {
+    path: '',
+    loadComponent: () =>
+      import('../app/shared/log-in/log-in.component').then(
+        (c) => c.LogInComponent
+      ),
+  }, */
   {
     path: 'reg-Proveedores',
     loadComponent: () =>
@@ -25,8 +32,8 @@ export const routes: Routes = [
   {
     path: 'reg-Marcas',
     loadComponent: () =>
-      import('../app/shared/reg-modelo/reg-modelo.component').then(
-        (c) => c.RegModeloComponent
+      import('../app/shared/reg-marca/reg-marca.component').then(
+        (c) => c.RegMarcaComponent
       ),
   },
   {

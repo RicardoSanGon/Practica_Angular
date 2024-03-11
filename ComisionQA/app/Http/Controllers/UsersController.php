@@ -68,6 +68,10 @@ class UsersController extends Controller
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
         }
+        $user=User::where('email',$request->email)->first();
+        if($user->status==0){
+            return response()->json(['msg'=>'El usuario no ha verificado su correo'],400);
+        }
         $credentials = $request->only('email', 'password');
         try {
             if (! $token = JWTAuth::attempt($credentials)) {

@@ -9,4 +9,8 @@ class Supplier extends Model
 {
     use HasFactory;
     public $timestamps = false;
+
+    public function inventories(){
+        return $this->hasMany(Inventory::class,'id');
+    }
 }

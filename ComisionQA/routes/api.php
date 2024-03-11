@@ -3,7 +3,9 @@
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\CataloguesController;
 use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\ModelsController;
+use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -47,4 +49,9 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/customers/table/permissions',[CustomersController::class,'showCustomersTable']);
     Route::get('/customers',[CustomersController::class,'index']);
     Route::post('/create/order',[OrdersController::class,'store']);
+    Route::post('/inventorie/add',[InventoriesController::class,'store']);
+    Route::get('/inventorie/permissions',[InventoriesController::class,'showTableAndForm']);
+    Route::get('/inventories',[InventoriesController::class,'index']);
+    Route::post('/order/details/create',[OrderDetailsController::class,'store']);
+    Route::get('/order/details',[OrderDetailsController::class,'index']);
 });

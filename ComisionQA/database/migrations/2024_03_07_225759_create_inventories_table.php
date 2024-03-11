@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->string('admission_date');
-            $table->string('stock');
+            $table->integer('stock');
             $table->foreignId('vehicle_model_id')->references('id')->on('vehicle_models');
             $table->foreignId('supplier_id')->references('id')->on('suppliers');
         });

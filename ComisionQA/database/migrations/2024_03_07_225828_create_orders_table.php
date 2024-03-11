@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('order_date');
-            $table->boolean('status');
+            $table->date('order_date')->default(now());
+            $table->enum('status', ['proceso', 'enviada','cancelada'])->default('proceso');
             $table->foreignId('customer_id')->references('id')->on('customers');
         });
     }

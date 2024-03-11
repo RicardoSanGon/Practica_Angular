@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,19 +12,23 @@ class OrdersController extends Controller
 {
     //
     public function store(Request $request){
-        $validaciones=Validator::make($request->all(),[
-            'order_date'=>'required|date',
-            'status'=>'required|boolean',
-            'customer_id'=> 'required|numeric|regex:/^[0-9]+$/',
-        ]);
-        if($validaciones->fails()){
-            return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
+
+        $customer=Customer::where('user_id',UsersController::getUserIdFromToken($request->header('authorization')))->first();
+        if(!$customer){
+            return response()->json(["msg"=>"El usuario no esta registrado como cliente"],400);
         }
+        $orden = Order::where('customer_id',$customer->id)->latest('order_date')->first();
+        if($orden!==null && $orden->status!==null){
+            if ($orden->status==='proceso'){
+                return response()->json(["msg"=>"El usuario ya tiene una orden en proceso"],400);
+            }
+        }
+
+
         $order = new Order();
-        $order->order_date=$request->order_date;
-        $order->status=$request->status;
-        $order->customer_id=$request->customer_id;
-        
+        $order->customer_id=$customer->id;
+        $order->status='proceso';
+
         try{
             $order->save();
         }
@@ -32,7 +37,7 @@ class OrdersController extends Controller
         }
 
         return response()->json([
-            "msg" => "Registro correcto"
+            "msg" => "Order creada"
         ],201);
     }
 }

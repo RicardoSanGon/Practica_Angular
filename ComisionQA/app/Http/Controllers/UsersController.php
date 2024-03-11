@@ -16,7 +16,23 @@ use App\Mail\VerificacionEmail;
 
 class UsersController extends Controller
 {
-    //
+
+    public function index()
+    {
+        $users = User::all();
+        $users=$users->map(function($user){
+            return[
+                "id"=>$user->id,
+                "name"=>$user->name,
+                "email"=>$user->email,
+                "role_id"=>$user->role->rol,
+                "status"=>$user->status
+            ];
+        });
+        return response()->json(['data'=>$users], 200);
+    }
+
+
     public function store(Request $request)
     {
         $validaciones=Validator::make($request->all(),[
@@ -47,7 +63,7 @@ class UsersController extends Controller
     {
         $validaciones=Validator::make($request->all(),[
             'email'=>'required|email|regex:/(.*@.{2,}\..{2,3})$/',
-            'password'=>'required|string|min:8|max:255'
+            'password'=>'required|string|max:255'
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
@@ -68,6 +84,16 @@ class UsersController extends Controller
         return response()->json(['token'=>$token,'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion'],202);
     }
 
+    public function logout(Request $request)
+    {
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+            return response()->json(['msg' => 'Sesion cerrada correctamente'], 200);
+        } catch (JWTException $e) {
+            return response()->json(['msg' => 'No se pudo cerrar la sesion'], 500);
+        }
+    }
+
     public function codeverification(Request $request)
     {
         $validaciones=Validator::make($request->all(),[
@@ -76,7 +102,7 @@ class UsersController extends Controller
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
         }
-        $user=User::findOrFail($this->getUserIdFromToken($request->header('Authorization')));
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
         if(Hash::check($request->code,$user->code)){
             return response()->json(["msg"=>"Verificacion Correcta"],200);
         }
@@ -101,7 +127,7 @@ class UsersController extends Controller
             }
     }
 
-    public function getUserIdFromToken($authorizationHeader) {
+    public static function getUserIdFromToken($authorizationHeader) {
         try {
             if (substr($authorizationHeader, 0, 7) !== 'Bearer ') {
                 return response()->json(['msg' => 'Token not provided'], 401);
@@ -159,5 +185,14 @@ class UsersController extends Controller
         } catch (Exception $e) {
             return response()->json($e, 400);
         }
+    }
+
+    public function showUsersTable(Request $request)
+    {
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        if($user->role_id==1){
+            return response()->json(['permission'=>true],200);
+        }
+        return response()->json(['permission'=>false],401);
     }
 }

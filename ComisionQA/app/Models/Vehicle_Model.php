@@ -9,4 +9,8 @@ class Vehicle_Model extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    public $table = 'vehicle_models';
+    public function brand(){
+        return $this->belongsTo(Brand::class);
+    }
 }

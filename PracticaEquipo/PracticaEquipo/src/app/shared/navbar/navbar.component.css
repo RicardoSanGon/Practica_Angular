@@ -1,0 +1,33 @@
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    }
+#div1 {
+    height: 350px;
+    width: 350px;
+    background-color: rgb(247, 138, 138);
+    margin: 60px;
+    text-align: center;
+}
+#div2 {
+    height: 350px;
+    width: 350px;
+    background-color: rgb(129, 7, 7);
+    margin: 60px;
+    text-align: center;
+}
+#div3 {
+    height: 350px;
+    width: 350px;
+    background-color: rgb(77, 66, 66);
+    margin: 60px;
+    text-align: center;
+}
+.pacifico-regular {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+  }

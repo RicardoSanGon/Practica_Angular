@@ -67,4 +67,52 @@ class InventoriesController extends Controller
            return response()->json(["permission"=>true],200);
         return response()->json(["permission"=>false], 401);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'admission_date' => 'sometimes|required|after_or_equal:today|date_format:Y-d-m',
+            'stock' => 'sometimes|required|integer|min:10',
+            'model_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
+            'supplier_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $inventory = Inventory::findOrFail($id);
+
+            if ($request->has('admission_date')) {
+                $inventory->admission_date = $request->admission_date;
+            }
+
+            if ($request->has('stock')) {
+                $inventory->stock = $request->stock;
+            }
+
+            if ($request->has('model_id')) {
+                $model = Vehicle_Model::find($request->model_id);
+                if (!$model) {
+                    return response()->json(["msg" => "El modelo no existe"], 400);
+                }
+                $inventory->vehicle_model_id = $request->model_id;
+            }
+
+            if ($request->has('supplier_id')) {
+                $supplier = Supplier::find($request->supplier_id);
+                if (!$supplier) {
+                    return response()->json(["msg" => "El proveedor no existe"], 400);
+                }
+                $inventory->supplier_id = $request->supplier_id;
+            }
+
+            $inventory->save();
+
+            return response()->json(["msg" => "Inventario actualizado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar el inventario", "Error" => $e], 500);
+        }
+    }
 }

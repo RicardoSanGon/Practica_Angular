@@ -55,4 +55,7 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::post('/order/details/create',[OrderDetailsController::class,'store']);
     Route::get('/order/details',[OrderDetailsController::class,'index']);
     Route::put('/order/details/status/{id}',[OrderDetailsController::class,'changeStatusDetail']);
+    Route::post('/create/brand',[BrandsController::class,'store']);
+    Route::post('/create/model',[ModelsController::class,'store']);
+    Route::get('/catalogue/brand/{id}',[CataloguesController::class,'getBrands']);
 });

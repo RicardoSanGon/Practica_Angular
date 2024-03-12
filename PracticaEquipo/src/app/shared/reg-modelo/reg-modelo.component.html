@@ -16,28 +16,30 @@
         <h2>Registrar Modelo</h2>
         <div class="">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Modelo</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                <label  class="form-label">Modelo</label>
+                <input type="text" class="form-control" placeholder="ex: Ford">
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Año</label>
-                <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                <label  class="form-label">Año</label>
+                <input type="number" class="form-control"  placeholder="ex: 2015">
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Descripcion</label>
                 <textarea class="form-control" id="" rows="3"></textarea>
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Precio</label>
-                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="$Precio">
+                <label  class="form-label">Precio</label>
+                <input type="number" class="form-control"  placeholder="$Precio">
             </div>
+
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Estatus</label>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Estatus</option>
+                <label  class="form-label">Catalogo</label>
+                <select class="form-select" aria-label="Default select example" (change)="onCatalogueSelected($event)">
+                    <option *ngFor="let catalogo of catalogue_data" [value]="catalogo.id">{{catalogo.name}}</option>
                 </select>
             </div>
             <div class="mb-3">
+<<<<<<< HEAD
                 <label for="exampleFormControlInput1" class="form-label">Catalogo</label>
                 <select class="form-select" aria-label="Default select example">
                     <option selected>Catalogo</option>
@@ -48,11 +50,16 @@
                 <select class="form-select" aria-label="Default select example">
                     <option selected>Marca</option>
 <<<<<<< HEAD
+=======
+                <label  class="form-label">Marca</label>
+                <select class="form-select" aria-label="Default select example" (change)="onBrandSelected($event)">
+                    <option *ngFor="let brand of brand_data" [value]="brand.id">{{brand.brand_name}}</option>
+>>>>>>> 408205b4887d39a2e4cdd590fee69a0e40f12029
 
                 </select>
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3">Agregar</button>
+                <button type="submit" class="btn btn-primary mb-3" (click)="submitForm()">Agregar</button>
             </div>
         </div>
     </div>

@@ -58,5 +58,35 @@ class CustomersController extends Controller
            return response()->json(["permission"=>true],200);
        return response()->json(["permission"=>false], 401);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'customer_address' => 'sometimes|required|string|regex:/^[a-zA-Z0-9 ,\-]+$/|max:255|min:3',
+            'customer_phone' => "sometimes|required|unique:customers,customer_phone,$id|string|regex:/^[0-9]+$/|max:10|min:10"
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $customer = Customer::findOrFail($id);
+
+            if ($request->has('customer_address')) {
+                $customer->customer_address = $request->customer_address;
+            }
+
+            if ($request->has('customer_phone')) {
+                $customer->customer_phone = $request->customer_phone;
+            }
+
+            $customer->save();
+
+            return response()->json(["msg" => "Cliente actualizado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar el cliente", "Error" => $e], 500);
+        }
+    }
 }
 

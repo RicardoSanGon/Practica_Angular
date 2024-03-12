@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Vehicle_Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -55,12 +56,16 @@ class ModelsController extends Controller
             'model_name'=>'required|string|alpha|max:255|min:3',
             'model_year'=>'required|numeric|regex:/^[0-9]+$/|min:4|max:4',
             'model_description'=> 'required|string|alpha|max:255|min:3',
-            'model_price'=> 'required|double',
+            'model_price'=> 'required|regex:/^\d+(\.\d{1,2})?$/',
             'model_stock'=>'required|numeric|regex:/^[0-9]+$/',
             'brand_id'=> 'required|numeric|regex:/^[0-9]+$/',
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
+        }
+        $brand=Brand::find($request->brand_id);
+        if($brand==null){
+            return response()->json(["msg"=>"La marca no existe"],400);
         }
         $modelo = new Vehicle_Model();
         $modelo->model_name=$request->model_name;
@@ -80,5 +85,55 @@ class ModelsController extends Controller
         return response()->json([
             "msg" => "Registro correcto"
         ],201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'model_name' => 'sometimes|required|string|alpha|max:255|min:3',
+            'model_year' => 'sometimes|required|numeric|regex:/^[0-9]+$/|min:4|max:4',
+            'model_description' => 'sometimes|required|string|alpha|max:255|min:3',
+            'model_price' => 'sometimes|required|double',
+            'model_stock' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
+            'brand_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $modelo = Vehicle_Model::findOrFail($id);
+
+            if ($request->has('model_name')) {
+                $modelo->model_name = $request->model_name;
+            }
+
+            if ($request->has('model_year')) {
+                $modelo->model_year = $request->model_year;
+            }
+
+            if ($request->has('model_description')) {
+                $modelo->model_description = $request->model_description;
+            }
+
+            if ($request->has('model_price')) {
+                $modelo->model_price = $request->model_price;
+            }
+
+            if ($request->has('model_stock')) {
+                $modelo->model_stock = $request->model_stock;
+            }
+
+            if ($request->has('brand_id')) {
+                $modelo->brand_id = $request->brand_id;
+            }
+
+            $modelo->save();
+
+            return response()->json(["msg" => "Modelo actualizado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar el modelo", "Error" => $e], 500);
+        }
     }
 }

@@ -35,4 +35,32 @@ class BillsController extends Controller
             "msg" => "Registro correcto"
         ],201);
     }
+
+    public function update(Request $request, $detailId)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'total_amount' => 'required|double',
+            'tax_amount' => 'required|double',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $bill = Bill::where('detail_id', $detailId)->first();
+
+            if ($bill) {
+                $bill->total_amount = $request->total_amount;
+                $bill->tax_amount = $request->tax_amount;
+                $bill->save();
+
+                return response()->json(["msg" => "Factura actualizada correctamente"], 200);
+            } else {
+                return response()->json(["msg" => "No se encontró la factura con el detail_id proporcionado"], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar la factura", "Error" => $e], 500);
+        }
+    }
 }

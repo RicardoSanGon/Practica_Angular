@@ -146,13 +146,10 @@ class OrderDetailsController extends Controller
         try {
             $detail->save();
 
-            // Verifica si el nuevo estado es 'aceptado' y el estado anterior no lo era
             if ($detail->status === 'aceptado' && $previousStatus !== 'aceptado') {
-                // Envía el correo electrónico al cliente asociado
                 $customer = $detail->order->customer;
 
                 if ($customer) {
-                    // Utiliza la clase Mail para enviar el correo electrónico
                     Mail::to($customer->email)->send(new OrdenAceptadaMail($detail));
                 }
             }

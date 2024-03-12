@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Catalogue;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -66,5 +67,47 @@ class CataloguesController extends Controller
                 "permission" => false
             ],401);
 
+    }
+
+<<<<<<< HEAD
+    public function getBrands($id){
+        $brands = Brand::where('catalogue_id',$id)->get();
+        $brands = $brands->map(function($brand){
+            return[
+                "id"=>$brand->id,
+                "brand_name"=>$brand->brand_name,
+            ];
+        });
+        return response()->json(['data'=>$brands], 200);
+=======
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            "name" => 'sometimes|required|min:3|max:50|alpha',
+            "status" => 'sometimes|required|boolean',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $catalogue = Catalogue::findOrFail($id);
+
+            if ($request->has('name')) {
+                $catalogue->name = $request->name;
+            }
+
+            if ($request->has('status')) {
+                $catalogue->status = $request->status;
+            }
+
+            $catalogue->save();
+
+            return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar el catálogo", "Error" => $e], 500);
+        }
+>>>>>>> 1995ed953146296bd0c7ff1459302b8dddb46783
     }
 }

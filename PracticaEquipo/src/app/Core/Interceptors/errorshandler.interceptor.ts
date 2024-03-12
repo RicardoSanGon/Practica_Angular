@@ -5,7 +5,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 
 export const errorshandlerInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(catchError((error: HttpErrorResponse) => {
-    const errorBody = error.error;
-    return throwError(errorBody);
+    return throwError(error);
   }));
 };

@@ -29,6 +29,8 @@ export class LogInComponent {
     this.userService.LogInUser(this.user).subscribe(
       (response)=>{
         localStorage.setItem('token', response.token);
+        this.errorEmail=null
+        this.errorPassword=null
       },
       (error)=>{
         console.log(error)

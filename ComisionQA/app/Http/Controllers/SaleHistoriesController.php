@@ -41,4 +41,41 @@ class SaleHistoriesController extends Controller
             "msg" => "Registro correcto"
         ],201);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'sale_date' => 'required|date',
+            'total_amount' => 'required|double',
+            'quantity' => 'required|numeric|regex:/^[0-9]+$/',
+            'model_id' => 'required|numeric|regex:/^[0-9]+$/',
+            'customer_id' => 'required|numeric|regex:/^[0-9]+$/',
+            'detail_id' => 'required|numeric|regex:/^[0-9]+$/',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        $history = Sale_History::find($id);
+
+        if ($history === null) {
+            return response()->json(["msg" => "El historial de venta no existe"], 400);
+        }
+
+        $history->sale_date = $request->sale_date;
+        $history->total_amount = $request->total_amount;
+        $history->quantity = $request->quantity;
+        $history->model_id = $request->model_id;
+        $history->customer_id = $request->customer_id;
+        $history->detail_id = $request->detail_id;
+
+        try {
+            $history->save();
+
+            return response()->json(["msg" => "Registro actualizado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar el historial de venta", "Error" => $e], 500);
+        }
+    }
 }

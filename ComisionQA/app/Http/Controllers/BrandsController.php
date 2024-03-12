@@ -58,4 +58,34 @@ class BrandsController extends Controller
         ],201);
 
     }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            "brand_name" => 'sometimes|required|min:3|string|alpha',
+            "catalogue_id" => 'sometimes|required|numeric|regex:/^[0-9]+$/'
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $brand = Brand::findOrFail($id);
+
+            if ($request->has('brand_name')) {
+                $brand->brand_name = $request->brand_name;
+            }
+
+            if ($request->has('catalogue_id')) {
+                $brand->catalogue_id = $request->catalogue_id;
+            }
+
+            $brand->save();
+
+            return response()->json(["msg" => "Marca actualizada correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar la marca", "Error" => $e], 500);
+        }
+    }
 }

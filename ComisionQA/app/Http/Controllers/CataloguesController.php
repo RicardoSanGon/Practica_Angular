@@ -112,4 +112,9 @@ class CataloguesController extends Controller
         }
 
     }
+
+    public function updateCatalogueStatus(Request $request, $id)
+    {
+        return $this->updateStatus($request, 'catalogues', $id, 'status');
+    }
 }

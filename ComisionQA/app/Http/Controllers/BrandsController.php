@@ -88,4 +88,9 @@ class BrandsController extends Controller
             return response()->json(["msg" => "No se pudo actualizar la marca", "Error" => $e], 500);
         }
     }
+
+    public function updateBrandStatus(Request $request, $id)
+    {
+        return $this->updateStatus($request, 'brands', $id, 'brand_status');
+    }
 }

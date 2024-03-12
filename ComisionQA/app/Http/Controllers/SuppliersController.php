@@ -67,4 +67,9 @@ class SuppliersController extends Controller
             return response()->json(["msg" => "No se pudo actualizar el proveedor", "Error" => $e], 500);
         }
     }
+
+    public function updateSupplierStatus(Request $request, $id)
+    {
+        return $this->updateStatus($request, 'suppliers', $id, 'supplier_status');
+    }
 }

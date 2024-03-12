@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <app-navbar></app-navbar>
     <div class="center">
         <div class="container">
             <div>
@@ -26,7 +27,7 @@
                   <div *ngIf="errorPassword" class="text-danger">{{errorPassword}}</div>
                 </div>
                 <button class="form-control btn-color subtitulo" (click)="submitForm()">Iniciar Sesion</button>
-                <div class="mb-3" style="margin-top: 10px; color: white; text-align: center;">¿Aún no tienes una cuenta? <a href="#">Registrate</a></div>
+                <div class="mb-3" style="margin-top: 10px; color: white; text-align: center;">¿Aún no tienes una cuenta? <a routerLink="/signIn">Registrate</a></div>
 
 
             </form>

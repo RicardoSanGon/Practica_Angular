@@ -5,6 +5,7 @@ import {CataloguesService} from "../../Core/Services/Catalogue/catalogues.servic
 import {NgForOf, NgIf} from "@angular/common";
 import {CatalogueIndex} from "../../Core/Interfaces/catalogue-index";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-reg-marca',
@@ -13,7 +14,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     NgForOf,
     ReactiveFormsModule,
     FormsModule,
-    NgIf
+    NgIf,
+    NavbarComponent
   ],
   templateUrl: './reg-marca.component.html',
   styleUrl: './reg-marca.component.css'

@@ -5,13 +5,15 @@ import {BrandsService} from "../../Core/Services/Brand/brands.service";
 import {CataloguesService} from "../../Core/Services/Catalogue/catalogues.service";
 import {NgForOf} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-reg-modelo',
   standalone: true,
   imports: [
     NgForOf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NavbarComponent
   ],
   templateUrl: './reg-modelo.component.html',
   styleUrl: './reg-modelo.component.css'

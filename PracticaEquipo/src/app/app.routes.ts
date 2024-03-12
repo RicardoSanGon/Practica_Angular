@@ -2,6 +2,9 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 45bd765e3240c9ebfd935785e217e4f07b8a1a4c
 /*  {
     path: '',
     loadComponent: () =>
@@ -9,8 +12,11 @@ export const routes: Routes = [
         (c) => c.LogInComponent
       ),
   }, */
+<<<<<<< HEAD
 =======
 >>>>>>> d6ff5ff9a5d074228aeb236c478aa5bc76aa94aa
+=======
+>>>>>>> 45bd765e3240c9ebfd935785e217e4f07b8a1a4c
   {
     path: 'reg-Proveedores',
     loadComponent: () =>
@@ -36,12 +42,17 @@ export const routes: Routes = [
     path: 'reg-Marcas',
     loadComponent: () =>
 <<<<<<< HEAD
+<<<<<<< HEAD
       import('../app/shared/reg-marca/reg-marca.component').then(
         (c) => c.RegMarcaComponent
 =======
       import('../app/shared/reg-modelo/reg-modelo.component').then(
         (c) => c.RegModeloComponent
 >>>>>>> d6ff5ff9a5d074228aeb236c478aa5bc76aa94aa
+=======
+      import('../app/shared/reg-marca/reg-marca.component').then(
+        (c) => c.RegMarcaComponent
+>>>>>>> 45bd765e3240c9ebfd935785e217e4f07b8a1a4c
       ),
   },
   {

@@ -69,17 +69,19 @@ class CataloguesController extends Controller
 
     }
 
-<<<<<<< HEAD
-    public function getBrands($id){
-        $brands = Brand::where('catalogue_id',$id)->get();
-        $brands = $brands->map(function($brand){
-            return[
-                "id"=>$brand->id,
-                "brand_name"=>$brand->brand_name,
+
+    public function getBrands($id)
+    {
+        $brands = Brand::where('catalogue_id', $id)->get();
+        $brands = $brands->map(function ($brand) {
+            return [
+                "id" => $brand->id,
+                "brand_name" => $brand->brand_name,
             ];
         });
-        return response()->json(['data'=>$brands], 200);
-=======
+        return response()->json(['data' => $brands], 200);
+    }
+
     public function update(Request $request, $id)
     {
         $validaciones = Validator::make($request->all(), [
@@ -108,6 +110,6 @@ class CataloguesController extends Controller
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el catálogo", "Error" => $e], 500);
         }
->>>>>>> 1995ed953146296bd0c7ff1459302b8dddb46783
+
     }
 }

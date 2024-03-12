@@ -56,6 +56,7 @@ class UsersController extends Controller
         $token=JWTAuth::fromUser($user);
         $url=URL::temporarySignedRoute('verificar',now()->addMinutes(30),['token'=>$token]);
         Mail::to($request->email)->send(new VerificacionEmail($request->name,$url));
+        JWTAuth::invalidate($token);
         return response()->json(["msg"=>"Registro Correcto"],201);
     }
 
@@ -85,6 +86,7 @@ class UsersController extends Controller
         $user->code=Hash::make($code);
         $user->save();
         Mail::to($request->email)->send(new SendCode($user->name,$code));
+
         return response()->json(['token'=>$token,'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion'],202);
     }
 
@@ -108,7 +110,8 @@ class UsersController extends Controller
         }
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
         if(Hash::check($request->code,$user->code)){
-            return response()->json(["msg"=>"Verificacion Correcta"],200);
+            $token=JWTAuth::fromUser($user);
+            return response()->json(["msg"=>"Verificacion Correcta","token"=>$token],200);
         }
         return response()->json(["msg"=>"Codigo incorrecto"],400);
     }

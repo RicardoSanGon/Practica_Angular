@@ -40,4 +40,35 @@ class OrdersController extends Controller
             "msg" => "Order creada"
         ],201);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'status' => 'required|integer|in:0,1,2,3',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        $order = Order::find($id);
+
+        if ($order === null) {
+            return response()->json(["msg" => "La orden no existe"], 400);
+        }
+
+        if ($request->status >= $order->status) {
+            $order->status = $request->status;
+
+            try {
+                $order->save();
+
+                return response()->json(["msg" => "Orden actualizada correctamente"], 200);
+            } catch (Exception $e) {
+                return response()->json(["msg" => "No se pudo actualizar la orden", "Error" => $e], 500);
+            }
+        }
+
+        return response()->json(["msg" => "Transición de estado no válida"], 400);
+    }
 }

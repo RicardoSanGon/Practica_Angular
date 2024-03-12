@@ -3,14 +3,9 @@ import {Models} from "../../Core/Interfaces/models";
 import {ModelsService} from "../../Core/Services/Model/models.service";
 import {BrandsService} from "../../Core/Services/Brand/brands.service";
 import {CataloguesService} from "../../Core/Services/Catalogue/catalogues.service";
-<<<<<<< HEAD
-import {NgForOf} from "@angular/common";
-import {ReactiveFormsModule} from "@angular/forms";
 import { NavbarComponent } from '../navbar/navbar.component';
-=======
 import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
->>>>>>> 24e5ee321a8f84fa21f9871cfd0566617efe792e
 
 @Component({
   selector: 'app-reg-modelo',
@@ -18,12 +13,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   imports: [
     NgForOf,
     ReactiveFormsModule,
-<<<<<<< HEAD
-    NavbarComponent
-=======
+    NavbarComponent,
     NgIf,
     FormsModule
->>>>>>> 24e5ee321a8f84fa21f9871cfd0566617efe792e
   ],
   templateUrl: './reg-modelo.component.html',
   styleUrl: './reg-modelo.component.css'

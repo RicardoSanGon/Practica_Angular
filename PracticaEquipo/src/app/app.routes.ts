@@ -3,20 +3,28 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 45bd765e3240c9ebfd935785e217e4f07b8a1a4c
 /*  {
+=======
+  {
+>>>>>>> 3e57731b8f0e995cea900e10492df0ada6252e7e
     path: '',
     loadComponent: () =>
       import('../app/shared/log-in/log-in.component').then(
         (c) => c.LogInComponent
       ),
+<<<<<<< HEAD
   }, */
 <<<<<<< HEAD
 =======
 >>>>>>> d6ff5ff9a5d074228aeb236c478aa5bc76aa94aa
 =======
 >>>>>>> 45bd765e3240c9ebfd935785e217e4f07b8a1a4c
+=======
+  },
+>>>>>>> 3e57731b8f0e995cea900e10492df0ada6252e7e
   {
     path: 'reg-Proveedores',
     loadComponent: () =>

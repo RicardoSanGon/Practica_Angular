@@ -54,10 +54,10 @@ class ModelsController extends Controller
     public function store(Request $request){
         $validaciones=Validator::make($request->all(),[
             'model_name'=>'required|string|alpha|max:255|min:3',
-            'model_year'=>'required|numeric|regex:/^[0-9]+$/|min:4|max:4',
-            'model_description'=> 'required|string|alpha|max:255|min:3',
-            'model_price'=> 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'model_stock'=>'required|numeric|regex:/^[0-9]+$/',
+            'model_year'=>'required|numeric|regex:/^[0-9]+$/|min:2010|max:2030',
+            'model_description' => 'required|regex:/^[a-zA-Z\s]+$/|max:255|min:10',
+            'model_price'=> 'required|integer|min:50000',
+            'model_stock'=>'required|numeric|min:10',
             'brand_id'=> 'required|numeric|regex:/^[0-9]+$/',
         ]);
         if($validaciones->fails()){
@@ -65,7 +65,7 @@ class ModelsController extends Controller
         }
         $brand=Brand::find($request->brand_id);
         if($brand==null){
-            return response()->json(["msg"=>"La marca no existe"],400);
+            return response()->json(["model_brand"=>"La marca no existe"],400);
         }
         $modelo = new Vehicle_Model();
         $modelo->model_name=$request->model_name;

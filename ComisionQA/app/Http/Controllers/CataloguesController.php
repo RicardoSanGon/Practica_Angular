@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Catalogue;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -66,5 +67,16 @@ class CataloguesController extends Controller
                 "permission" => false
             ],401);
 
+    }
+
+    public function getBrands($id){
+        $brands = Brand::where('catalogue_id',$id)->get();
+        $brands = $brands->map(function($brand){
+            return[
+                "id"=>$brand->id,
+                "brand_name"=>$brand->brand_name,
+            ];
+        });
+        return response()->json(['data'=>$brands], 200);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Vehicle_Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -55,12 +56,16 @@ class ModelsController extends Controller
             'model_name'=>'required|string|alpha|max:255|min:3',
             'model_year'=>'required|numeric|regex:/^[0-9]+$/|min:4|max:4',
             'model_description'=> 'required|string|alpha|max:255|min:3',
-            'model_price'=> 'required|double',
+            'model_price'=> 'required|regex:/^\d+(\.\d{1,2})?$/',
             'model_stock'=>'required|numeric|regex:/^[0-9]+$/',
             'brand_id'=> 'required|numeric|regex:/^[0-9]+$/',
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
+        }
+        $brand=Brand::find($request->brand_id);
+        if($brand==null){
+            return response()->json(["msg"=>"La marca no existe"],400);
         }
         $modelo = new Vehicle_Model();
         $modelo->model_name=$request->model_name;

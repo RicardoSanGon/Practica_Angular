@@ -35,10 +35,10 @@ class BrandsController extends Controller
     public function store(Request $request){
         $validaciones = Validator::make($request->all(),[
             "brand_name" => 'required|min:3|string|alpha',
-            "catalogue_id" => 'required|numeric|regex:/^[0-9]+$/'
+            "catalogue_id" => 'required|numeric|regex:/^[0-9]+$/|min:1'
         ]);
 
-        if($validaciones->failed()){
+        if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=> "Error en los datos"],400);
         }
 

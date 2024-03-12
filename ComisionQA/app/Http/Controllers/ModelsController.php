@@ -136,4 +136,9 @@ class ModelsController extends Controller
             return response()->json(["msg" => "No se pudo actualizar el modelo", "Error" => $e], 500);
         }
     }
+
+    public function updateModelStatus(Request $request, $id)
+    {
+        return $this->updateStatus($request, 'vehicle_models', $id, 'model_status');
+    }
 }

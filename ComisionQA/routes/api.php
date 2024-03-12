@@ -59,3 +59,10 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::post('/create/model',[ModelsController::class,'store']);
     Route::get('/catalogue/brand/{id}',[CataloguesController::class,'getBrands']);
 });
+
+//Rutas para editar status:
+Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);
+Route::put('/update-status/catalogues/{id}', [CataloguesController::class, 'updateCatalogueStatus']);
+Route::put('/update-status/suppliers/{id}', [SuppliersController::class, 'updateSupplierStatus']);
+Route::put('/update-status/users/{id}', [UsersController::class, 'updateUserStatus']);
+Route::put('/update-status/models/{id}', [ModelsController::class, 'updateModelStatus']);

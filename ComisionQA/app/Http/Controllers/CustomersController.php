@@ -26,7 +26,7 @@ class CustomersController extends Controller
     public function store(Request $request){
         $validaciones=Validator::make($request->all(),[
             'customer_address'=>'required|string|regex:/^[a-zA-Z0-9 ,\-]+$/|max:255|min:3',
-            'customer_phone'=>'required|unique:customers|string|regex:/^[0-9]+$/|max:10|min:10'
+            'customer_phone'=>'required|unique:customers|regex:/^[0-9]+$/|max:10|min:10'
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);

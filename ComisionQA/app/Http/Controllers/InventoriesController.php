@@ -27,21 +27,21 @@ class InventoriesController extends Controller
     }
     public function store(Request $request){
         $validaciones=Validator::make($request->all(),[
-            'admission_date'=>'required|after_or_equal:today|date_format:Y-d-m',
+            'admission_date'=>'required|after_or_equal:today|date_format:Y-m-d',
             'stock'=>'required|integer|min:10',
             'model_id'=> 'required|numeric|regex:/^[0-9]+$/',
-            'suppier_id'=> 'required|numeric|regex:/^[0-9]+$/',
+            'supplier_id'=> 'required|numeric|regex:/^[0-9]+$/',
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
         }
         $model=Vehicle_Model::find($request->model_id);
         if(!$model){
-            return response()->json(["msg"=>"El modelo no existe"],400);
+            return response()->json(["model_id"=>"El modelo no existe"],400);
         }
         $supplier=Supplier::find($request->suppier_id);
         if(!$supplier){
-            return response()->json(["msg"=>"El proveedor no existe"],400);
+            return response()->json(["supplier_id"=>"El proveedor no existe"],400);
         }
         $inventory = new Inventory();
         $inventory->admission_date = $request->admission_date;

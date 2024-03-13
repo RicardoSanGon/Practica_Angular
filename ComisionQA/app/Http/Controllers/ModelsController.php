@@ -40,7 +40,7 @@ class ModelsController extends Controller
                 return[
                     "id"=>$model->id,
                     "modelo"=>$model->model_name,
-                    "año"=>$model->model_year,
+                    "year"=>$model->model_year,
                     "descripcion"=>$model->model_description,
                     "precio"=>$model->model_price,
                     "existencias"=>$model->model_stock,

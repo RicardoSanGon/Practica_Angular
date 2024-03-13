@@ -10,12 +10,25 @@ use Exception;
 
 class SuppliersController extends Controller
 {
-    //
+    public function index()
+    {
+        $suppliers = Supplier::all();
+        $suppliers = $suppliers->map(function ($supplier) {
+            return [
+                "id" => $supplier->id,
+                "supplier_name" => $supplier->supplier_name,
+                "supplier_email" => $supplier->supplier_email,
+                "supplier_phone" => $supplier->supplier_phone,
+                "supplier_status" => $supplier->supplier_status
+            ];
+        });
+        return response()->json(['data' => $suppliers], 200);
+    }
     public function store(Request $request){
         $validaciones=Validator::make($request->all(),[
             'supplier_name'=>'required|string|alpha|max:255|min:3',
             'supplier_email'=>'required|email|unique:users|regex:/(.*@.{2,}\..{2,3})$/',
-            'supplier_phone'=>'required|unique:suppliers|numeric|regex:/^[0-9]+$/'
+            'supplier_phone'=>'required|unique:suppliers|min:10|max:10|regex:/^[0-9]+$/'
         ]);
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);

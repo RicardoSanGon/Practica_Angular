@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrdenAceptadaMail;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a256896e9662fba2650390e1ebcc9fdb1d2f430c
 class OrderDetailsController extends Controller
 {
     public function index(Request $request){
@@ -95,4 +99,45 @@ class OrderDetailsController extends Controller
             "msg" => "Registro correcto"
         ],201);
     }
+<<<<<<< HEAD
 }
+=======
+
+
+    public function changeStatusDetail(Request $request, $id)
+    {
+        $validaciones = Validator::make($request->all(), [
+            'status' => 'required|string|in:aceptado,cancelado',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        $detail = Order_Detail::find($id);
+
+        if ($detail === null) {
+            return response()->json(["msg" => "El detalle no existe"], 400);
+        }
+
+        $previousStatus = $detail->status;
+        $detail->status = $request->status;
+
+        try {
+            $detail->save();
+
+            if ($detail->status === 'aceptado' && $previousStatus !== 'aceptado') {
+                $customer = $detail->order->customer;
+
+                if ($customer) {
+                    Mail::to($customer->email)->send(new OrdenAceptadaMail($detail));
+                }
+            }
+
+            return response()->json(["msg" => "Registro correcto"], 201);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo cambiar el estado del detalle", "Error" => $e], 500);
+        }
+    }
+}
+>>>>>>> a256896e9662fba2650390e1ebcc9fdb1d2f430c

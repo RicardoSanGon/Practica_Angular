@@ -27,13 +27,14 @@ class ModelsController extends Controller
                 return[
                     "id"=>$model->id,
                     "modelo"=>$model->model_name,
-                    "año"=>$model->model_year,
+                    "year"=>$model->model_year,
                     "descripcion"=>$model->model_description,
                     "precio"=>$model->model_price,
                     "existencias"=>$model->model_stock,
                     "marca"=>$model->brand->brand_name,
                 ];
             });
+            $is_admin=false;
         }
         else{
             $models = $models->map(function($model){
@@ -48,8 +49,9 @@ class ModelsController extends Controller
                     "status"=>$model->model_status ? "Activo" : "Inactivo"
                 ];
             });
+            $is_admin=true;
         }
-        return response()->json(['data'=>$models], 200);
+        return response()->json(['data'=>$models,'is_admin'=>$is_admin], 200);
     }
     public function store(Request $request){
         $validaciones=Validator::make($request->all(),[

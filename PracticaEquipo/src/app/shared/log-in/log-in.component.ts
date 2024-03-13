@@ -33,13 +33,24 @@ export class LogInComponent {
     this.userService.LogInUser(this.user).subscribe(
       (response)=>{
         localStorage.setItem('token', response.token);
-        this.errorEmail=null
-        this.errorPassword=null
+        console.log('logeado');
       },
       (error)=>{
         console.log(error)
-        this.errorEmail = error.Errores.email;
-        this.errorPassword = error.Errores.password;
+        if(error.error?.Errores?.email !== undefined ){
+          this.errorEmail=error.error.Errores.email
+        }
+        else
+        {
+          this.errorEmail=null
+        }
+        if(error.error?.Errores?.password != undefined){
+          this.errorPassword=error.error.Errores.password
+        }
+        else
+        {
+          this.errorPassword=null
+        }
       }
     );
   }

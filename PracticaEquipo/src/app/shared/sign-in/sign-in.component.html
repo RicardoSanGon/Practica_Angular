@@ -17,18 +17,21 @@
             </div>
             <form class="form-cotrol">
                 <div class="mb-3">
-                    <label for="" class="form-label subtitulo"><i class='bx bxs-user'></i> Nombre</label>
-                    <input type="text" class="form-control" id="" placeholder="User name">
+                    <label class="form-label subtitulo"><i class='bx bxs-user'></i> Nombre</label>
+                    <input type="text" class="form-control"  placeholder="User name" [(ngModel)]="user.name" name="name">
+                  <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label subtitulo"><i class='bx bxs-envelope'></i> Correo</label>
-                    <input type="email" class="form-control" id="" placeholder="name@example.com">
+                    <label  class="form-label subtitulo"><i class='bx bxs-envelope' ></i> Correo</label>
+                    <input type="email" class="form-control"  placeholder="name@example.com" [(ngModel)]="user.email" name="email">
+                    <div *ngIf="errorEmail" class="text-danger">{{errorEmail}}</div>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label subtitulo"><i class='bx bxs-lock-alt'></i> Contraseña</label>
-                    <input type="password" class="form-control" id="" placeholder="Password">
+                    <label  class="form-label subtitulo"><i class='bx bxs-lock-alt' ></i> Contraseña</label>
+                    <input type="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" name="password">
+                    <div *ngIf="errorPassword" class="text-danger">{{errorPassword}}</div>
                 </div>
-                <button class="form-control btn-color subtitulo">Registrarse</button>
+                <button class="form-control btn-color subtitulo" (click)="submitForm()">Registrarse</button>
                 <div class="mb-3" style="margin-top: 10px; color: white; text-align: center;">¿Ya tienes una cuenta? <a
                         routerLink="/">Inicia Sesion</a>
                 </div>

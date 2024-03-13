@@ -18,6 +18,7 @@ export class TabCatalogoComponent {
   constructor(private cataloguesService: CataloguesService) {
     this.getCatalogo();
   }
+
   getCatalogo() {
     this.cataloguesService.getCatalogues().subscribe({
       next: (result) => {

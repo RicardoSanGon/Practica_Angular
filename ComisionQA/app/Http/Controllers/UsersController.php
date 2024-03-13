@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendCode;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +57,6 @@ class UsersController extends Controller
         $token=JWTAuth::fromUser($user);
         $url=URL::temporarySignedRoute('verificar',now()->addMinutes(30),['token'=>$token]);
         Mail::to($request->email)->send(new VerificacionEmail($request->name,$url));
-        JWTAuth::invalidate($token);
         return response()->json(["msg"=>"Registro Correcto"],201);
     }
 
@@ -70,6 +70,9 @@ class UsersController extends Controller
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=>"Error en los datos"],400);
         }
         $user=User::where('email',$request->email)->first();
+        if(!$user){
+            return response()->json(['msg'=>'El usuario no existe'],404);
+        }
         if($user->status==0){
             return response()->json(['msg'=>'El usuario no ha verificado su correo'],400);
         }
@@ -86,7 +89,6 @@ class UsersController extends Controller
         $user->code=Hash::make($code);
         $user->save();
         Mail::to($request->email)->send(new SendCode($user->name,$code));
-
         return response()->json(['token'=>$token,'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion'],202);
     }
 
@@ -206,5 +208,29 @@ class UsersController extends Controller
     public function updateUserStatus(Request $request, $id)
     {
         return $this->updateStatus($request, 'users', $id, 'status');
+    }
+
+    public function is_admin(Request $request){
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        if($user->role_id==1){
+            return response()->json(['is_admin'=>true],200);
+        }
+        return response()->json(['is_admin'=>false],200);
+    }
+    public function is_guest(Request $request){
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        if($user->role_id==3){
+            return response()->json(['is_guest'=>true],200);
+        }
+        return response()->json(['is_guest'=>false],200);
+    }
+
+    public function is_client(Request $request){
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        $customer=Customer::where('user_id',$user->id)->first();
+        if($customer){
+            return response()->json(['is_client'=>true],200);
+        }
+        return response()->json(['is_client'=>false],200);
     }
 }

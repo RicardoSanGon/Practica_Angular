@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla Modelos</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla Catalogo</title>
 </head>
+
 <body>
-    <app-navbar></app-navbar>
+<app-navbar></app-navbar>
+<div class="container" style="margin-top: 20px;">
+  <button type="button" class="btn btn-primary" *ngIf="is_client" (click)="createOrder()">Crear Orden</button>
+  <div class="alert alert-warning" role="alert" *ngIf="msg">
+    {{msg}}
+  </div>
+  <table class="table table-bordered" style="text-align: center;">
+    <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Año</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Existencias</th>
+      <th scope="col">Descripcion</th>
+      <th scope="col">Marca</th>
+      <th scope="col" *ngIf="is_admin">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+  <tr *ngFor="let model of model_data">
+      <th scope="row">{{model.modelo}}</th>
+      <th scope="row">{{model.year}}</th>
+      <th scope="row">{{model.precio}}</th>
+      <th scope="row">{{model.existencias}}</th>
+      <th scope="row">{{model.descripcion}}</th>
+      <th scope="row">{{model.marca}}</th>
+      <th scope="row" *ngIf="is_admin">{{model.status}}</th>
+      <th scope="row" *ngIf="is_admin">
+        <button type="button" class="btn btn-warning">Modificar</button>
+        <button type="button" class="btn btn-danger">Eliminar</button>
+      </th>
+    <th scope="row" *ngIf="is_client">
+      <button type="button" class="btn btn-success" (click)="agregarAlCarrito(model)">Agregar al carrito</button>
+    </th>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
+
 </html>

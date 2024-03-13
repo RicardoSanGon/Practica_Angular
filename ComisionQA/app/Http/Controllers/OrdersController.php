@@ -65,4 +65,18 @@ class OrdersController extends Controller
             return response()->json(["msg" => "No se pudo actualizar la orden", "Error" => $e], 500);
         }
     }
+
+    public function index()
+    {
+        $order = Order::all();
+        $order = $order->map(function ($order) {
+            return [
+                "id" => $supplier->id,
+                "order_date" => $order->order_date,
+                "status" => $order->status,
+                "customer_id" => $order->customer_id,
+            ];
+        });
+        return response()->json(['data' => $order], 200);
+    }
 }

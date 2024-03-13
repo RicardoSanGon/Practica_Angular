@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import {NgForOf, NgIf} from "@angular/common";
 
 import {MapModels} from "../../Core/Interfaces/map-models";
@@ -12,7 +11,7 @@ import {CarritoService} from "../../Core/Services/Carrito/carrito.service";
 @Component({
   selector: 'app-tab-modelos',
   standalone: true,
-  imports: [NavbarComponent, NgForOf, NgIf],
+  imports: [ NgForOf, NgIf],
   templateUrl: './tab-modelos.component.html',
   styleUrl: './tab-modelos.component.css'
 })

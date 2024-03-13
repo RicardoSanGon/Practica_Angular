@@ -1,41 +1,32 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
-import {Router, RouterModule} from '@angular/router';
-import {UserForm} from "../../Core/Interfaces/user-form";
-import {UsersService} from "../../Core/Services/User/users.service";
-import {FormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
-
+import { Router, RouterModule } from '@angular/router';
+import { UserForm } from '../../Core/Interfaces/user-form';
+import { UsersService } from '../../Core/Services/User/users.service';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [
-    RouterModule,
-    NavbarComponent,
-    FormsModule,
-    NgIf,
-  ],
+  imports: [RouterModule, NavbarComponent, FormsModule, NgIf],
   templateUrl: './sign-in.component.html',
-  styleUrl: './sign-in.component.css'
+  styleUrl: './sign-in.component.css',
 })
 export class SignInComponent {
-  user:UserForm=
-    {
-      name: '',
-      email: '',
-      password: ''
-    }
-    public errorEmail:String|null = null;
-    public errorName:String|null = null;
-    public errorPassword:String|null = null;
-constructor(private usersService: UsersService,
-            private router:Router) {}
+  user: UserForm = {
+    name: '',
+    email: '',
+    password: '',
+  };
+  public errorEmail: String | null = null;
+  public errorName: String | null = null;
+  public errorPassword: String | null = null;
+  constructor(private usersService: UsersService, private router: Router) {}
 
   submitForm() {
     this.usersService.createUser(this.user).subscribe(
-      (response) =>
-      {
+      (response) => {
         this.router.navigate(['/']);
       },
       (error) => {
@@ -47,15 +38,13 @@ constructor(private usersService: UsersService,
         }
         if (error.error?.Errores?.password) {
           this.errorPassword = error.error.Errores.password;
-        }
-        else
-        {
+        } else {
           this.errorEmail = null;
           this.errorName = null;
           this.errorPassword = null;
         }
 
-        console.log(error)
+        console.log(error);
       }
     );
   }

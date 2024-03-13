@@ -145,7 +145,7 @@ class UsersController extends Controller
             $token = substr($authorizationHeader, 7);
             $payload = JWTAuth::setToken($token)->getPayload();
         } catch (JWTException $e) {
-            return response()->json(['msg' => 'Invalid token'], $e->getStatusCode());
+            return response()->json(['msg' => 'Invalid token']);
         }
 
         return $payload['sub'];

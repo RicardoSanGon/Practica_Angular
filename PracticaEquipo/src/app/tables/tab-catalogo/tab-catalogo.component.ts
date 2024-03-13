@@ -27,4 +27,8 @@ export class TabCatalogoComponent {
       },
     });
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ce066e4402c7bd9c44977275b9cf61ffa576f64b

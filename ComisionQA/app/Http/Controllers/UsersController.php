@@ -202,4 +202,9 @@ class UsersController extends Controller
         }
         return response()->json(['permission'=>false],401);
     }
+
+    public function updateUserStatus(Request $request, $id)
+    {
+        return $this->updateStatus($request, 'users', $id, 'status');
+    }
 }

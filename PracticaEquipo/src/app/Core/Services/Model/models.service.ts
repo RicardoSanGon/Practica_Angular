@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Models} from "../../Interfaces/models";
 import {Observable} from "rxjs";
 import {MsgResponse} from "../../Interfaces/MsgResponse";
+import {DataModels} from "../../Interfaces/data-models";
 
 @Injectable({
   providedIn: 'root'
@@ -15,4 +16,6 @@ export class ModelsService {
   {
     return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/create/model', model);
   }
+  public getModels(): Observable<DataModels>
+  {return this.http.get<DataModels>('http://127.0.0.1:8000/api/models')}
 }

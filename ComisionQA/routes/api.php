@@ -7,6 +7,7 @@ use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\ModelsController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,4 +59,13 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::post('/create/brand',[BrandsController::class,'store']);
     Route::post('/create/model',[ModelsController::class,'store']);
     Route::get('/catalogue/brand/{id}',[CataloguesController::class,'getBrands']);
+    Route::post('/create/supplier',[SuppliersController::class,'store']);
+    Route::get('/suppliers',[SuppliersController::class,'index']);
 });
+
+//Rutas para editar status:
+Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);
+Route::put('/update-status/catalogues/{id}', [CataloguesController::class, 'updateCatalogueStatus']);
+Route::put('/update-status/suppliers/{id}', [SuppliersController::class, 'updateSupplierStatus']);
+Route::put('/update-status/users/{id}', [UsersController::class, 'updateUserStatus']);
+Route::put('/update-status/models/{id}', [ModelsController::class, 'updateModelStatus']);

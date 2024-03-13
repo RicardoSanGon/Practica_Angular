@@ -10,28 +10,30 @@
 <body>
     <app-navbar></app-navbar>
     <div class="container">
+<<<<<<< HEAD
         <h2>Registrarse como Cliente</h2>
+=======
+        <h2>Registrese como Cliente</h2>
+>>>>>>> ce066e4402c7bd9c44977275b9cf61ffa576f64b
         <div class="">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Direccion</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1"
-                    placeholder="Ingrese la direccion">
+                <label  class="form-label">Direccion</label>
+                <input type="text" class="form-control"
+                    placeholder="Ingrese la direccion" [(ngModel)]="customer.customer_address">
+              <div *ngIf="errorAddress" class="text-danger">{{errorAddress}}</div>
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Telefono</label>
-                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Telefono">
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Usuario</label>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Usuario</option>
-                </select>
+                <label  class="form-label">Telefono</label>
+                <input type="number" class="form-control"  placeholder="Telefono" [(ngModel)]="customer.customer_phone">
+              <div *ngIf="errorPhone" class="text-danger">{{errorPhone}}</div>
             </div>
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">Agregar</button>
+            <button type="submit" class="btn btn-primary mb-3" (click)="createCustomer()">Agregar</button>
         </div>
     </div>
+
+
 </body>
 
 </html>

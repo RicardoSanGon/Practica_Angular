@@ -78,4 +78,21 @@ class SaleHistoriesController extends Controller
             return response()->json(["msg" => "No se pudo actualizar el historial de venta", "Error" => $e], 500);
         }
     }
+
+    public function index()
+    {
+        $sales = Sale_History::all();
+        $sales = $sales->map(function ($sales) {
+            return [
+                "id" => $sales->id,
+                "sale_date" => $sales->sale_date,
+                "total_amount" => $sales->total_amount,
+                "quantity" => $sales->quantity,
+                "vehicle_model_id" => $sales->vehicle_model_id,
+                "customer_id" => $sales->customer_id,
+                "detail_id" => $sales->detail_id,
+            ];
+        });
+        return response()->json(['data' => $suppliers], 200);
+    }
 }

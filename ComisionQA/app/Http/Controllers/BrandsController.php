@@ -41,7 +41,10 @@ class BrandsController extends Controller
         if($validaciones->fails()){
             return response()->json(["Errores"=>$validaciones->errors(),"msg"=> "Error en los datos"],400);
         }
-
+        $catalogue = Catalogue::find($request->catalogue_id);
+        if(!$catalogue){
+            return response()->json(["catalogue_id"=>"El catalogo no existe"],400);
+        }
         $brand = new Brand();
         $brand->brand_name = $request->brand_name;
         $brand->catalogue_id=$request->catalogue_id;

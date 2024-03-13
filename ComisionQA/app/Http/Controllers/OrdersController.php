@@ -71,7 +71,7 @@ class OrdersController extends Controller
         $order = Order::all();
         $order = $order->map(function ($order) {
             return [
-                "id" => $supplier->id,
+                "id" => $order->id,
                 "order_date" => $order->order_date,
                 "status" => $order->status,
                 "customer_id" => $order->customer_id,

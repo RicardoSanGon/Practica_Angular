@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/is_admin',[UsersController::class,'is_admin']);
     Route::get('/is_customer',[UsersController::class,'is_client']);
     Route::get('/is_guest',[UsersController::class,'is_guest']);
+    Route::get('/is_user',[UsersController::class,'is_user']);
 });
 
 //Rutas para editar status:

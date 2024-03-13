@@ -233,4 +233,11 @@ class UsersController extends Controller
         }
         return response()->json(['is_client'=>false],200);
     }
+    public function is_user(Request $request){
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        if($user->role_id==2){
+            return response()->json(['is_user'=>true],200);
+        }
+        return response()->json(['is_user'=>false],200);
+    }
 }

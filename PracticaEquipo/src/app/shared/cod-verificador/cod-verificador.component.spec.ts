@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabCatalogoComponent } from './tab-catalogo.component';
+import { CodVerificadorComponent } from './cod-verificador.component';
 
-describe('TabCatalogoComponent', () => {
-  let component: TabCatalogoComponent;
-  let fixture: ComponentFixture<TabCatalogoComponent>;
+describe('CodVerificadorComponent', () => {
+  let component: CodVerificadorComponent;
+  let fixture: ComponentFixture<CodVerificadorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TabCatalogoComponent]
+      imports: [CodVerificadorComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(TabCatalogoComponent);
+    fixture = TestBed.createComponent(CodVerificadorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

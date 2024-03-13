@@ -42,6 +42,7 @@
                             Clientes
                         </a>
                         <ul class="dropdown-menu">
+<<<<<<< HEAD
                             <li><a class="dropdown-item" routerLink="reg-Clientes" *ngIf="is_user">Registrarse como
                                     Cliente</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Marcas">Tabla Marcas</a></li>
@@ -54,11 +55,31 @@
                         <a class="nav-link active" style="color: white;" aria-current="page" routerLink="carrito"
                             *ngIf="is_user">Carrito</a>
                     </li>
+=======
+                            <li><a class="dropdown-item" routerLink="/tab-Marcas">Tabla Marcas</a></li>
+                            <li><a class="dropdown-item" routerLink="/tab-Modelos">Tabla Modelos</a></li>
+                            <li><a class="dropdown-item" routerLink="/tab-Historial">Tabla Historial</a></li>
+                            <li><a class="dropdown-item" routerLink="/tab-Ordenes">Tabla Ordenes</a></li>
+                        </ul>
+                    </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" style="color: white;" aria-current="page" routerLink="/carrito" *ngIf="is_user">Carrito</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="/reg-Clientes" *ngIf="is_user">Registrarse como Cliente</a>
+                  </li>
+
+
+>>>>>>> 8f52516fd76a96857b185325102c9cf6c8baf151
                 </ul>
             </div>
         </div>
     </nav>
+<<<<<<< HEAD
     <router-outlet></router-outlet>
+=======
+
+>>>>>>> 8f52516fd76a96857b185325102c9cf6c8baf151
 </body>
 
 </html>

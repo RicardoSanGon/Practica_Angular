@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {UsersService} from "../../Core/Services/User/users.service";
 import {NgIf} from "@angular/common";
@@ -13,11 +13,15 @@ import {NgIf} from "@angular/common";
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
   is_admin: boolean = false;
   is_user: boolean = false;
   is_guest: boolean = false;
   constructor(private userService: UsersService)
+  {
+
+  }
+  ngOnInit(): void
   {
     this.is_Admin();
     this.is_User();

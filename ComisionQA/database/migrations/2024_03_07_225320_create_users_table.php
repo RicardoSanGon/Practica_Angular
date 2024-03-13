@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('status')->default(false);
             $table->string('code')->nullable();
             $table->foreignId('role_id')->references('id')->on('rols');
+            $table->boolean('is_code_verified')->default(false);
         });
     }
 

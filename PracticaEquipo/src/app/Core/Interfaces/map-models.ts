@@ -1,4 +1,5 @@
 export interface MapModels {
+  cantidad?: number;
   id: number,
   modelo: string,
   year: string,

@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<table class="table table-bordered" style="text-align: center; margin: 20px">
+  <thead>
+  <tr>
+    <th scope="col">Nombre</th>
+    <th scope="col">Año</th>
+    <th scope="col">Precio</th>
+    <th scope="col">Existencias</th>
+    <th scope="col">Cantidad</th>
+    <th scope="col">Modificar Cantidad</th>
+    <th scope="col">Eliminar</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of carrito">
+    <td>{{item.modelo}}</td>
+    <td>{{item.year}}</td>
+    <td>{{item.precio}}</td>
+    <td>{{item.existencias}}</td>
+    <td>{{item.cantidad}}</td>
+    <td>
+      <button type="button" class="btn btn-warning" style="font-size: 130%;margin-left: 20px" (click)="quiteElement(item)">-</button>
+      <button type="button" class="btn btn-info" style="font-size: 130%;margin-left: 20px" (click)="addElement(item)">+</button>
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger" (click)="eliminarElemento(item)">Eliminar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>

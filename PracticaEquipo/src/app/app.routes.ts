@@ -52,4 +52,7 @@ export const routes: Routes = [
   {
     path: 'tab-Historial', loadComponent: () =>import('../app/tables/tab-historial/tab-historial.component').then((c) => c.TabHistorialComponent),
   },
+  {
+    path:'carrito', loadComponent: () =>import('../app/shared/carrito/carrito.component').then((c) => c.CarritoComponent),
+  }
 ];

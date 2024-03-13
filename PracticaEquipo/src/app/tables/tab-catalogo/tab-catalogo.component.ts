@@ -17,6 +17,7 @@ export class TabCatalogoComponent {
   constructor(private cataloguesService: CataloguesService) {
     this.getCatalogo();
   }
+
   getCatalogo() {
     this.cataloguesService.getCatalogues().subscribe({
       next: (result) => {
@@ -27,8 +28,4 @@ export class TabCatalogoComponent {
       },
     });
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ce066e4402c7bd9c44977275b9cf61ffa576f64b

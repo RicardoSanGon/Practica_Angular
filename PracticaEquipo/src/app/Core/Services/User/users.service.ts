@@ -8,6 +8,7 @@ import {UserForm} from "../../Interfaces/user-form";
 import {IsAdmin} from "../../Interfaces/is-admin";
 import {IsCustomer} from "../../Interfaces/is-customer";
 import {IsGuest} from "../../Interfaces/is-guest";
+import {IsUser} from "../../Interfaces/is-user";
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,10 @@ export class UsersService {
   isGuest():Observable<IsGuest>
   {
     return this.http.get<IsGuest>('http://127.0.0.1:8000/api/is_guest');
+  }
+
+  isUser():Observable<IsUser>
+  {
+    return this.http.get<IsUser>('http://127.0.0.1:8000/api/is_user');
   }
 }

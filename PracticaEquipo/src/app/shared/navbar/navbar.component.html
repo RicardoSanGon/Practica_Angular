@@ -25,7 +25,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" style="color: white;" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                            aria-expanded="false" *ngIf="is_admin">
                             Administracion
                         </a>
                         <ul class="dropdown-menu">
@@ -41,11 +41,11 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" style="color: white;" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                            aria-expanded="false" *ngIf="is_user || is_Admin">
                             Clientes
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" routerLink="/reg-Clientes">Registrarse como Cliente</a></li>
+                            <li><a class="dropdown-item" routerLink="/reg-Clientes" *ngIf="is_user">Registrarse como Cliente</a></li>
                             <li><a class="dropdown-item" routerLink="/tab-Marcas">Tabla Marcas</a></li>
                             <li><a class="dropdown-item" routerLink="/tab-Modelos">Tabla Modelos</a></li>
                             <li><a class="dropdown-item" routerLink="/tab-Historial">Tabla Historial</a></li>
@@ -53,7 +53,7 @@
                         </ul>
                     </li>
                   <li class="nav-item">
-                    <a class="nav-link active" style="color: white;" aria-current="page" routerLink="/carrito">Carrito</a>
+                    <a class="nav-link active" style="color: white;" aria-current="page" routerLink="/carrito" *ngIf="is_user">Carrito</a>
                   </li>
                 </ul>
             </div>

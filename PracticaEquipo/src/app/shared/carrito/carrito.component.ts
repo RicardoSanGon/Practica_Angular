@@ -46,4 +46,9 @@ export class CarritoComponent implements OnInit{
       this.changeDetector.detectChanges();
     }
   }
+
+  sendCart() {
+    const products = {products:this.carrito};
+    console.log(products);
+  }
 }

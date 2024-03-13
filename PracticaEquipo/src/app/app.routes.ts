@@ -29,9 +29,6 @@ export const routes: Routes = [
     path: 'tab-Proveedores', loadComponent: () =>import('../app/tables/tab-proveedores/tab-proveedores.component').then((c) => c.TabProveedoresComponent),
   },
   {
-    path: 'tab-Roles', loadComponent: () =>import('../app/tables/tab-roles/tab-roles.component').then((c) => c.TabRolesComponent),
-  },
-  {
     path: 'tab-Usuarios', loadComponent: () =>import('../app/tables/tab-usuarios/tab-usuarios.component').then((c) => c.TabUsuariosComponent),
   },
   {
@@ -51,5 +48,9 @@ export const routes: Routes = [
   },
   {
     path: 'tab-Historial', loadComponent: () =>import('../app/tables/tab-historial/tab-historial.component').then((c) => c.TabHistorialComponent),
+  },
+  /*RUTAS DE EDICION*/
+  {
+    path: 'catalogo/:id/edit', loadComponent: () =>import('../app/form-edit/catalogo-edit/catalogo-edit.component').then((c) => c.CatalogoEditComponent),
   },
 ];

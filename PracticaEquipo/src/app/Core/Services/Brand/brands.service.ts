@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {MsgResponse} from "../../Interfaces/MsgResponse";
 import {Brand} from "../../Interfaces/brand";
 import {BrandByCatalogue} from "../../Interfaces/brand-by-catalogue";
+import { DataBrands } from '../../Interfaces/data-brands';
 
 @Injectable({
   providedIn: 'root'
@@ -20,4 +21,9 @@ export class BrandsService {
   getBrands(id:number):Observable<BrandByCatalogue> {
     return this.http.get<BrandByCatalogue>('http://127.0.0.1:8000/api/catalogue/brand/'+id);
   }
+  tabgetBrands(): Observable<DataBrands> {
+    return this.http.get<DataBrands>('http://127.0.0.1:8000/api/brands');
+  }
+
+  
 }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabRolesComponent } from './tab-roles.component';
+import { CatalogoEditComponent } from './catalogo-edit.component';
 
-describe('TabRolesComponent', () => {
-  let component: TabRolesComponent;
-  let fixture: ComponentFixture<TabRolesComponent>;
+describe('CatalogoEditComponent', () => {
+  let component: CatalogoEditComponent;
+  let fixture: ComponentFixture<CatalogoEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TabRolesComponent]
+      imports: [CatalogoEditComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(TabRolesComponent);
+    fixture = TestBed.createComponent(CatalogoEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,1 +1,12 @@
-<p>cod-verificador works!</p>
+<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: #5e5e5e">
+  <div class="card">
+    <div class="card-body">
+      <form (ngSubmit)="submitCode()" class="form-group">
+        <label for="verificationCode" class="form-label">Código de verificación:</label>
+        <input type="number" id="verificationCode" [(ngModel)]="verificationCode" name="verificationCode" required minlength="6" maxlength="6" class="form-control" >
+        <div *ngIf="errorCode" class="text-danger">{{errorCode}}</div>
+        <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>

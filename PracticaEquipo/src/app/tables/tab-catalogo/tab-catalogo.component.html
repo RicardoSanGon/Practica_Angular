@@ -2,12 +2,8 @@
 <html lang="en">
 
 <head>
-<<<<<<< HEAD
-  <<<<<<< HEAD <meta charset="UTF-8">
-=======
 
     <meta charset="UTF-8">
->>>>>>> a256896e9662fba2650390e1ebcc9fdb1d2f430c
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla Catalogo</title>
 </head>
@@ -18,28 +14,24 @@
     <table class="table table-bordered" style="text-align: center;">
       <thead>
         <tr>
+          <th scope="col" *ngIf="is_admin">ID</th>
           <th scope="col">Nombre</th>
-          <th scope="col">Estatus</th>
-          <th scope="col">Opciones</th>
+          <th scope="col" *ngIf="is_admin">Estatus</th>
+          <th scope="col" *ngIf="is_admin">Opciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of catalogoList">
-          <th scope="row">{{item.id}}</th>
+          <th scope="row" *ngIf="is_admin">{{item.id}}</th>
           <th scope="row">{{item.name}}</th>
-          <th scope="row">{{item.status}}</th>
-          <th scope="row">
-            <a routerLink="/catalogo/{{item.id}}/edit" class="btn btn-warning">Edit</a>
-            <button type="button" class="btn btn-danger">Eliminar</button>
+          <th scope="row" *ngIf="is_admin">{{item.status}}</th>
+          <th scope="row" *ngIf="is_admin">
+            <a routerLink="/catalogo/{{item.id}}/edit" class="btn btn-warning" >Edit</a>
+            <button type="button" class="btn btn-danger" >Eliminar</button>
           </th>
         </tr>
       </tbody>
     </table>
   </div>
 </body>
-
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> a256896e9662fba2650390e1ebcc9fdb1d2f430c

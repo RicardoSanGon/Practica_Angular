@@ -49,14 +49,15 @@ export const routes: Routes = [
   {
     path: 'tab-Historial', loadComponent: () =>import('../app/tables/tab-historial/tab-historial.component').then((c) => c.TabHistorialComponent),
   },
-<<<<<<< HEAD
   /*RUTAS DE EDICION*/
   {
     path: 'catalogo/:id/edit', loadComponent: () =>import('../app/form-edit/catalogo-edit/catalogo-edit.component').then((c) => c.CatalogoEditComponent),
   },
-=======
   {
     path:'carrito', loadComponent: () =>import('../app/shared/carrito/carrito.component').then((c) => c.CarritoComponent),
+  },
+  {
+    path:'code/verification',loadComponent: () =>import('../app/shared/cod-verificador/cod-verificador.component').then((c) => c.CodVerificadorComponent),
   }
->>>>>>> a256896e9662fba2650390e1ebcc9fdb1d2f430c
+
 ];

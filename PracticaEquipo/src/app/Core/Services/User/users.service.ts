@@ -9,6 +9,7 @@ import {IsAdmin} from "../../Interfaces/is-admin";
 import {IsCustomer} from "../../Interfaces/is-customer";
 import {IsGuest} from "../../Interfaces/is-guest";
 import {IsUser} from "../../Interfaces/is-user";
+import {Code} from "../../Interfaces/code";
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +43,9 @@ export class UsersService {
   isUser():Observable<IsUser>
   {
     return this.http.get<IsUser>('http://127.0.0.1:8000/api/is_user');
+  }
+
+  CodeVerification(code: Code):Observable<MsgResponse> {
+    return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/verification/code', code);
   }
 }

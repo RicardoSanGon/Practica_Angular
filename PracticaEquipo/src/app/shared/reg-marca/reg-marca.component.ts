@@ -38,7 +38,7 @@ constructor(private brandservice: BrandsService,private catalogueservice:Catalog
         this.data = response.data;
       },
       (error) => {
-        if(error.message==='Unauthenticated.'){
+        if(error.status===401){
           //redireccionar al login
           return console.log('No estas autenticado');
         }
@@ -62,8 +62,20 @@ constructor(private brandservice: BrandsService,private catalogueservice:Catalog
           //redireccionar al login
           return console.log('No estas autenticado');
         }
-        this.errorName = error.Errores.brand_name;
-        this.errorCatalogue = error.Errores.catalogue_id;
+        if (error.error?.Errores?.brand_name!==undefined && error.error.Errores.brand_name!==null)
+        {
+          this.errorName = error.error.Errores.brand_name;
+        }
+        else {
+          this.errorName = null;
+        }
+        if (error.error?.catalogue_id!==undefined && error.error.catalogue_id!==null)
+        {
+          this.errorCatalogue = error.error.catalogue_id;
+        }
+        else {
+          this.errorCatalogue = null;
+        }
       });
   }
 

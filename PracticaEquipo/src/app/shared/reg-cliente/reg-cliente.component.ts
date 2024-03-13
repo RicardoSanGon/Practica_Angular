@@ -34,7 +34,7 @@ export class RegClienteComponent {
     public createCustomer(){
       this.customerService.createCustomer(this.customer).subscribe(
         (response) => {
-          console.log(response);
+          this.router.navigate(['tab-Modelos'])
         },
         (error) => {
           if(error.status===401)

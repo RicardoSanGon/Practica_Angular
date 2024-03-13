@@ -61,6 +61,9 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/catalogue/brand/{id}',[CataloguesController::class,'getBrands']);
     Route::post('/create/supplier',[SuppliersController::class,'store']);
     Route::get('/suppliers',[SuppliersController::class,'index']);
+    Route::get('/is_admin',[UsersController::class,'is_admin']);
+    Route::get('/is_customer',[UsersController::class,'is_client']);
+    Route::get('/is_guest',[UsersController::class,'is_guest']);
 });
 
 //Rutas para editar status:

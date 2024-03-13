@@ -12,10 +12,6 @@ use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrdenAceptadaMail;
-<<<<<<< HEAD
-=======
-
->>>>>>> ce066e4402c7bd9c44977275b9cf61ffa576f64b
 
 class OrderDetailsController extends Controller
 {
@@ -101,11 +97,7 @@ class OrderDetailsController extends Controller
         ],201);
     }
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> ce066e4402c7bd9c44977275b9cf61ffa576f64b
     public function changeStatusDetail(Request $request, $id)
     {
         $validaciones = Validator::make($request->all(), [

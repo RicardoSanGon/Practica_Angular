@@ -96,6 +96,9 @@ class UsersController extends Controller
     {
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
+            $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+            $user->is_code_verified=false;
+            $user->save();
             return response()->json(['msg' => 'Sesion cerrada correctamente'], 200);
         } catch (JWTException $e) {
             return response()->json(['msg' => 'No se pudo cerrar la sesion'], 500);
@@ -113,6 +116,8 @@ class UsersController extends Controller
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
         if(Hash::check($request->code,$user->code)){
             $token=JWTAuth::fromUser($user);
+            $user->is_code_verified=true;
+            $user->save();
             return response()->json(["msg"=>"Verificacion Correcta","token"=>$token],200);
         }
         return response()->json(["msg"=>"Codigo incorrecto"],400);

@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/inventorie/permissions',[InventoriesController::class,'showTableAndForm']);
     Route::get('/inventories',[InventoriesController::class,'index']);
     Route::post('/order/details/create',[OrderDetailsController::class,'store']);
-    Route::get('/order/details/{id}',[OrderDetailsController::class,'index']);
+    Route::get('/order/details/{id?}',[OrderDetailsController::class,'index']);
     Route::put('/order/details/status/{id}',[OrderDetailsController::class,'changeStatusDetail']);
     Route::post('/create/brand',[BrandsController::class,'store']);
     Route::post('/create/model',[ModelsController::class,'store']);

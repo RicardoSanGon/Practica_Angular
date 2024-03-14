@@ -144,12 +144,16 @@ export const routes: Routes = [
           ),
       },
       {
+<<<<<<< HEAD
         path: 'catalogo/:id/edit',
         canActivate: [AuthGuard],
+=======
+        path: 'tab-orden-detalle/:id',
+>>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
         loadComponent: () =>
-          import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
-            (c) => c.CatalogoEditComponent
-          ),
+          import(
+            '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
+          ).then((c) => c.TabOrdenDetalleComponent),
       },
       {
         path: 'carrito',

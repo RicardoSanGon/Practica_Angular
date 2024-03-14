@@ -108,7 +108,11 @@ class Data extends Seeder
             ]);
 
         DB::table('users')->insert([
+<<<<<<< HEAD
             ['name'=>'admin', 'email'=>'rs795384@hotmail.com', 'password'=>Hash::make('admin'), 'role_id'=>1,'status'=>true],
+=======
+            ['name'=>'admin', 'email'=>'ivettemolina.009@gmail.com', 'password'=>Hash::make('Jungiri97#'), 'role_id'=>1,'status'=>true],
+>>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
             ]);
     }
 }

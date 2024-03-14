@@ -45,7 +45,6 @@ export class RegInventarioComponent {
         this.supplier_data = data.data;
         if (this.supplier_data.length > 0) {
           this.inventory.supplier_id = <number>this.supplier_data[0].id;
-          console.log(this.inventory.supplier_id);
         }
       },
       (error) => {
@@ -55,6 +54,7 @@ export class RegInventarioComponent {
       }
     );
   }
+
   public getModels(): void {
     this.modelsService.getModels().subscribe(
       (data) => {
@@ -74,6 +74,32 @@ export class RegInventarioComponent {
   }
 
   submitForm() {
+    this.errorDate = null;
+    this.errorStock = null;
+    this.errorModel = null;
+    this.errorSupplier = null;
+
+    if (!this.inventory.admission_date) {
+      this.errorDate = 'La fecha de admisión es requerida.';
+      return;
+    }
+
+    if (this.inventory.stock <= 0) {
+      this.errorStock = 'El stock debe ser mayor que cero.';
+      return;
+    }
+
+    if (!this.inventory.model_id) {
+      this.errorModel = 'Debes seleccionar un modelo.';
+      return;
+    }
+
+    if (!this.inventory.supplier_id) {
+      this.errorSupplier = 'Debes seleccionar un proveedor.';
+      return;
+    }
+
+    // Lógica para enviar el formulario si pasa las validaciones
     this.inventoriesService.addInventory(this.inventory).subscribe(
       (data) => {
         console.log(data);
@@ -99,20 +125,19 @@ export class RegInventarioComponent {
           this.errorStock = null;
         }
         if (
-          error.error?.model_id !== undefined &&
-          error.error.model_id !== null
+          error.error?.Errores?.model_id !== undefined &&
+          error.error.Errores.model_id !== null
         ) {
           this.errorModel = error.error.Errores.model_id;
         } else {
           this.errorModel = null;
         }
         if (
-          error.error?.supplier_id !== undefined &&
-          error.error.supplier_id !== null
+          error.error?.Errores?.supplier_id !== undefined &&
+          error.error.Errores.supplier_id !== null
         ) {
-          this.errorSupplier = error.error.supplier_id;
-        } else {
-          this.errorSupplier = null;
+          this.errorSupplier = error.error.Errores.supplier_id;
+        } else {this.errorSupplier = null;
         }
       }
     );
@@ -120,11 +145,9 @@ export class RegInventarioComponent {
 
   onSupplierSelected($event: any) {
     this.inventory.supplier_id = $event.target.value;
-    console.log(this.inventory.supplier_id);
   }
 
   onModelSelected($event: any) {
     this.inventory.model_id = $event.target.value;
-    console.log(this.inventory.model_id);
   }
 }

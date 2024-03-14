@@ -115,6 +115,22 @@ class CataloguesController extends Controller
 
     public function updateCatalogueStatus(Request $request, $id)
     {
-        return $this->updateStatus($request, 'catalogues', $id, 'status');
+        $validaciones = Validator::make($request->all(), [
+            "status" => 'required|boolean',
+        ]);
+
+        if ($validaciones->fails()) {
+            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
+        }
+
+        try {
+            $catalogue = Catalogue::findOrFail($id);
+            $catalogue->status = $request->status;
+            $catalogue->save();
+
+            return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo actualizar el catálogo", "Error" => $e], 500);
+        }
     }
 }

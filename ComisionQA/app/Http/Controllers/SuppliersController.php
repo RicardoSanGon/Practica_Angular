@@ -26,8 +26,8 @@ class SuppliersController extends Controller
     }
     public function store(Request $request){
         $validaciones=Validator::make($request->all(),[
-            'supplier_name'=>'required|string|alpha|max:255|min:3',
-            'supplier_email'=>'required|email|unique:users|regex:/(.*@.{2,}\..{2,3})$/',
+            'supplier_name'=>'required|string|regex:/^[a-zA-Z0-9 ]*$/|max:255|min:3',
+            'supplier_email'=>'required|email|unique:suppliers|regex:/(.*@.{2,}\..{2,3})$/',
             'supplier_phone'=>'required|unique:suppliers|min:10|max:10|regex:/^[0-9]+$/'
         ]);
         if($validaciones->fails()){

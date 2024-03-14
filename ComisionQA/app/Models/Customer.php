@@ -13,4 +13,8 @@ class Customer extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function sale_histories(){
+        return $this->hasMany(Sale_History::class);
+    }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('detail_id')->references('id')->on('order_details');
             $table->float('total_amount');
             $table->float('tax_amount');
+            $table->foreignId('customer_id')->references('id')->on('customers');
         });
     }
 

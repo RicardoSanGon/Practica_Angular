@@ -8,6 +8,7 @@ use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\ModelsController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\SaleHistoriesController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\BillController;
@@ -70,6 +71,8 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/orders',[OrdersController::class,'index']);
 
     Route::get('/bills', [BillsController::class, 'index']);
+    Route::get('/history',[SaleHistoriesController::class,'index']);
+    Route::get('/is_code_verified',[UsersController::class,'is_Code_Verified']);
 
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);

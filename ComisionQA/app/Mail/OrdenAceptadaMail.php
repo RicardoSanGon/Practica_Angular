@@ -28,11 +28,11 @@ class OrdenAceptadaMail extends Mailable
     /**
      * Get the message envelope.
      *
-     * @return \Illuminate\Mail\Mailables\Envelope
+     * @return OrdenAceptadaMail
      */
     public function build()
     {
-        return $this->subject('Orden Aceptada Mail')
+        return $this->from('mail')
                     ->view('emails.orden-aceptada');
     }
 

@@ -21,4 +21,8 @@ class Vehicle_Model extends Model
     public function order_details(){
         return $this->hasMany(Order_Detail::class,'id');
     }
+
+    public function sale_histories(){
+        return $this->hasMany(Sale_History::class,'id');
+    }
 }

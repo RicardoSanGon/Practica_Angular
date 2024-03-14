@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
@@ -66,17 +67,19 @@ class OrdersController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $order = Order::all();
-        $order = $order->map(function ($order) {
-            return [
-                "id" => $order->id,
-                "order_date" => $order->order_date,
-                "status" => $order->status,
-                "customer_id" => $order->customer_id,
-            ];
-        });
-        return response()->json(['data' => $order], 200);
+        $user=User::find(UsersController::getUserIdFromToken($request->header('authorization')));
+        if ($user->role_id===1) {
+            $orders = Order::all();
+            return response()->json(['data' => $orders], 200);
+        }
+        if ($user->role_id===2) {
+            $customer=Customer::where('user_id',$user->id)->first();
+            $orders = Order::where('customer_id',$customer->id)->get();
+            return response()->json(['data' => $orders], 200);
+        }
+
+        return response()->json(['data' => []], 200);
     }
 }

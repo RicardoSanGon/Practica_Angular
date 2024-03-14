@@ -77,7 +77,6 @@ class BillsController extends Controller
 
         $bills = $bills->map(function ($bill) {
             return [
-                'id' => $bill->id,
                 'detail_id' => $bill->detail_id,
                 'total_amount' => $bill->total_amount,
                 'tax_amount' => $bill->tax_amount,

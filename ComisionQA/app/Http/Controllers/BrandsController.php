@@ -15,19 +15,12 @@ class BrandsController extends Controller
     public function index(Request $request){
         $brands = Brand::all();
 
-        $user=User::find(UsersController::getUserIdFromToken($request->header('authorization')));
-        if ($user->role_id==2 || $user->role_id==3){
-            $brands = Brand::where('brand_status', true)
-                ->whereHas('catalogue', function ($query) {
-                    $query->where('status', true);
-                })->get();
-        }
         $brands = $brands->map(function($brand){
             return[
                 "id"=>$brand->id,
                 "brand_name"=>$brand->brand_name,
-                "brand_status"=>$brand->brand_status,
-                "catalogue_id"=>$brand->catalogue_id,
+                "brand_status"=>$brand->brand_status?"Activo":"Inactivo",
+                "catalogue_id"=>$brand->catalogue->name,
             ];
         });
         return response()->json(['data'=>$brands], 200);

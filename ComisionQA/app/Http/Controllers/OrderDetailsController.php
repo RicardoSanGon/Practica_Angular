@@ -117,6 +117,7 @@ class OrderDetailsController extends Controller
     {
         $validaciones = Validator::make($request->all(), [
             'status' => 'required|string|in:aceptado,cancelado',
+            'delery_date' => 'required|date|after:today'
         ]);
 
         if ($validaciones->fails()) {
@@ -125,7 +126,7 @@ class OrderDetailsController extends Controller
 
         $detail = Order_Detail::find($id);
 
-        if ($detail === null) {
+        if (!$detail) {
             return response()->json(["msg" => "El detalle no existe"], 400);
         }
 
@@ -133,31 +134,21 @@ class OrderDetailsController extends Controller
         $detail->status = $request->status;
 
         try {
-            if ($detail->status === 'aceptado' && $previousStatus !== 'aceptado') {
+            if ($previousStatus !== 'aceptado' || $previousStatus !== 'cancelado') {
 
-                $modelStock = $detail->vehicle_model->model_stock;
+                $model = Vehicle_Model::where('id', $detail->vehicle_model_id)->first();
 
 
-                if ($modelStock < $detail->quantity) {
+                if ($model->model_stock < $detail->quantity) {
                     return response()->json(["msg" => "No hay suficiente stock para aceptar el pedido"], 400);
                 }
 
 
-                $detail->vehicle_model->model_stock = $modelStock - $detail->quantity;
+                $model->model_stock = $model->model_stock - $detail->quantity;
             }
-
-
+            $detail->delery_date = $request->delery_date;
             $detail->save();
-
-
-            if ($detail->status === 'aceptado' && $previousStatus !== 'aceptado') {
-                $customer = $detail->order->customer;
-
-                if ($customer) {
-                    Mail::to($customer->email)->send(new OrdenAceptadaMail($detail));
-                }
-            }
-
+            $model->save();
             return response()->json(["msg" => "Registro correcto"], 201);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo cambiar el estado del detalle", "Error" => $e], 500);

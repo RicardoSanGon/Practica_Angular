@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import {AuthGuard} from "./Core/Guards/auth.guard";
+import {CatalogoEditComponent} from "./form-edit/catalogo-edit/catalogo-edit.component";
 
 export const routes: Routes = [
   {
@@ -126,6 +127,16 @@ export const routes: Routes = [
           import('../app/tables/tab-catalogo/tab-catalogo.component').then(
             (c) => c.TabCatalogoComponent
           ),
+        children: [
+          {
+            path: 'catalogo/:id/edit',
+            canActivate: [AuthGuard],
+            loadComponent: () =>
+              import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
+                (c) => c.CatalogoEditComponent
+              ),
+          },
+        ]
       },
       {
         path: 'tab-Inventario',
@@ -157,15 +168,9 @@ export const routes: Routes = [
           import('../app/tables/historial/historial.component').then(
             (c) => c.HistorialComponent
           ),
-      }
+      },
+
     ],
   },
-  {
-    path: 'catalogo/:id/edit',
-    canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
-        (c) => c.CatalogoEditComponent
-      ),
-  },
+
 ];

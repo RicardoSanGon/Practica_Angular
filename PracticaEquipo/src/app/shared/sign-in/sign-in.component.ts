@@ -27,7 +27,7 @@ export class SignInComponent {
   submitForm() {
     this.usersService.createUser(this.user).subscribe(
       (response) => {
-        this.router.navigate(['navbar/tab-Catalogos']);
+        this.router.navigate(['/']);
       },
       (error) => {
         if (error.error?.Errores?.email) {

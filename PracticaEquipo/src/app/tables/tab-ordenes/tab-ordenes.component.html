@@ -15,8 +15,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Fecha_Orden</th>
                     <th scope="col">Estatus</th>
-                    <th scope="col">Empleado</th>
-                    <th scope="col">Opciones</th>
+                    <th scope="col" *ngIf="is_admin">Cliente</th>
+                    <th scope="col" >Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,11 +24,11 @@
                     <th scope="row">{{item.id}}</th>
                     <th scope="row">{{item.order_date}}</th>
                     <th scope="row">{{item.status}}</th>
-                    <th scope="row">{{item.customer_id}}</th>
+                    <th scope="row" *ngIf="is_admin">{{item.customer_id}}</th>
                     <th scope="row" *ngFor="let order of ordersList">
                         <a [routerLink]="['tab-orden-detalle/', item.id]" class="btn btn-warning" style="margin-right: 5px;">Detalle</a>
-                        <button type="button" class="btn btn-warning" style="margin-right: 5px;">Modificar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
+                        <button type="button" class="btn btn-warning" style="margin-right: 5px;" *ngIf="is_admin">Modificar</button>
+                        <button type="button" class="btn btn-danger" *ngIf="is_admin">Eliminar</button>
                     </th>
                 </tr>
             </tbody>

@@ -36,6 +36,7 @@ export class RegProveedorComponent {
         console.log(res);
       },
       (err) => {
+        console.log(err);
         if (err.status === 401) {
           console.log('Unauthenticated');
         }

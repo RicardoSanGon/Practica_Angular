@@ -14,20 +14,21 @@
             <form>
                 <div class="mb-3">
                     <label class="form-label">Proveedor</label>
-                    <input type="text" class="form-control" placeholder="Nombre del Proveedor" [(ngModel)]="supplier.supplier_name" required minlength="3" maxlength="50">
+                    <input type="text" class="form-control" placeholder="Nombre del Proveedor" [(ngModel)]="supplier.supplier_name" required minlength="3" maxlength="50" name="name">
                     <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Correo</label>
-                    <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="supplier.supplier_email" required>
+                    <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="supplier.supplier_email" required name="email">
                     <div *ngIf="errorEmail" class="text-danger">{{errorEmail}}</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Telefono</label>
-                    <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="supplier.supplier_phone" required pattern="[0-9]{10}">
+                    <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="supplier.supplier_phone" required pattern="[0-9]{10}" name="phone">
                     <div *ngIf="errorPhone" class="text-danger">{{errorPhone}}</div>
                 </div>
             </form>
+          <button type="submit" class="btn btn-primary" (click)="createSupplier()">Guardar</button>
         </div>
     </div>
 </body>

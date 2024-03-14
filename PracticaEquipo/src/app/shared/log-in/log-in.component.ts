@@ -18,10 +18,7 @@ export class LogInComponent {
   public errorPassword: string | null = null;
 
   public msgError: string | null = null;
-  public constructor(
-    private userService: UsersService,
-    private router: Router
-  ) {}
+  public constructor(private userService: UsersService, private router: Router) {}
 
   public user: UserLogIn = {
     email: '',
@@ -29,10 +26,14 @@ export class LogInComponent {
   };
 
   public submitForm() {
+    if (!this.validateForm()) {
+      return;
+    }
+
     this.userService.LogInUser(this.user).subscribe(
       (response) => {
         localStorage.setItem('token', response.token);
-        console.log('logueado');
+        console.log('User logged in');
         this.router.navigate(['code/verification']);
       },
       (error) => {
@@ -42,7 +43,7 @@ export class LogInComponent {
         } else {
           this.errorEmail = null;
         }
-        if (error.error?.Errores?.password != undefined) {
+        if (error.error?.Errores?.password !== undefined) {
           this.errorPassword = error.error.Errores.password;
         } else {
           this.errorPassword = null;
@@ -55,5 +56,28 @@ export class LogInComponent {
         }
       }
     );
+  }
+
+  private validateForm(): boolean {
+    let isValid = true;
+    if (!this.user.email || !this.isValidEmail(this.user.email)) {
+      this.errorEmail = 'Ingrese un correo electrónico válido';
+      isValid = false;
+    } else {
+      this.errorEmail = null;
+    }
+    if (!this.user.password || this.user.password.length < 6) {
+      this.errorPassword = 'La contraseña debe tener al menos 6 caracteres';
+      isValid = false;
+    } else {
+      this.errorPassword = null;
+    }
+    return isValid;
+  }
+
+  private isValidEmail(email: string): boolean {
+    // Expresión regular para validar un correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 }

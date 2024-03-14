@@ -18,10 +18,11 @@
                 <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Catalogo</label>
-                <select class="form-select" aria-label="Default select example" (change)="onSelectChange($event)">
+                <label for="exampleFormControlInput1" class="form-label">Catálogo</label>
+                <select class="form-select" aria-label="Default select example" (change)="onSelectChange($event)"
+                    [(ngModel)]="brand.catalogue_id">
+                    <option value="" disabled selected>Selecciona un catálogo</option>
                     <option *ngFor="let catalogo of data" [value]="catalogo.id">{{catalogo.name}}</option>
-
                 </select>
                 <div *ngIf="errorCatalogue" class="text-danger">{{errorCatalogue}}</div>
             </div>

@@ -22,7 +22,10 @@ export class RegClienteComponent {
   public errorAddress: String | null = null;
   public errorPhone: String | null = null;
   public errorUser: String | null = null;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
   constructor(
     private customerService: CustomersService,
     private router: Router

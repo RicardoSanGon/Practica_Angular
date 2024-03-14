@@ -5,6 +5,10 @@ import {UsersService} from "../../Core/Services/User/users.service";
 import {NgIf} from "@angular/common";
 import { Router ,RouterModule } from '@angular/router';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
 @Component({
   selector: 'app-log-in',
   standalone: true,
@@ -17,10 +21,17 @@ export class LogInComponent {
   public errorPassword: string | null = null;
 
   public msgError: string | null = null;
+<<<<<<< HEAD
   public constructor(private userService: UsersService,
                      private router:Router) {
 
   }
+=======
+  public constructor(
+    private userService: UsersService,
+    private router: Router
+  ) {}
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
 
   public user: UserLogIn = {
     email: '',
@@ -31,11 +42,16 @@ export class LogInComponent {
     this.userService.LogInUser(this.user).subscribe(
       (response) => {
         localStorage.setItem('token', response.token);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
         console.log('logueado');
-
         this.router.navigate(['code/verification']);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
       },
       (error) => {
         console.log(error);

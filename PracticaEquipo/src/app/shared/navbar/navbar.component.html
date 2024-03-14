@@ -50,10 +50,13 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" style="color: white;" aria-current="page" routerLink="/carrito"
+                        <a class="nav-link active" style="color: white;" aria-current="page" routerLink="carrito"
                             *ngIf="is_user">Carrito</a>
                     </li>
-<<<<<<< HEAD
+                  <li class="nav-item">
+                        <a class="nav-link active" style="color: white;" aria-current="page" routerLink="historial"
+                            *ngIf="is_user || is_admin">Historial</a>
+                    </li>
                   <li class="nav-item">
                     <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="reg-Clientes" *ngIf="is_user && !is_client">Registrarse como Cliente</a>
                   </li>
@@ -63,11 +66,6 @@
                     <li class="nav-item">
                         <button class="nav-link active" style="color: white;" aria-current="page"
                                 (click)="CerrarSesion()">Cerrar Sesion</button>
-=======
-                    <li class="nav-item">
-                        <a class="dropdown-item" style="color: white; margin-top: 8px; margin-left: 5px"
-                            routerLink="/reg-Clientes" *ngIf="is_user">Registrarse como Cliente</a>
->>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
                     </li>
                 </ul>
             </div>

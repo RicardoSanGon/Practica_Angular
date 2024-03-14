@@ -136,6 +136,7 @@ export const routes: Routes = [
           ),
       },
       {
+<<<<<<< HEAD
         path: 'tab-Historial',
         canActivate: [AuthGuard],
         loadComponent: () =>
@@ -144,6 +145,8 @@ export const routes: Routes = [
           ),
       },
       {
+=======
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
         path: 'tab-orden-detalle/:id',
         loadComponent: () =>
           import(
@@ -158,6 +161,14 @@ export const routes: Routes = [
             (c) => c.CarritoComponent
           ),
       },
+      {
+        path:'historial',
+        canActivate: [AuthGuard],
+        loadComponent: () =>
+          import('../app/tables/historial/historial.component').then(
+            (c) => c.HistorialComponent
+          ),
+      }
     ],
   },
   {
@@ -168,4 +179,8 @@ export const routes: Routes = [
         (c) => c.CatalogoEditComponent
       ),
   },
+<<<<<<< HEAD
 ];
+=======
+];
+>>>>>>> 455624cb4459d120303532939e1de5e93d61ba89

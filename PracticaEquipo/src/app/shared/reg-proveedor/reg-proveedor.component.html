@@ -11,24 +11,23 @@
     <div class="container">
         <h2>Registrar Proveedor</h2>
         <div class="">
-            <div class="mb-3">
-                <label  class="form-label">Proveedor</label>
-                <input type="text" class="form-control" placeholder="Nombre del Proveedor" [(ngModel)]="supplier.supplier_name">
-              <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
-            </div>
-            <div class="mb-3">
-                <label  class="form-label">Correo</label>
-                <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="supplier.supplier_email">
-              <div *ngIf="errorEmail" class="text-danger">{{errorEmail}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Telefono</label>
-                <input type="number" class="form-control" placeholder="Telefono" [(ngModel)]="supplier.supplier_phone">
-              <div *ngIf="errorPhone" class="text-danger">{{errorPhone}}</div>
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3" (click)="createSupplier()">Agregar</button>
-            </div>
+            <form>
+                <div class="mb-3">
+                    <label class="form-label">Proveedor</label>
+                    <input type="text" class="form-control" placeholder="Nombre del Proveedor" [(ngModel)]="supplier.supplier_name" required minlength="3" maxlength="50">
+                    <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Correo</label>
+                    <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="supplier.supplier_email" required>
+                    <div *ngIf="errorEmail" class="text-danger">{{errorEmail}}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Telefono</label>
+                    <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="supplier.supplier_phone" required pattern="[0-9]{10}">
+                    <div *ngIf="errorPhone" class="text-danger">{{errorPhone}}</div>
+                </div>
+            </form>
         </div>
     </div>
 </body>

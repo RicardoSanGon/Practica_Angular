@@ -26,8 +26,8 @@ class BrandsController extends Controller
             return[
                 "id"=>$brand->id,
                 "brand_name"=>$brand->brand_name,
-                "catalogue"=>$brand->catalogue->name,
-                "Status"=>$brand->brand_status ? "Activo" : "Inactivo"
+                "brand_status"=>$brand->brand_status,
+                "catalogue_id"=>$brand->catalogue_id,
             ];
         });
         return response()->json(['data'=>$brands], 200);

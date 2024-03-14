@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla Catalogo</title>
+</head>
+
+<body>
+<div class="container" style="margin-top: 25px;">
+  <table class="table table-bordered" style="text-align: center;">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Total</th>
+      <th scope="col">Cantidad</th>
+      <th scope="col">Modelo</th>
+      <th scope="col" *ngIf="is_admin">Cliente</th>
+      <th scope="col">No. de Detalle</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let historial of data">
+      <th scope="row" >{{historial.id}}</th>
+      <th scope="row">{{historial.sale_date}}</th>
+      <th scope="row" >{{historial.total_amount}}</th>
+      <th scope="row" >{{historial.quantity}}</th>
+      <th scope="row" >{{historial.vehicle_model}}</th>
+      <th scope="row" *ngIf="is_admin">{{historial.customer}}</th>
+      <th scope="row" >{{historial.detail_id}}</th>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

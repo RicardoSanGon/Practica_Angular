@@ -3,15 +3,17 @@ import {Injectable} from '@angular/core';
 import {CarritoService} from "../../Core/Services/Carrito/carrito.service";
 import {MapModels} from "../../Core/Interfaces/map-models";
 import {NavbarComponent} from "../navbar/navbar.component";
-import { NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Carrito} from "../../Core/Interfaces/carrito";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
   imports: [
     NavbarComponent,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css'
@@ -21,8 +23,10 @@ import {Carrito} from "../../Core/Interfaces/carrito";
 export class CarritoComponent implements OnInit{
   carrito: MapModels[]=[];
   productos:Carrito={products:[]};
+  msg: String | null=null;
   constructor(private carritoService: CarritoService,
-              private changeDetector: ChangeDetectorRef) {}
+              private changeDetector: ChangeDetectorRef,
+              private router:Router) {}
 
   ngOnInit() {this.carrito = this.carritoService.obtenerCarrito();}
 
@@ -54,10 +58,23 @@ export class CarritoComponent implements OnInit{
     console.log(this.productos);
     this.carritoService.enviarCarrito(this.productos).subscribe(
       (res) => {
-        console.log(res);
+        this.msg="Carrito enviado";
+        this.carritoService.eliminarCarrito();
+        this.router.navigate(['navbar/tab-Modelos'])
       },
       (err) => {
-        console.log(err);
+        if(err.status==401)
+        {
+          this.router.navigate(['/']);
+        }
+        if(err.error?.msg!==undefined && err.error.msg!==null)
+        {
+          this.msg=err.error.msg;
+        }
+        else
+        {
+          this.msg="Error al enviar el carrito";
+        }
       }
     );
   }

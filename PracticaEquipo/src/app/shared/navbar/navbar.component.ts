@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit{
       },
       (error) => {
         if (error.status === 401) {
-          console.log('No autorizado');
+          this.router.navigate(['/']);
         }
       }
     );
@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit{
       },
       (error) => {
         if (error.status === 401) {
-          console.log('No autorizado');
+          this.router.navigate(['/']);
         }
       }
     );
@@ -67,7 +67,7 @@ export class NavbarComponent implements OnInit{
       },
       (error) => {
         if (error.status === 401) {
-          console.log('No autorizado');
+          this.router.navigate(['/']);
         }
       }
     );
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit{
       },
       (error) => {
         if (error.status === 401) {
-          console.log('No autorizado');
+          this.router.navigate(['/']);
         }
       }
     );

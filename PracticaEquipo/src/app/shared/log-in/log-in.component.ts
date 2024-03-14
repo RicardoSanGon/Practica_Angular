@@ -1,18 +1,10 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
 import {UserLogIn} from "../../Core/Interfaces/user-log-in";
 import {FormsModule, NgModel} from "@angular/forms";
 import {UsersService} from "../../Core/Services/User/users.service";
 import {NgIf} from "@angular/common";
 import { Router ,RouterModule } from '@angular/router';
 
-=======
-import { UserLogIn } from '../../Core/Interfaces/user-log-in';
-import { FormsModule, NgModel } from '@angular/forms';
-import { UsersService } from '../../Core/Services/User/users.service';
-import { NgIf } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
->>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
 
 @Component({
   selector: 'app-log-in',
@@ -26,17 +18,11 @@ export class LogInComponent {
   public errorPassword: string | null = null;
 
   public msgError: string | null = null;
-<<<<<<< HEAD
-  public constructor(private userService: UsersService,
-                     private router:Router) {
-
-  }
-=======
   public constructor(
     private userService: UsersService,
     private router: Router
   ) {}
->>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
+
   public user: UserLogIn = {
     email: '',
     password: '',
@@ -46,16 +32,8 @@ export class LogInComponent {
     this.userService.LogInUser(this.user).subscribe(
       (response) => {
         localStorage.setItem('token', response.token);
-<<<<<<< HEAD
-
         console.log('logueado');
-
         this.router.navigate(['code/verification']);
-
-=======
-
-        this.router.navigate(['code/verification']);
->>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
       },
       (error) => {
         console.log(error);

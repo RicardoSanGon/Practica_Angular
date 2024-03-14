@@ -56,4 +56,8 @@ export class CarritoService {
   {
     return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/order/details/create', this.carrito)
   }
+
+  eliminarCarrito() {
+    this.carrito = [];
+  }
 }

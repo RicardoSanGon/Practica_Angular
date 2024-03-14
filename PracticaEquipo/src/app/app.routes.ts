@@ -136,20 +136,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'tab-Historial',
-        canActivate: [AuthGuard],
-        loadComponent: () =>
-          import('../app/tables/tab-historial/tab-historial.component').then(
-            (c) => c.TabHistorialComponent
-          ),
-      },
-      {
-<<<<<<< HEAD
-        path: 'catalogo/:id/edit',
-        canActivate: [AuthGuard],
-=======
         path: 'tab-orden-detalle/:id',
->>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
         loadComponent: () =>
           import(
             '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
@@ -163,6 +150,22 @@ export const routes: Routes = [
             (c) => c.CarritoComponent
           ),
       },
+      {
+        path:'historial',
+        canActivate: [AuthGuard],
+        loadComponent: () =>
+          import('../app/tables/historial/historial.component').then(
+            (c) => c.HistorialComponent
+          ),
+      }
     ],
+  },
+  {
+    path: 'catalogo/:id/edit',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
+        (c) => c.CatalogoEditComponent
+      ),
   },
 ];

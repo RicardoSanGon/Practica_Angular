@@ -1,4 +1,7 @@
 <button type="button" class="btn btn-success" (click)="sendCart()">Enviar</button>
+<div class="alert alert-warning" role="alert" *ngIf="msg">
+  {{msg}}
+</div>
 <table class="table table-bordered" style="text-align: center; margin: 20px">
   <thead>
   <tr>

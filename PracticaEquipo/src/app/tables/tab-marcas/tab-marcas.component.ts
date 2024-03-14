@@ -6,6 +6,7 @@ import { BrandsService } from '../../Core/Services/Brand/brands.service';
 import { Brands } from '../../Core/Interfaces/brands';
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {UsersService} from "../../Core/Services/User/users.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-tab-marcas',
@@ -19,7 +20,8 @@ export class TabMarcasComponent{
   is_admin: boolean = false;
 
   constructor(private brandsService: BrandsService,
-              private userService:UsersService) {
+              private userService:UsersService,
+              private router:Router) {
     this.getBrands();
     this.is_Admin();
   }
@@ -33,7 +35,9 @@ export class TabMarcasComponent{
 
       },
       error: (error) => {
-        console.log(error);
+        if (error.status === 401) {
+          this.router.navigate(['/']);
+        }
       }
     });
   }
@@ -48,7 +52,7 @@ export class TabMarcasComponent{
       },
       (error) => {
         if (error.status === 401) {
-          console.log('No autorizado');
+          this.router.navigate(['/']);
         }
       }
     );

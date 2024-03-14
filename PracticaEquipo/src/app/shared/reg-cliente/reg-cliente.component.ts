@@ -19,84 +19,42 @@ export class RegClienteComponent {
     customer_address: '',
     customer_phone: '',
   };
-  
+
   public errorAddress: String | null = null;
   public errorPhone: String | null = null;
   public errorUser: String | null = null;
 
-<<<<<<< HEAD
+
   constructor(
     private customerService: CustomersService,
     private router: Router
   ) {}
 
-  public createCustomer() {
-    this.customerService.createCustomer(this.customer).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        if (error.status === 401) {
-          this.router.navigate(['/']);
-=======
-    public createCustomer(){
+
+    public createCustomer() {
       this.customerService.createCustomer(this.customer).subscribe(
         (response) => {
-          this.router.navigate(['tab-Modelos'])
+          this.router.navigate(['navbar/tab-Modelos'])
         },
         (error) => {
-          if(error.status===401)
-          {
+          if (error.status === 401) {
             this.router.navigate(['/']);
           }
-          if(error.error?.Errores?.customer_address!==undefined && error.error.Errores.customer_address!==null)
-          {
-            this.errorAddress=error.error.Errores.customer_address;
+          if (error.error?.Errores?.customer_address !== undefined && error.error.Errores.customer_address !== null) {
+            this.errorAddress = error.error.Errores.customer_address;
+          } else {
+            this.errorAddress = null;
           }
-          else
-          {
-            this.errorAddress=null;
+          if (error.error?.Errores?.customer_phone !== undefined && error.error.Errores.customer_phone !== null) {
+            this.errorPhone = error.error.Errores.customer_phone;
+          } else {
+            this.errorPhone = null;
           }
-          if(error.error?.Errores?.customer_phone!==undefined && error.error.Errores.customer_phone!==null)
-          {
-            this.errorPhone=error.error.Errores.customer_phone;
+          if (error.error?.msg !== undefined && error.error.msg !== null) {
+            this.errorUser = error.error.msg;
+          } else {
+            this.errorUser = null;
           }
-          else
-          {
-            this.errorPhone=null;
-          }
-          if(error.error?.msg!==undefined && error.error.msg!==null)
-          {
-            this.errorUser=error.error.msg;
-          }
-          else
-          {
-            this.errorUser=null;
-          }
->>>>>>> 8f52516fd76a96857b185325102c9cf6c8baf151
-        }
-        if (
-          error.error?.Errores?.customer_address !== undefined &&
-          error.error.Errores.customer_address !== null
-        ) {
-          this.errorAddress = error.error.Errores.customer_address;
-        } else {
-          this.errorAddress = null;
-        }
-        if (
-          error.error?.Errores?.customer_phone !== undefined &&
-          error.error.Errores.customer_phone !== null
-        ) {
-          this.errorPhone = error.error.Errores.customer_phone;
-        } else {
-          this.errorPhone = null;
-        }
-        if (error.error?.msg !== undefined && error.error.msg !== null) {
-          this.errorUser = error.error.msg;
-        } else {
-          this.errorUser = null;
-        }
-      }
-    );
-  }
+        })
+    }
 }

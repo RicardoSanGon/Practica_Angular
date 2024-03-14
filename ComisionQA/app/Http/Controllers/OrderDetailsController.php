@@ -29,7 +29,7 @@ class OrderDetailsController extends Controller
                 "orden_id" => $order_detail->order_id,
                 "precio_total" => $order_detail->price,
                 "status" => $order_detail->status,
-                "fecha_de_entrega" => $order_detail->delery_date
+                "fecha_de_entrega" => $order_detail->delery_date ? 'No tiene fecha de entrega' : $order_detail->delery_date
             ];
         });
         return response()->json(['data' => $order_details], 200);
@@ -62,7 +62,7 @@ class OrderDetailsController extends Controller
                 "orden_id" => $order_detail->order_id,
                 "precio_total" => $order_detail->price,
                 "status" => $order_detail->status,
-                "fecha_de_entrega" => $order_detail->delery_date
+                "fecha_de_entrega" => $order_detail->delery_date ? 'No tiene fecha de entrega' : $order_detail->delery_date
             ];
         });
         return response()->json(['data' => $order_details], 200);
@@ -72,6 +72,7 @@ class OrderDetailsController extends Controller
 
     public function store(Request $request)
     {
+
         $customer = Customer::where('user_id', UsersController::getUserIdFromToken($request->header('authorization')))->first();
         if (!$customer) {
             return response()->json(["msg" => "El usuario no esta registrado como cliente"], 400);
@@ -80,21 +81,22 @@ class OrderDetailsController extends Controller
         if ($order === null || $order->status === 'cancelado' || $order->status === 'entregado') {
             return response()->json(["msg" => "El usuario no tiene una orden en proceso"], 400);
         }
-        $data = $request->products;
-        if(count($data)===0){
-            return response()->json(["msg" => "No hay productos"], 400);
+        $data = $request->request->all();
+        Log::info($data);
+        if(count($data)===0 || $data===null){
+            return response()->json(["msg" => "El carrito no tiene productos"], 400);
         }
-        if ($request->products !== null) {
+        if ($data !== null) {
             foreach ($data as $detalle) {
-                $vehicle_model = Vehicle_model::find($detalle['model_id']);
+                $vehicle_model = Vehicle_model::find($detalle['id']);
                 if ($vehicle_model === null) {
                     return response()->json(["msg" => "El modelo no existe"], 400);
                 }
                 $NewOrderDetail = new Order_Detail();
-                $NewOrderDetail->quantity = $detalle['quantity'];
-                $NewOrderDetail->vehicle_model_id = $detalle['model_id'];
+                $NewOrderDetail->quantity = $detalle['cantidad'];
+                $NewOrderDetail->vehicle_model_id = $detalle['id'];
                 $NewOrderDetail->order_id = $order->id;
-                $NewOrderDetail->price = $vehicle_model->model_price * $detalle['quantity'];
+                $NewOrderDetail->price = $vehicle_model->model_price * $detalle['cantidad'];
                 $NewOrderDetail->status = 'pendiente';
                 try {
                     $NewOrderDetail->save();
@@ -109,7 +111,7 @@ class OrderDetailsController extends Controller
                 "msg" => "Registro correcto"
             ], 201);
         }
-
+        return response()->json(["msg" => "No se pudo crear el detalle de orden"], 500);
     }
     public function changeStatusDetail(Request $request, $id)
     {

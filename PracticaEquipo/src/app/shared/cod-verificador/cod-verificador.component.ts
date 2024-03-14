@@ -26,7 +26,7 @@ export class CodVerificadorComponent {
     this.userService.CodeVerification({code: this.verificationCode}).subscribe(
       (data) => {
         console.log(data)
-        this.router.navigate(['tab-Catalogo']);
+        this.router.navigate(['navbar/tab-Catalogo']);
       },
       (error) => {
         console.log(error)

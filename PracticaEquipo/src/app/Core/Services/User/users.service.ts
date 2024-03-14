@@ -10,6 +10,7 @@ import {IsCustomer} from "../../Interfaces/is-customer";
 import {IsGuest} from "../../Interfaces/is-guest";
 import {IsUser} from "../../Interfaces/is-user";
 import {Code} from "../../Interfaces/code";
+import {IsAuth} from "../../Interfaces/is-auth";
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,13 @@ export class UsersService {
 
   CodeVerification(code: Code):Observable<MsgResponse> {
     return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/verification/code', code);
+  }
+
+  LogOut():Observable<MsgResponse> {
+    return this.http.get<MsgResponse>('http://127.0.0.1:8000/api/logout');
+  }
+
+  is_Auth():Observable<IsAuth> {
+    return this.http.get<IsAuth>('http://127.0.0.1:8000/api/is_auth');
   }
 }

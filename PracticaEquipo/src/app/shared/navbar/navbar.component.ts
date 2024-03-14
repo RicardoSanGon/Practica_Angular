@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {UsersService} from "../../Core/Services/User/users.service";
 import {NgIf} from "@angular/common";
 
@@ -17,7 +17,9 @@ export class NavbarComponent implements OnInit{
   is_admin: boolean = false;
   is_user: boolean = false;
   is_guest: boolean = false;
-  constructor(private userService: UsersService)
+  is_client: boolean = false;
+  constructor(private userService: UsersService,
+              private router: Router)
   {
 
   }
@@ -26,6 +28,7 @@ export class NavbarComponent implements OnInit{
     this.is_Admin();
     this.is_User();
     this.is_Guest();
+    this.is_Client();
   }
 
   is_Admin()
@@ -66,6 +69,32 @@ export class NavbarComponent implements OnInit{
         if (error.status === 401) {
           console.log('No autorizado');
         }
+      }
+    );
+  }
+
+  is_Client()
+  {
+    this.userService.isClient().subscribe(
+      (res) => {
+        this.is_client = res.is_client;
+      },
+      (error) => {
+        if (error.status === 401) {
+          console.log('No autorizado');
+        }
+      }
+    );
+  }
+
+  CerrarSesion()
+  {
+    this.userService.LogOut().subscribe(
+      (res) => {
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        console.log(error);
       }
     );
   }

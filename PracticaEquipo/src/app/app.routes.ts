@@ -136,17 +136,7 @@ export const routes: Routes = [
           ),
       },
       {
-<<<<<<< HEAD
-        path: 'tab-Historial',
-        canActivate: [AuthGuard],
-        loadComponent: () =>
-          import('../app/tables/tab-historial/tab-historial.component').then(
-            (c) => c.TabHistorialComponent
-          ),
-      },
-      {
-=======
->>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
+
         path: 'tab-orden-detalle/:id',
         loadComponent: () =>
           import(
@@ -172,15 +162,12 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'catalogo/:id/edit',
+    path: 'catalogo-edit',
     canActivate: [AuthGuard],
     loadComponent: () =>
       import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
         (c) => c.CatalogoEditComponent
       ),
   },
-<<<<<<< HEAD
 ];
-=======
-];
->>>>>>> 455624cb4459d120303532939e1de5e93d61ba89
+

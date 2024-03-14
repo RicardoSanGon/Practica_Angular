@@ -28,6 +28,7 @@ export class TabMarcasComponent{
   getBrands() {
     this.brandsService.tabgetBrands().subscribe({
       next: (result) => {
+        console.log(result);
         this.brandsList = result.data;
 
       },

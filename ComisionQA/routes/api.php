@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillsController;
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\CataloguesController;
 use App\Http\Controllers\CustomersController;
@@ -67,10 +68,18 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/is_guest',[UsersController::class,'is_guest']);
     Route::get('/is_user',[UsersController::class,'is_user']);
     Route::get('/orders',[OrdersController::class,'index']);
+<<<<<<< HEAD
     Route::get('/bills', [BillsController::class, 'index']);
 });
+=======
+>>>>>>> 66434065537ebd47172a8651d646ad7c2344843b
 
-//Rutas para editar status:
+    Route::get('/bills', [BillsController::class, 'index']);
+
+});
+Route::get('/is_auth',[UsersController::class,'is_Auth']);
+
+
 Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);
 Route::put('/update-status/catalogues/{id}', [CataloguesController::class, 'updateCatalogueStatus']);
 Route::put('/update-status/suppliers/{id}', [SuppliersController::class, 'updateSupplierStatus']);

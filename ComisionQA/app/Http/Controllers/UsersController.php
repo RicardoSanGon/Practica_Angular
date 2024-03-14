@@ -95,13 +95,17 @@ class UsersController extends Controller
     public function logout(Request $request)
     {
         try {
-            JWTAuth::invalidate(JWTAuth::getToken());
-            $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
-            $user->is_code_verified=false;
+            $userId = self::getUserIdFromToken($request->header('Authorization'));
+            $user = User::find($userId);
+            if (!$user) {
+                return response()->json(['msg' => 'User not found'], 404);
+            }
+            JWTAuth::invalidate($request->header('Authorization'));
+            $user->is_code_verified = false;
             $user->save();
-            return response()->json(['msg' => 'Sesion cerrada correctamente'], 200);
+            return response()->json(['msg' => 'Sesion cerrada'], 200);
         } catch (JWTException $e) {
-            return response()->json(['msg' => 'No se pudo cerrar la sesion'], 500);
+            return response()->json(['msg' => 'Could not close the session'], 500);
         }
     }
 
@@ -244,5 +248,30 @@ class UsersController extends Controller
             return response()->json(['is_user'=>true],200);
         }
         return response()->json(['is_user'=>false],200);
+    }
+
+    public function is_Auth(Request $request){
+
+        try
+        {
+            if (!$request->hasHeader('Authorization')) {
+                return response()->json(['is_Auth'=>false],200);
+            }
+            $token = JWTAuth::getToken();
+            $user = JWTAuth::setToken($token)->authenticate();
+            return response()->json(['is_Auth'=>true],200);
+        }
+        catch (Exception $e){
+            return response()->json(['is_Auth'=>false],200);
+        }
+
+    }
+
+    public function is_Code_Verified(Request $request){
+        $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        if($user->is_code_verified){
+            return response()->json(['is_Code_Verified'=>true],200);
+        }
+        return response()->json(['is_Code_Verified'=>false],200);
     }
 }

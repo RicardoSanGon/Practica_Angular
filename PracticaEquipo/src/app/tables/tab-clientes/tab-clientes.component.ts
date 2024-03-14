@@ -20,6 +20,7 @@ export class TabClientesComponent {
   getCustomer() {
     this.customersService.getCustomer().subscribe({
       next: (result) => {
+        console.log(result);
         this.customersList = result.data;
       },
       error: (error) => {

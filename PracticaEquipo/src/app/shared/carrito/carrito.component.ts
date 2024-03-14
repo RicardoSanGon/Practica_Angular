@@ -4,6 +4,7 @@ import {CarritoService} from "../../Core/Services/Carrito/carrito.service";
 import {MapModels} from "../../Core/Interfaces/map-models";
 import {NavbarComponent} from "../navbar/navbar.component";
 import { NgForOf} from "@angular/common";
+import {Carrito} from "../../Core/Interfaces/carrito";
 
 @Component({
   selector: 'app-carrito',
@@ -19,6 +20,7 @@ import { NgForOf} from "@angular/common";
 
 export class CarritoComponent implements OnInit{
   carrito: MapModels[]=[];
+  productos:Carrito={products:[]};
   constructor(private carritoService: CarritoService,
               private changeDetector: ChangeDetectorRef) {}
 
@@ -48,7 +50,15 @@ export class CarritoComponent implements OnInit{
   }
 
   sendCart() {
-    const products = {products:this.carrito};
-    console.log(products);
+    this.productos.products = this.carrito;
+    console.log(this.productos);
+    this.carritoService.enviarCarrito(this.productos).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }

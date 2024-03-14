@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import {MapModels} from "../../Interfaces/map-models";
+import {HttpClient} from "@angular/common/http";
+import {Carrito} from "../../Interfaces/carrito";
+import {Observable} from "rxjs";
+import {MsgResponse} from "../../Interfaces/MsgResponse";
 
 
 @Injectable({
@@ -7,6 +11,9 @@ import {MapModels} from "../../Interfaces/map-models";
 })
 export class CarritoService {
   private carrito: MapModels[] = [];
+
+  constructor(private http: HttpClient) {
+  }
 
   agregarAlCarrito(model: MapModels) {
     const item = this.carrito.find(m => m.id === model.id);
@@ -43,5 +50,10 @@ export class CarritoService {
   }
   actualizarCarrito(carrito: MapModels[]) {
     this.carrito = carrito;
+  }
+
+  enviarCarrito(carrito:Carrito):Observable<MsgResponse>
+  {
+    return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/order/details/create', this.carrito)
   }
 }

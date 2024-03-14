@@ -24,13 +24,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'tab-orden-detalle/:id',
-    loadComponent: () =>
-      import(
-        '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
-      ).then((c) => c.TabOrdenDetalleComponent),
-  },
-  {
     path: 'navbar',
     canActivate: [AuthGuard],
     loadComponent: () =>
@@ -151,21 +144,13 @@ export const routes: Routes = [
           ),
       },
       {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        path: 'catalogo/:id/edit',
-        canActivate: [AuthGuard],
-=======
         path: 'tab-orden-detalle/:id',
->>>>>>> 3ba9dd1f508ba4bc56f9d25e52a6aee5b671a7db
         loadComponent: () =>
           import(
             '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
           ).then((c) => c.TabOrdenDetalleComponent),
       },
       {
->>>>>>> 66434065537ebd47172a8651d646ad7c2344843b
         path: 'carrito',
         canActivate: [AuthGuard],
         loadComponent: () =>
@@ -173,13 +158,14 @@ export const routes: Routes = [
             (c) => c.CarritoComponent
           ),
       },
-      {
-        path: 'tab-Factura',
-        loadComponent: () =>
-          import(
-            '../app/tables/tab-factura/tab-factura.component'
-          ).then((c) => c.TabFacturaComponent),
-      },
     ],
+  },
+  {
+    path: 'catalogo/:id/edit',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
+        (c) => c.CatalogoEditComponent
+      ),
   },
 ];

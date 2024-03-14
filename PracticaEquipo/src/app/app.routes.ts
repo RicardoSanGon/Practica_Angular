@@ -23,6 +23,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'tab-orden-detalle/:id',
+    loadComponent: () =>
+      import(
+        '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
+      ).then((c) => c.TabOrdenDetalleComponent),
+  },
+  {
     path: 'navbar',
     loadComponent: () =>
       import('../app/shared/navbar/navbar.component').then(
@@ -128,18 +135,18 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'tab-orden-detalle/:id',
-        loadComponent: () =>
-          import(
-            '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
-          ).then((c) => c.TabOrdenDetalleComponent),
-      },
-      {
         path: 'carrito',
         loadComponent: () =>
           import('../app/shared/carrito/carrito.component').then(
             (c) => c.CarritoComponent
           ),
+      },
+      {
+        path: 'tab-Factura',
+        loadComponent: () =>
+          import(
+            '../app/tables/tab-factura/tab-factura.component'
+          ).then((c) => c.TabFacturaComponent),
       },
     ],
   },

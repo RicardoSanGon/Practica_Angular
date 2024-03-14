@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { NgForOf } from '@angular/common';
 import { Orders } from '../../Core/Interfaces/orders';
 import { OrdersService } from '../../Core/Services/Order/orders.service';
@@ -8,7 +7,7 @@ import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-tab-ordenes',
   standalone: true,
-  imports: [NavbarComponent, NgForOf, RouterModule],
+  imports: [ NgForOf, RouterModule],
   templateUrl: './tab-ordenes.component.html',
   styleUrl: './tab-ordenes.component.css',
 })

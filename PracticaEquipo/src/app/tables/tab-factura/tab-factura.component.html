@@ -1,1 +1,35 @@
-<p>tab-factura works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Factura</title>
+</head>
+
+<body>
+    <div class="container" style="margin-top: 25px;">
+        <table class="table table-bordered" style="text-align: center;">
+            <thead>
+                <tr>
+                    <th scope="col">Detalle</th>
+                    <th scope="col">Monto_Total</th>
+                    <th scope="col">Total_mas_impuesto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of billsList">
+                    <th scope="row">{{item.detail_id}}</th>
+                    <th scope="row">{{item.total_amount}}</th>
+                    <th scope="row">{{item.tax_amount}}</th>
+                    <th scope="row">
+                        <button type="button" class="btn btn-warning" style="margin-right: 5px;">Modificar</button>
+                        <button type="button" class="btn btn-danger">Eliminar</button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

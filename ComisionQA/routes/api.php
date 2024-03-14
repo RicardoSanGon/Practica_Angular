@@ -66,7 +66,9 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/is_guest',[UsersController::class,'is_guest']);
     Route::get('/is_user',[UsersController::class,'is_user']);
     Route::get('/orders',[OrdersController::class,'index']);
+
 });
+Route::get('/is_auth',[UsersController::class,'is_Auth']);
 
 //Rutas para editar status:
 Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);

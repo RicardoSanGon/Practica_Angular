@@ -81,6 +81,9 @@ class OrderDetailsController extends Controller
             return response()->json(["msg" => "El usuario no tiene una orden en proceso"], 400);
         }
         $data = $request->products;
+        if(count($data)===0){
+            return response()->json(["msg" => "No hay productos"], 400);
+        }
         if ($request->products !== null) {
             foreach ($data as $detalle) {
                 $vehicle_model = Vehicle_model::find($detalle['model_id']);
@@ -93,7 +96,6 @@ class OrderDetailsController extends Controller
                 $NewOrderDetail->order_id = $order->id;
                 $NewOrderDetail->price = $vehicle_model->model_price * $detalle['quantity'];
                 $NewOrderDetail->status = 'pendiente';
-                $NewOrderDetail->delery_date = $detalle['delery_date'];
                 try {
                     $NewOrderDetail->save();
                 } catch (Exception $e) {
@@ -103,10 +105,11 @@ class OrderDetailsController extends Controller
             }
             $order->status = 'enviada';
             $order->save();
+            return response()->json([
+                "msg" => "Registro correcto"
+            ], 201);
         }
-        return response()->json([
-            "msg" => "Registro correcto"
-        ], 201);
+
     }
     public function changeStatusDetail(Request $request, $id)
     {

@@ -17,10 +17,10 @@ class InventoriesController extends Controller
         $inventories = $inventories->map(function($inventory){
             return[
                 "id"=>$inventory->id,
-                "fecha de ingreso"=>$inventory->admission_date,
+                "admission_date"=>$inventory->admission_date,
                 "stock"=>$inventory->stock,
-                "modelo"=>$inventory->models->model_name,
-                "proveedor"=>$inventory->supplier->supplier_name,
+                "vehicle_model_id"=>$inventory->vehicle_model_id,
+                "supplier_id"=>$inventory->supplier_id,
             ];
         });
         return response()->json(['data'=>$inventories], 200);

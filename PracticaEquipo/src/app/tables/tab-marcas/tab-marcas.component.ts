@@ -31,7 +31,14 @@ export class TabMarcasComponent{
     this.brandsService.tabgetBrands().subscribe({
       next: (result) => {
         console.log(result);
-        this.brandsList = result.data;
+        if(this.is_admin)
+        {
+          this.brandsList = result.data;
+        }
+        else
+        {
+          this.brandsList = result.data.filter((brand) => brand.brand_status === 'Activo');
+        }
 
       },
       error: (error) => {

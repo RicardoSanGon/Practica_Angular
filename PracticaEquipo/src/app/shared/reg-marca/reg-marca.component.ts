@@ -28,9 +28,9 @@ export class RegMarcaComponent {
   public data:any[] = [];
   public errorName:String|null = null;
   public errorCatalogue:String|null = null;
-constructor(private brandservice: BrandsService,private catalogueservice:CataloguesService) {
-  this.getCatalogues();
-}
+  constructor(private brandservice: BrandsService, private catalogueservice: CataloguesService) {
+    this.getCatalogues();
+  }
 
   private getCatalogues() {
     this.catalogueservice.getCatalogues().subscribe(
@@ -38,45 +38,47 @@ constructor(private brandservice: BrandsService,private catalogueservice:Catalog
         this.data = response.data;
       },
       (error) => {
-        if(error.status===401){
+        if (error.status === 401) {
           //redireccionar al login
-          return console.log('No estas autenticado');
+          console.log('No estás autenticado');
         }
-        //otro error
+        // otro error
       });
   }
-
 
   public onSelectChange(event: any) {
     this.brand.catalogue_id = event.target.value;
   }
+
   public submitForm() {
+    this.errorName = null;
+    this.errorCatalogue = null;
+  
+    if (!this.brand.brand_name || this.brand.brand_name === '') {
+      this.errorName = 'El nombre de la marca es requerido.';
+      return;
+    }
+  
+    if (!this.brand.catalogue_id) {
+      this.errorCatalogue = 'Debes seleccionar un catálogo.';
+      return;
+    }
+  
     this.brandservice.createBrand(this.brand).subscribe(
       (response) => {
-        this.errorName = null;
-        this.errorCatalogue = null;
-        console.log(response)
+        console.log(response);
       },
       (error) => {
-        if(error.message==='Unauthenticated.'){
-          //redireccionar al login
-          return console.log('No estas autenticado');
+        if (error.message === 'Unauthenticated.') {
+          // redireccionar al login
+          console.log('No estás autenticado');
         }
-        if (error.error?.Errores?.brand_name!==undefined && error.error.Errores.brand_name!==null)
-        {
+        if (error.error?.Errores?.brand_name !== undefined && error.error.Errores.brand_name !== null) {
           this.errorName = error.error.Errores.brand_name;
         }
-        else {
-          this.errorName = null;
-        }
-        if (error.error?.catalogue_id!==undefined && error.error.catalogue_id!==null)
-        {
+        if (error.error?.catalogue_id !== undefined && error.error.catalogue_id !== null) {
           this.errorCatalogue = error.error.catalogue_id;
-        }
-        else {
-          this.errorCatalogue = null;
         }
       });
   }
-
 }

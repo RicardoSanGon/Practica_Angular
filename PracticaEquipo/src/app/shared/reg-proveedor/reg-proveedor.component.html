@@ -14,19 +14,32 @@
             <form>
                 <div class="mb-3">
                     <label class="form-label">Proveedor</label>
+<<<<<<< HEAD
                     <input type="text" class="form-control" placeholder="Nombre del Proveedor" [(ngModel)]="supplier.supplier_name" required minlength="3" maxlength="50" name="name">
+=======
+                    <input type="text" class="form-control" placeholder="Nombre del Proveedor" [(ngModel)]="supplier.supplier_name" required name="supplier_name">
+>>>>>>> a97c8aa3af9b4309dc4bfd9af4391a10c3e66767
                     <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Correo</label>
+<<<<<<< HEAD
                     <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="supplier.supplier_email" required name="email">
+=======
+                    <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="supplier.supplier_email" required name="supplier_email">
+>>>>>>> a97c8aa3af9b4309dc4bfd9af4391a10c3e66767
                     <div *ngIf="errorEmail" class="text-danger">{{errorEmail}}</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Telefono</label>
+<<<<<<< HEAD
                     <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="supplier.supplier_phone" required pattern="[0-9]{10}" name="phone">
+=======
+                    <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="supplier.supplier_phone" required pattern="[0-9]{10}" name="supplier_phone">
+>>>>>>> a97c8aa3af9b4309dc4bfd9af4391a10c3e66767
                     <div *ngIf="errorPhone" class="text-danger">{{errorPhone}}</div>
                 </div>
+                
             </form>
           <button type="submit" class="btn btn-primary" (click)="createSupplier()">Guardar</button>
         </div>

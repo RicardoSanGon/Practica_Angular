@@ -39,8 +39,7 @@ export class RegModeloComponent {
   public errorPrice:String|null=null;
   public errorStock:String|null=null;
   public msg:String|null=null;
-  constructor(private modelservice:ModelsService,private brandservice:BrandsService, private catalogueservice:CataloguesService)
-  {
+  constructor(private modelservice: ModelsService, private brandservice: BrandsService, private catalogueservice: CataloguesService) {
     this.getCatalogues();
   }
 
@@ -50,12 +49,9 @@ export class RegModeloComponent {
         this.catalogue_data = response.data;
       },
       (error) => {
-          //redireccionar al login
-          if(error.status===401)
-          {
-            console.log('Unauthenticated')
-          }
-        //otro error
+        if (error.status === 401) {
+          console.log('Unauthenticated');
+        }
       });
   }
 
@@ -64,19 +60,16 @@ export class RegModeloComponent {
     this.getBrands(this.model.brand_id);
   }
 
-  getBrands(id:number)
-  {
+  getBrands(id: number) {
     this.brandservice.getBrands(id).subscribe(
       (response) => {
         this.brand_data = response.data;
         this.model.brand_id = this.brand_data[0].id;
       },
       (error) => {
-        if(error.status===401){
-          //redireccionar al login
-          return console.log('Unauthenticated');
+        if (error.status === 401) {
+          console.log('Unauthenticated');
         }
-
       });
   }
 
@@ -85,6 +78,10 @@ export class RegModeloComponent {
   }
 
   submitForm() {
+    if (!this.validateForm()) {
+      return;
+    }
+
     this.modelservice.createModel(this.model).subscribe(
       (response) => {
         console.log(response);
@@ -109,5 +106,46 @@ export class RegModeloComponent {
           this.msg = error.error.model_brand;
         }
       });
+  }
+
+  private validateForm(): boolean {
+    let isValid = true;
+
+    if (!this.model.model_name || this.model.model_name.length < 3) {
+      this.errorName = 'El nombre del modelo debe tener al menos 3 caracteres';
+      isValid = false;
+    } else {
+      this.errorName = null;
+    }
+
+    if (!this.model.model_year || this.model.model_year < 1900 || this.model.model_year > new Date().getFullYear()) {
+      this.errorYear = 'Ingrese un año válido';
+      isValid = false;
+    } else {
+      this.errorYear = null;
+    }
+
+    if (!this.model.model_price || this.model.model_price <= 0) {
+      this.errorPrice = 'El precio debe ser mayor que cero';
+      isValid = false;
+    } else {
+      this.errorPrice = null;
+    }
+
+    if (!this.model.model_stock || this.model.model_stock < 0) {
+      this.errorStock = 'El stock debe ser mayor o igual a cero';
+      isValid = false;
+    } else {
+      this.errorStock = null;
+    }
+
+    if (!this.model.model_description || this.model.model_description.length < 10) {
+      this.errorDescription = 'La descripción debe tener al menos 10 caracteres';
+      isValid = false;
+    } else {
+      this.errorDescription = null;
+    }
+
+    return isValid;
   }
 }

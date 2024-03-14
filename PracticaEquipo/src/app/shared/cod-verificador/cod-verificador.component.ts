@@ -19,35 +19,29 @@ export class CodVerificadorComponent {
   errorCode:String|null=null;
 
   constructor(private userService: UsersService,
-              private router: Router) {
-  }
+    private router: Router) {
+}
 
-  submitCode() {
-    this.userService.CodeVerification({code: this.verificationCode}).subscribe(
-      (data) => {
-        console.log(data)
-        this.router.navigate(['navbar/tab-Catalogo']);
-      },
-      (error) => {
-        console.log(error)
-        if(error.status===401)
-        {
-          this.router.navigate(['/']);
-        }
-        else {
-          if(error.error?.Errores?.code !== undefined && error.error.Errores.code !== null)
-          {
-            this.errorCode=error.error.Errores.code
-          }
-          else
-          {
-            if (error.error?.msg !== undefined && error.error?.msg !== null) {
-              this.errorCode = error.error.msg
-            }
-          }
-
-        }
-      }
-    );
+submitCode() {
+this.userService.CodeVerification({code: this.verificationCode}).subscribe(
+(data) => {
+console.log(data);
+this.router.navigate(['navbar/tab-Catalogo']);
+},
+(error) => {
+console.log(error);
+if (error.status === 401) {
+this.router.navigate(['/']);
+} else {
+if (error.error?.Errores?.code !== undefined && error.error.Errores.code !== null) {
+  this.errorCode = error.error.Errores.code;
+} else {
+  if (error.error?.msg !== undefined && error.error?.msg !== null) {
+    this.errorCode = error.error.msg;
   }
+}
+}
+}
+);
+}
 }

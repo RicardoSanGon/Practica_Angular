@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabFacturaComponent } from './tab-factura.component';
+import { TabFaturacionComponent } from './tab-faturacion.component';
 
-describe('TabFacturaComponent', () => {
-  let component: TabFacturaComponent;
-  let fixture: ComponentFixture<TabFacturaComponent>;
+describe('TabFaturacionComponent', () => {
+  let component: TabFaturacionComponent;
+  let fixture: ComponentFixture<TabFaturacionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TabFacturaComponent]
+      imports: [TabFaturacionComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(TabFacturaComponent);
+    fixture = TestBed.createComponent(TabFaturacionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

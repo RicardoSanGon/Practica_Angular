@@ -11,6 +11,7 @@ import {IsGuest} from "../../Interfaces/is-guest";
 import {IsUser} from "../../Interfaces/is-user";
 import {Code} from "../../Interfaces/code";
 import {IsAuth} from "../../Interfaces/is-auth";
+import {IsCodeVerified} from "../../Interfaces/is-code-verified";
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,10 @@ export class UsersService {
 
   is_Auth():Observable<IsAuth> {
     return this.http.get<IsAuth>('http://127.0.0.1:8000/api/is_auth');
+  }
+
+  is_Auth2():Observable<IsCodeVerified>
+  {
+    return this.http.get<IsCodeVerified>('http://127.0.0.1:8000/api/is_code_verified');
   }
 }

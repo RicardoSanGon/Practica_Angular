@@ -24,7 +24,7 @@ class BillsController extends Controller
         $bill->detail_id=$request->detail_id;
         $bill->total_amount=$request->total_amount;
         $bill->tax_amount=$request->tax_amount;
-        
+
         try{
             $bill->save();
         }
@@ -67,7 +67,7 @@ class BillsController extends Controller
 
     public function index(Request $request)
     {
-        $userId = Auth::id();
+        $userId = UsersController::getUserIdFromToken($request->header('authorization'));
 
         $bills = Bill::where('customer_id', $userId)->get();
 
@@ -75,27 +75,15 @@ class BillsController extends Controller
             return response()->json(['msg' => 'No se encontraron facturas para este cliente'], 404);
         }
 
-        $response = [];
-
-        foreach ($bills as $bill) {
-            $billDetails = $bill->details()->get();
-
-            $detailsData = [];
-            foreach ($billDetails as $detail) {
-                $detailsData[] = [
-                    'detail_id' => $detail->detail_id,
-                    'total_amount' => $detail->total_amount,
-                    'tax_amount' => $detail->tax_amount,
-                ];
-            }
-
-            $response[] = [
-                'bill_id' => $bill->id,
-                'customer_id' => $bill->customer_id,
-                'details' => $detailsData,
+        $bills = $bills->map(function ($bill) {
+            return [
+                'id' => $bill->id,
+                'detail_id' => $bill->detail_id,
+                'total_amount' => $bill->total_amount,
+                'tax_amount' => $bill->tax_amount,
             ];
-        }
+        });
 
-        return response()->json(['data' => $response], 200);
+        return response()->json(['data' => $bills], 200);
     }
 }

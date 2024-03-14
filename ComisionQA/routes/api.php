@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillsController;
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\CataloguesController;
 use App\Http\Controllers\CustomersController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\BillController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -67,10 +69,12 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/is_user',[UsersController::class,'is_user']);
     Route::get('/orders',[OrdersController::class,'index']);
 
+    Route::get('/bills', [BillsController::class, 'index']);
+
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);
 
-//Rutas para editar status:
+
 Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);
 Route::put('/update-status/catalogues/{id}', [CataloguesController::class, 'updateCatalogueStatus']);
 Route::put('/update-status/suppliers/{id}', [SuppliersController::class, 'updateSupplierStatus']);

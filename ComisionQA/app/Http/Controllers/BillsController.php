@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class BillsController extends Controller
@@ -62,5 +63,39 @@ class BillsController extends Controller
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar la factura", "Error" => $e], 500);
         }
+    }
+
+    public function index(Request $request)
+    {
+        $userId = Auth::id();
+
+        $bills = Bill::where('customer_id', $userId)->get();
+
+        if ($bills->isEmpty()) {
+            return response()->json(['msg' => 'No se encontraron facturas para este cliente'], 404);
+        }
+
+        $response = [];
+
+        foreach ($bills as $bill) {
+            $billDetails = $bill->details()->get();
+
+            $detailsData = [];
+            foreach ($billDetails as $detail) {
+                $detailsData[] = [
+                    'detail_id' => $detail->detail_id,
+                    'total_amount' => $detail->total_amount,
+                    'tax_amount' => $detail->tax_amount,
+                ];
+            }
+
+            $response[] = [
+                'bill_id' => $bill->id,
+                'customer_id' => $bill->customer_id,
+                'details' => $detailsData,
+            ];
+        }
+
+        return response()->json(['data' => $response], 200);
     }
 }

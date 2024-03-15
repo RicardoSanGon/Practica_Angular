@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {UserLogIn} from "../../Core/Interfaces/user-log-in";
-import {FormsModule, NgModel} from "@angular/forms";
-import {UsersService} from "../../Core/Services/User/users.service";
-import {NgIf} from "@angular/common";
-import { Router ,RouterModule } from '@angular/router';
-
+import { UserLogIn } from '../../Core/Interfaces/user-log-in';
+import { FormsModule } from '@angular/forms';
+import { UsersService } from '../../Core/Services/User/users.service';
+import { NgIf } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -16,9 +15,12 @@ import { Router ,RouterModule } from '@angular/router';
 export class LogInComponent {
   public errorEmail: string | null = null;
   public errorPassword: string | null = null;
-
   public msgError: string | null = null;
-  public constructor(private userService: UsersService, private router: Router) {}
+
+  constructor(
+    private userService: UsersService,
+    private router: Router
+  ) {}
 
   public user: UserLogIn = {
     email: '',

@@ -26,4 +26,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Rol::class);
     }
+
+    public function logHistory()
+    {
+        return $this->hasMany(LogHistory::class,'id');
+    }
 }

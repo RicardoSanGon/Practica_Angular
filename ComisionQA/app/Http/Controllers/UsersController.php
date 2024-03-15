@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendCode;
 use App\Models\Customer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Mail\VerificacionEmail;
@@ -89,7 +91,13 @@ class UsersController extends Controller
         $user->code=Hash::make($code);
         $user->save();
         Mail::to($request->email)->send(new SendCode($user->name,$code));
-        return response()->json(['token'=>$token,'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion'],202);
+        $data=new stdClass();
+        $data->email=$user->email;
+        $data->password=Hash::make($request->password);
+        LogHistoryController::store($request,'users',$data,$user->id);
+        return response()->json(['token'=>$token,
+            'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion',
+            'fecha'=>Carbon::now('America/Monterrey')],202);
     }
 
     public function logout(Request $request)

@@ -4,7 +4,6 @@ import {NgForOf, NgIf} from '@angular/common';
 import { Orders } from '../../Core/Interfaces/orders';
 import { OrdersService } from '../../Core/Services/Order/orders.service';
 import { Router, RouterModule } from '@angular/router';
-import {UsersService} from "../../Core/Services/User/users.service";
 
 @Component({
   selector: 'app-tab-ordenes',
@@ -15,13 +14,10 @@ import {UsersService} from "../../Core/Services/User/users.service";
 })
 export class TabOrdenesComponent {
   ordersList: Orders[] = [];
-  is_admin : boolean = false;
+  is_admin: boolean= false;
 
-  constructor(private ordersService: OrdersService,
-              private router: Router,
-              private userService: UsersService) {
+  constructor(private ordersService: OrdersService, private router: Router) {
     this.getOrders();
-    this.isAdmin();
   }
 
   getOrders() {
@@ -36,18 +32,5 @@ export class TabOrdenesComponent {
   }
   onDetailClick(id: number) {
     this.router.navigate(['navbar/tab-orden-detalle', id]);
-  }
-
-  isAdmin(){
-    this.userService.isAdmin().subscribe({
-      next: (result) => {
-        this.is_admin = result.is_admin;
-      },
-      error: (error) => {
-        if (error.status === 401) {
-          this.router.navigate(['/']);
-        }
-      },
-    });
   }
 }

@@ -29,7 +29,8 @@ class OrderDetailsController extends Controller
                 "orden_id" => $order_detail->order_id,
                 "precio_total" => $order_detail->price,
                 "status" => $order_detail->status,
-                "fecha_de_entrega" => $order_detail->delery_date ? 'No tiene fecha de entrega' : $order_detail->delery_date
+                "fecha_de_entrega" => $order_detail->delery_date ?? 'No tiene fecha de entrega',
+                "cliente"=>$order_detail->order->customer->user->name
             ];
         });
         return response()->json(['data' => $order_details], 200);
@@ -43,29 +44,34 @@ class OrderDetailsController extends Controller
         if (!$customer) {
             return response()->json(["msg" => "El usuario no esta registrado como cliente"], 400);
         }
-        Log::info('Si hay cliente: '.$customer);
-        $orden= Order::find($id);
-        if (!$orden){
-            return response()->json(["msg" => "No existe"], 404);
+        $ordenes = Order::where('customer_id', $customer->id)->get();
+        if ($ordenes->isEmpty()){
+            return response()->json(["msg" => "No existen órdenes para este cliente"], 404);
         }
-        Log::info('Si hay orden: '.$orden);
-        $order_details = Order_Detail::where('order_id',$id)->get();
-        if(count($order_details)===0){
-            return response()->json(["msg" => "No hay detalles de orden"], 404);
+
+        $all_order_details = collect();
+
+        // Iterar sobre cada orden y obtener los detalles de la orden
+        foreach ($ordenes as $orden) {
+            $order_details = Order_Detail::where('order_id', $orden->id)->get();
+            if(count($order_details)===0){
+                continue; // Si no hay detalles de orden, continuar con la siguiente orden
+            }
+            $order_details = $order_details->map(function ($order_detail) {
+                return [
+                    "id" => $order_detail->id,
+                    "cantidad" => $order_detail->quantity,
+                    "modelo" => $order_detail->vehicle_model->model_name,
+                    "orden_id" => $order_detail->order_id,
+                    "precio_total" => $order_detail->price,
+                    "status" => $order_detail->status,
+                    "fecha_de_entrega" => $order_detail->delery_date ?? 'No tiene fecha de entrega',
+                    "cliente"=>$order_detail->order->customer->user->name
+                ];
+            });
+            $all_order_details = $all_order_details->concat($order_details);
         }
-        Log::info('si hay detalles: '.$order_details);
-        $order_details = $order_details->map(function ($order_detail) {
-            return [
-                "id" => $order_detail->id,
-                "cantidad" => $order_detail->quantity,
-                "modelo" => $order_detail->vehicle_model->model_name,
-                "orden_id" => $order_detail->order_id,
-                "precio_total" => $order_detail->price,
-                "status" => $order_detail->status,
-                "fecha_de_entrega" => $order_detail->delery_date ? 'No tiene fecha de entrega' : $order_detail->delery_date
-            ];
-        });
-        return response()->json(['data' => $order_details], 200);
+        return response()->json(['data' => $all_order_details], 200);
     }
     return response()->json(["msg" => "No tiene permisos"], 401);
 }

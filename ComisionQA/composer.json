@@ -11,7 +11,9 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
+        "mongodb/laravel-mongodb": "^3.9",
         "symfony/css-selector": "^6.0",
+        "symfony/event-dispatcher": "^6.0",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {

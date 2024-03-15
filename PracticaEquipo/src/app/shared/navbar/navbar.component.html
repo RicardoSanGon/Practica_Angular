@@ -45,6 +45,7 @@
                             <li><a class="dropdown-item" routerLink="tab-Marcas">Tabla Marcas</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Modelos">Tabla Modelos</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Ordenes">Tabla Ordenes</a></li>
+                            <li><a class="dropdown-item" routerLink="tab-Factura">Tabla Factura</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -60,6 +61,9 @@
                   </li>
                   <li class="nav-item">
                     <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="tab-Facturas" *ngIf="is_user">Facturas</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="tab-Detalles" *ngIf="is_user || is_admin">Detalles</a>
                   </li>
                 </ul>
                 <ul class="navbar-nav" style="margin-left: 40%">

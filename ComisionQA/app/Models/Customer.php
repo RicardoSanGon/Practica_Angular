@@ -17,4 +17,8 @@ class Customer extends Model
     public function sale_histories(){
         return $this->hasMany(Sale_History::class);
     }
+
+    public function orders(){
+        return $this->hasMany(Order::class,'id');
+    }
 }

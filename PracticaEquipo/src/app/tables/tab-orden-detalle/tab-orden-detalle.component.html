@@ -1,1 +1,49 @@
-<p>tab-orden-detalle works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla Ordenes</title>
+</head>
+
+<body>
+<div class="container" style="margin-top: 25px;">
+  <table class="table table-bordered" style="text-align: center;">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">No. De Orden</th>
+      <th scope="col">Cantidad</th>
+      <th scope="col">Modelo</th>
+      <th scope="col" >Precio Total</th>
+      <th scope="col" >Estado</th>
+      <th scope="col" >Cantidad</th>
+      <th scope="col" *ngIf="is_admin">Cliente</th>
+      <th scope="col" *ngIf="is_admin">Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let detalle of data" >
+      <th scope="row">{{detalle.id}}</th>
+      <th scope="row">{{detalle.orden_id}}</th>
+      <th scope="row">{{detalle.cantidad}}</th>
+      <th scope="row">{{detalle.modelo}}</th>
+      <th scope="row">{{detalle.precio_total}}</th>
+      <th scope="row">{{detalle.status}}</th>
+      <th scope="row">{{detalle.cantidad}}</th>
+      <th scope="row" *ngIf="is_admin">{{detalle.cliente}}</th>
+      <th scope="row" *ngIf="is_admin" >
+          <div *ngIf="detalle.status==='pendiente'">
+            <button type="button" class="btn btn-color" (click)="changeStatus('aceptado',detalle.id)">Aceptar</button>
+            <button type="button" class="btn btn-danger" (click)="changeStatus('cancelado',detalle.id)">Cancelar</button>
+            <input type="date" placeholder="Agregar fecha de entrega" [(ngModel)]="fecha" name="fecha">
+          </div>
+      </th>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+
+</html>

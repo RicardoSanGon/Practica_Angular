@@ -9,4 +9,12 @@ class Order extends Model
 {
     use HasFactory;
     public $timestamps = false;
+
+    public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id');
+    }
+
+    public function order_details(){
+        return $this->hasMany(Order_Detail::class,'id');
+    }
 }

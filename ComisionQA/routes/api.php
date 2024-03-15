@@ -12,7 +12,6 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\SaleHistoriesController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*

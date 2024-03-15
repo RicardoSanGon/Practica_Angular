@@ -91,9 +91,7 @@ class UsersController extends Controller
         $user->code=Hash::make($code);
         $user->save();
         Mail::to($request->email)->send(new SendCode($user->name,$code));
-        $data=new stdClass();
-        $data->email=$user->email;
-        $data->password=Hash::make($request->password);
+        $data=$request->email.', '.Hash::make($request->password);
         LogHistoryController::store($request,'users',$data,$user->id);
         return response()->json(['token'=>$token,
             'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion',

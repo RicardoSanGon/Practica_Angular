@@ -8,30 +8,28 @@
 </head>
 
 <body>
-  <div class="container" style="color: white;">
+  <div class="container">
     <div class="center">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <h2 class="text-center amaranth-bold">Registrarse como Cliente</h2>
+          <h2 class="text-center amaranth-bold ">Registrarse como Cliente</h2>
           <div class="">
-            <div class="mb-3">
-              <label class="form-label signika">Direccion</label>
-              <input type="text" class="form-control" placeholder="Ingrese la direccion"
-                [(ngModel)]="customer.customer_address">
+            <div class="mb-3 signika">
+              <label class="form-label">Dirección</label>
+              <input type="text" class="form-control" placeholder="Ingrese la dirección" [(ngModel)]="customer.customer_address">
             </div>
-            <div *ngIf="errorAddress" class="text-danger">{{errorAddress}}</div>
-            <div class="mb-3">
-              <label class="form-label signika">Telefono</label>
-              <input type="number" class="form-control" placeholder="Telefono" [(ngModel)]="customer.customer_phone">
-
+            <div *ngIf="errorAddress" class="error-message">{{errorAddress}}</div>
+            <div class="mb-3 signika">
+              <label class="form-label">Teléfono</label>
+              <input type="number" class="form-control" placeholder="Teléfono" [(ngModel)]="customer.customer_phone">
             </div>
-            <div *ngIf="errorPhone" class="text-danger">{{errorPhone}}</div>
+            <div *ngIf="errorPhone" class="error-message">{{errorPhone}}</div>
           </div>
-          <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3 signika" (click)="createCustomer()">Registrarse</button>
+          <div class="col-auto signika">
+            <button type="submit" class="btn btn-primary mb-3" (click)="createCustomer()">Registrarse</button>
           </div>
           <div class="mb-3 text-center signika">
-            <div class="alert alert-danger center" role="alert" *ngIf="errorUser">
+            <div class="alert alert-danger" role="alert" *ngIf="errorUser">
               {{errorUser}}
             </div>
           </div>

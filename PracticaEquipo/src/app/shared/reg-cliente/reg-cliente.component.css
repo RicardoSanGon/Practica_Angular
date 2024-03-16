@@ -1,9 +1,10 @@
 body {
     width: 100%;
-    height: 100vh;
+    height: 570px;
     background-image: url(../../shared/img/fondo2.jpg);
     background-size: cover;
     background-position: center;
+    color: white;
 }
 
 .center {
@@ -14,7 +15,7 @@ body {
     border: 2px solid rgba(10, 50, 182, 0.308);
     position: fixed;
     padding: 30px;
-    top: 50%;
+    top: 350px;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -24,3 +25,29 @@ body {
     font-weight: 700;
     font-style: normal;
 }
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .form-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+  }

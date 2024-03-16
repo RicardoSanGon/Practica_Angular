@@ -67,6 +67,7 @@ export class RegMarcaComponent {
     this.brandservice.createBrand(this.brand).subscribe(
       (response) => {
         console.log(response);
+        alert('¡Marca creada correctamente!');
       },
       (error) => {
         if (error.message === 'Unauthenticated.') {

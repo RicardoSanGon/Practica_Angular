@@ -34,6 +34,7 @@ export class RegProveedorComponent {
     this.supplierService.createSupplier(this.supplier).subscribe(
       (res) => {
         console.log(res);
+        alert('¡Proveedor creado correctamente!');
       },
       (err) => {
         console.log(err);

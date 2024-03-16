@@ -103,10 +103,11 @@ export class RegInventarioComponent {
     this.inventoriesService.addInventory(this.inventory).subscribe(
       (data) => {
         console.log(data);
+        alert('¡El invenatio se añadió correctamente!');
       },
       (error) => {
         if (error.status === 401) {
-          //refireccionar al login
+          //redireccionar al login
         }
         if (
           error.error?.Errores?.admission_date !== undefined &&
@@ -137,7 +138,8 @@ export class RegInventarioComponent {
           error.error.Errores.supplier_id !== null
         ) {
           this.errorSupplier = error.error.Errores.supplier_id;
-        } else {this.errorSupplier = null;
+        } else {
+          this.errorSupplier = null;
         }
       }
     );

@@ -85,6 +85,7 @@ export class RegModeloComponent {
     this.modelservice.createModel(this.model).subscribe(
       (response) => {
         console.log(response);
+        alert('¡Modelo creado correctamente!');
       },
       (error) => {
         if (error.error?.Errores?.model_name !== undefined && error.error.Errores.model_name !== null) {

@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
-import {AuthGuard} from "./Core/Guards/auth.guard";
-import {CatalogoEditComponent} from "./form-edit/catalogo-edit/catalogo-edit.component";
-import {IsAdminGuard} from "./Core/Guards/is-admin.guard";
-import {IsCodeVerifiedGuard} from "./Core/Guards/is-code-verified.guard";
+import { AuthGuard } from './Core/Guards/auth.guard';
+import { IsAdminGuard } from './Core/Guards/is-admin.guard';
+import { IsCodeVerifiedGuard } from './Core/Guards/is-code-verified.guard';
 
 export const routes: Routes = [
   {
@@ -88,7 +87,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             '../app/tables/tab-proveedores/tab-proveedores.component'
-            ).then((c) => c.TabProveedoresComponent),
+          ).then((c) => c.TabProveedoresComponent),
       },
       {
         path: 'tab-Usuarios',
@@ -129,16 +128,6 @@ export const routes: Routes = [
           import('../app/tables/tab-catalogo/tab-catalogo.component').then(
             (c) => c.TabCatalogoComponent
           ),
-        children: [
-          {
-            path: 'catalogo/:id/edit',
-            canActivate: [AuthGuard,IsCodeVerifiedGuard],
-            loadComponent: () =>
-              import('../app/form-edit/catalogo-edit/catalogo-edit.component').then(
-                (c) => c.CatalogoEditComponent
-              ),
-          },
-        ]
       },
       {
         path: 'tab-Inventario',
@@ -164,7 +153,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path:'historial',
+        path: 'historial',
         canActivate: [AuthGuard],
         loadComponent: () =>
           import('../app/tables/historial/historial.component').then(
@@ -172,14 +161,63 @@ export const routes: Routes = [
           ),
       },
       {
-        path:'tab-Facturas',
-        canActivate: [AuthGuard,IsCodeVerifiedGuard],
+        path: 'tab-Facturas',
+        canActivate: [AuthGuard, IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/tables/tab-faturacion/tab-faturacion.component').then(
             (c) => c.TabFaturacionComponent
           ),
-      }
-
+      },
+      {
+        path: 'edit-clientes',
+        canActivate: [AuthGuard, IsCodeVerifiedGuard],
+        loadComponent: () =>
+          import('../app/form-edit/customer-edit/customer-edit.component').then(
+            (c) => c.CustomerEditComponent
+          ),
+      },
     ],
   },
+  //RUTAS DE EDICION
+  {
+    path: 'edit-Marcas/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('../app/form-edit/brand-edit/brand-edit.component').then(
+        (c) => c.BrandEditComponent
+      ),
+  },
+  {
+    path: 'edit-Modelos/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('../app/form-edit/modelo-edit/modelo-edit.component').then(
+        (c) => c.ModeloEditComponent
+      ),
+  },
+  {
+    path: 'edit-Proveedores/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('../app/form-edit/provider-edit/provider-edit.component').then(
+        (c) => c.ProviderEditComponent
+      ),
+  },
+  {
+    path: 'edit-Inventario/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('../app/form-edit/inventario-edit/inventario-edit.component').then(
+        (c) => c.InventarioEditComponent
+      ),
+  },
+  {
+    path: 'edit-Catalogo/:id',
+    canActivate: [AuthGuard, IsCodeVerifiedGuard],
+    loadComponent: () =>
+      import('../app/form-edit/catalogue-edit/catalogue-edit.component').then(
+        (c) => c.CatalogueEditComponent
+      ),
+  },
+  
 ];

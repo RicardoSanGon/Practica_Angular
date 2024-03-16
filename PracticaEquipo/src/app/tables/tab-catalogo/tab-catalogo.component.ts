@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CataloguesService } from '../../Core/Services/Catalogue/catalogues.service';
 import { Catalogue } from '../../Core/Interfaces/catalogue';
 import {NgForOf, NgIf} from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {UsersService} from "../../Core/Services/User/users.service";
 import {NavbarComponent} from "../../shared/navbar/navbar.component";
 
@@ -18,7 +18,7 @@ export class TabCatalogoComponent {
   is_admin: boolean = false;
 
   constructor(private cataloguesService: CataloguesService,
-              private userService: UsersService) {
+              private userService: UsersService, private router: Router) {
     this.getCatalogo();
     this.is_Admin()
   }
@@ -47,4 +47,5 @@ export class TabCatalogoComponent {
       }
     );
   }
+  
 }

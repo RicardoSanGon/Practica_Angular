@@ -1,38 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
-import {UsersService} from "../../Core/Services/User/users.service";
-import {NgIf} from "@angular/common";
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { UsersService } from '../../Core/Services/User/users.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    RouterModule,
-    NgIf
-  ],
+  imports: [RouterModule, NgIf],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
   is_admin: boolean = false;
   is_user: boolean = false;
   is_guest: boolean = false;
   is_client: boolean = false;
-  constructor(private userService: UsersService,
-              private router: Router)
-  {
-
-  }
-  ngOnInit(): void
-  {
+  constructor(private userService: UsersService, private router: Router) {}
+  ngOnInit(): void {
     this.is_Admin();
     this.is_User();
     this.is_Guest();
     this.is_Client();
   }
 
-  is_Admin()
-  {
+  is_Admin() {
     this.userService.isAdmin().subscribe(
       (res) => {
         this.is_admin = res.is_admin;
@@ -45,8 +36,7 @@ export class NavbarComponent implements OnInit{
     );
   }
 
-  is_User()
-  {
+  is_User() {
     this.userService.isUser().subscribe(
       (res) => {
         this.is_user = res.is_user;
@@ -59,8 +49,7 @@ export class NavbarComponent implements OnInit{
     );
   }
 
-  is_Guest()
-  {
+  is_Guest() {
     this.userService.isGuest().subscribe(
       (res) => {
         this.is_guest = res.is_guest;
@@ -73,8 +62,7 @@ export class NavbarComponent implements OnInit{
     );
   }
 
-  is_Client()
-  {
+  is_Client() {
     this.userService.isClient().subscribe(
       (res) => {
         this.is_client = res.is_client;
@@ -87,8 +75,7 @@ export class NavbarComponent implements OnInit{
     );
   }
 
-  CerrarSesion()
-  {
+  CerrarSesion() {
     this.userService.LogOut().subscribe(
       (res) => {
         this.router.navigate(['/']);
@@ -98,7 +85,4 @@ export class NavbarComponent implements OnInit{
       }
     );
   }
-
-
-
 }

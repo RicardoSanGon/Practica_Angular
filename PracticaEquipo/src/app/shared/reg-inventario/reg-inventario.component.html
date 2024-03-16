@@ -4,39 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Inventario</title>
+    <title>Registro Inventario</title>
 </head>
 
 <body>
-    <div class="container">
-        <h2>Inventario</h2>
-        <div class="">
-            <div class="mb-3">
-                <label class="form-label">Fecha de Admisión</label>
-                <input type="date" class="form-control" name="admission_date" [(ngModel)]="inventory.admission_date">
-                <div *ngIf="errorDate" class="text-danger">{{errorDate}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Stock</label>
-                <input type="number" class="form-control" name="stock" placeholder="Stock" [(ngModel)]="inventory.stock">
-                <div *ngIf="errorStock" class="text-danger">{{errorStock}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Modelo</label>
-                <select class="form-select" aria-label="Default select example" name="model_id" (change)="onModelSelected($event)">
-                    <option *ngFor="let model of models_data" [value]="model.id">{{model.modelo}}</option>
-                </select>
-                <div *ngIf="errorModel" class="text-danger">{{errorModel}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Proveedor</label>
-                <select class="form-select" aria-label="Default select example" name="supplier_id" (change)="onSupplierSelected($event)">
-                    <option *ngFor="let supplier of supplier_data" [value]="supplier.id">{{supplier.supplier_name}}</option>
-                </select>
-                <div *ngIf="errorSupplier" class="text-danger">{{errorSupplier}}</div>
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3" (click)="submitForm()">Agregar</button>
+    <div class="container" style="color: white;">
+        <div class="center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h2 class="text-center amaranth-bold">Registrar Inventario</h2>
+                    <label class="form-label">Fecha de Admisión</label>
+                    <input type="date" class="form-control" name="admission_date"
+                        [(ngModel)]="inventory.admission_date">
+                    <div *ngIf="errorDate" class="text-danger">{{errorDate}}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Stock</label>
+                    <input type="number" class="form-control" name="stock" placeholder="Stock"
+                        [(ngModel)]="inventory.stock">
+                    <div *ngIf="errorStock" class="text-danger">{{errorStock}}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Modelo</label>
+                    <select class="form-select" aria-label="Default select example" name="model_id"
+                        (change)="onModelSelected($event)">
+                        <option *ngFor="let model of models_data" [value]="model.id">{{model.modelo}}</option>
+                    </select>
+                    <div *ngIf="errorModel" class="text-danger">{{errorModel}}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Proveedor</label>
+                    <select class="form-select" aria-label="Default select example" name="supplier_id"
+                        (change)="onSupplierSelected($event)">
+                        <option *ngFor="let supplier of supplier_data" [value]="supplier.id">{{supplier.supplier_name}}
+                        </option>
+                    </select>
+                    <div *ngIf="errorSupplier" class="text-danger">{{errorSupplier}}</div>
+                </div>
+                <div class="mb-3 text-center signika">
+                    <button type="submit" class="btn btn-primary mb-3" (click)="submitForm()">Agregar</button>
+                </div>
             </div>
         </div>
     </div>

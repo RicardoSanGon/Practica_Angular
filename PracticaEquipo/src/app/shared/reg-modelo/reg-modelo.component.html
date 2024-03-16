@@ -4,54 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Modelo</title>
+    <title>Registro Modelo</title>
 </head>
 
 <body>
-    <div class="container">
-        <h2>Registrar Modelo</h2>
-        <div class="">
-            <div class="mb-3">
-                <label class="form-label">Modelo</label>
-                <input type="text" class="form-control" placeholder="ex: Ford" name="model_name" [(ngModel)]="model.model_name">
-                <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Año</label>
-                <input type="number" class="form-control" [(ngModel)]="model.model_year" name="model_year">
-                <div *ngIf="errorYear" class="text-danger">{{errorYear}}</div>
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Descripción</label>
-                <textarea class="form-control" id="" rows="3" [(ngModel)]="model.model_description" name="model_description"></textarea>
-                <div *ngIf="errorDescription" class="text-danger">{{errorDescription}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Precio</label>
-                <input type="number" class="form-control" placeholder="$Precio" [(ngModel)]="model.model_price" name="model_price">
-                <div *ngIf="errorPrice" class="text-danger">{{errorPrice}}</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Stock</label>
-                <input type="number" class="form-control" placeholder="Stock" [(ngModel)]="model.model_stock" name="model_stock">
-                <div *ngIf="errorStock" class="text-danger">{{errorStock}}</div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Catálogo</label>
-                <select class="form-select" aria-label="Default select example" (change)="onCatalogueSelected($event)" name="catalog_id">
-                    <option *ngFor="let catalogo of catalogue_data" [value]="catalogo.id">{{catalogo.name}}</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Marca</label>
-                <select class="form-select" aria-label="Default select example" (change)="onBrandSelected($event)" name="brand_id">
-                    <option *ngFor="let brand of brand_data" [value]="brand.id">{{brand.brand_name}}</option>
-                </select>
-                <div *ngIf="msg" class="text-danger">{{msg}}</div>
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3" (click)="submitForm()">Agregar</button>
+    <div class="container" style="color: white;">
+        <div class="center">
+            <div class="row justify-content-center">
+                <h2 class="text-center amaranth-bold">Registrar Modelo</h2>
+                <div class="col-md-6">
+                    
+                    <div class="mb-3 signika">
+                        <label class="form-label">Modelo</label>
+                        <input type="text" class="form-control" placeholder="ex: Ford" name="model_name"
+                            [(ngModel)]="model.model_name">
+                        <div *ngIf="errorName" class="text-danger">{{errorName}}</div>
+                    </div>
+                    <div class="mb-3 signika">
+                        <label class="form-label">Año</label>
+                        <input type="number" class="form-control" [(ngModel)]="model.model_year" name="model_year">
+                        <div *ngIf="errorYear" class="text-danger">{{errorYear}}</div>
+                    </div>
+                    <div class="mb-3 signika">
+                        <label for="" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="" rows="3" [(ngModel)]="model.model_description"
+                            name="model_description"></textarea>
+                        <div *ngIf="errorDescription" class="text-danger">{{errorDescription}}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3 signika">
+                        <label class="form-label">Precio</label>
+                        <input type="number" class="form-control" placeholder="$Precio" [(ngModel)]="model.model_price"
+                            name="model_price">
+                        <div *ngIf="errorPrice" class="text-danger">{{errorPrice}}</div>
+                    </div>
+                    <div class="mb-3 signika">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control" placeholder="Stock" [(ngModel)]="model.model_stock"
+                            name="model_stock">
+                        <div *ngIf="errorStock" class="text-danger">{{errorStock}}</div>
+                    </div>
+                    <div class="mb-3 signika">
+                        <label class="form-label">Catálogo</label>
+                        <select class="form-select" aria-label="Default select example"
+                            (change)="onCatalogueSelected($event)" name="catalog_id">
+                            <option *ngFor="let catalogo of catalogue_data" [value]="catalogo.id">{{catalogo.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3 signika">
+                        <label class="form-label">Marca</label>
+                        <select class="form-select" aria-label="Default select example"
+                            (change)="onBrandSelected($event)" name="brand_id">
+                            <option *ngFor="let brand of brand_data" [value]="brand.id">{{brand.brand_name}}</option>
+                        </select>
+                        <div *ngIf="msg" class="text-danger">{{msg}}</div>
+                    </div>
+                </div>
+                <div class="mb-3 text-center signika">
+                    <button type="submit" class="btn btn-primary mb-3" (click)="submitForm()">Agregar</button>
+                </div>
             </div>
         </div>
     </div>

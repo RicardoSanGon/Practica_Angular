@@ -4,12 +4,13 @@ import { NgForOf } from '@angular/common';
 import { Inventory } from '../../Core/Interfaces/inventory';
 import { InventoriesService } from '../../Core/Services/Inventory/inventories.service';
 import { Inventories } from '../../Core/Interfaces/inventories';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-tab-inventario',
   standalone: true,
-  imports: [NavbarComponent, NgForOf],
+  imports: [NavbarComponent, NgForOf, RouterModule],
   templateUrl: './tab-inventario.component.html',
   styleUrl: './tab-inventario.component.css'
 })

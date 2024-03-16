@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Edit</title>
+</head>
+
+<body>
+    <div class="container" style="color: white;">
+        <div class="center">
+            <div class="row justify-content-center">
+                <h2 class="text-center amaranth-bold">Actualizar Proveedor</h2>
+                <div class="mb-3">
+                    <label class="form-label signika">Proveedor</label>
+                    <input type="text" class="form-control" placeholder="Nombre del Proveedor" required
+                        name="supplier_name">
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label signika">Correo</label>
+                    <input type="email" class="form-control" placeholder="name@example.com" required
+                        name="supplier_email">
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label signika">Telefono</label>
+                    <input type="tel" class="form-control" placeholder="Teléfono" required pattern="[0-9]{10}"
+                        name="supplier_phone">
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3 text-center signika">
+                    <button type="submit" class="btn btn-primary" style="margin-right: 20px;">Actualizar</button>
+                    <button type="submit" class="btn btn-danger" routerLink="/navbar/tab-Proveedores">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -31,3 +31,11 @@
     font-style: normal;
     font-size: 30px;
   }
+  .signika {
+    font-family: "Signika", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700px;
+    font-style: normal;
+    font-variation-settings:
+        "GRAD" 0;
+}

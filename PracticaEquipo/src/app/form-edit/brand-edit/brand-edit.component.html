@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Edit</title>
+</head>
+<body>
+    <div class="container" style="color: white;">
+        <div class="center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h2 class="text-center amaranth-bold">Editar Marca</h2>
+                    <div class="mb-3">
+                        <label for="brandName" class="form-label signika">Marca</label>
+                        <input type="text" class="form-control" id="brandName" placeholder="Nombre de la marca" name="brand_name">
+                        <div class="text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="catalogue" class="form-label signika">Catálogo</label>
+                        <select class="form-select" id="catalogue" aria-label="Selecciona un catálogo">
+                            <option value="" disabled selected>Selecciona un catálogo</option>
+                            <option></option>
+                        </select>
+                        <div class="text-danger"></div>
+                    </div>
+                    <div class="mb-3 text-center signika">
+                        <button type="submit" class="btn btn-primary" style="margin-right: 20px;">Actualizar</button>
+                        <button type="button" class="btn btn-danger" routerLink="/navbar/tab-Marcas">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

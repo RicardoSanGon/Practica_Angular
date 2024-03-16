@@ -6,12 +6,13 @@ import {ModelsService} from "../../Core/Services/Model/models.service";
 import {UsersService} from "../../Core/Services/User/users.service";
 import {OrdersService} from "../../Core/Services/Order/orders.service";
 import {CarritoService} from "../../Core/Services/Carrito/carrito.service";
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-tab-modelos',
   standalone: true,
-  imports: [ NgForOf, NgIf],
+  imports: [ NgForOf, NgIf, RouterModule],
   templateUrl: './tab-modelos.component.html',
   styleUrl: './tab-modelos.component.css'
 })

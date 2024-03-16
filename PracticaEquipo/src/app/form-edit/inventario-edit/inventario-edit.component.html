@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Edit</title>
+</head>
+
+<body>
+    <div class="container" style="color: white;">
+        <div class="center">
+            <div class="row justify-content-center">
+                <h2 class="text-center amaranth-bold">Actualizar Inventario</h2>
+                <div class="mb-3">
+                    <label class="form-label signika">Fecha de Admisión</label>
+                    <input type="date" class="form-control" name="admission_date">
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label signika">Stock</label>
+                    <input type="number" class="form-control" name="stock" placeholder="Stock">
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label signika">Modelo</label>
+                    <select class="form-select" aria-label="Default select example" name="model_id">
+                        <option></option>
+                    </select>
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label signika">Proveedor</label>
+                    <select class="form-select" aria-label="Default select example" name="supplier_id">
+                        <option></option>
+                    </select>
+                    <div class="text-danger"></div>
+                </div>
+                <div class="mb-3 text-center signika">
+                    <button type="submit" class="btn btn-primary mb-3 signika" style="margin-right: 20px;">Actualizar</button>
+                    <button type="submit" class="btn btn-danger mb-3 signika"
+                        routerLink="/navbar/tab-Inventario">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

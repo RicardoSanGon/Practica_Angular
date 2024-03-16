@@ -3,11 +3,12 @@ import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { NgForOf } from '@angular/common';
 import { Supplier } from '../../Core/Interfaces/supplier';
 import { SuppliersService } from '../../Core/Services/Supplier/suppliers.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-tab-proveedores',
   standalone: true,
-  imports: [NavbarComponent, NgForOf],
+  imports: [NavbarComponent, NgForOf, RouterModule],
   templateUrl: './tab-proveedores.component.html',
   styleUrl: './tab-proveedores.component.css',
 })

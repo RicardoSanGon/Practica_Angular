@@ -7,7 +7,7 @@
     <title>Navbar</title>
 </head>
 
-<body>
+<body class="signika">
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand pacifico-regular" style="color: white;">ComisiónQA</a>
@@ -45,32 +45,36 @@
                             <li><a class="dropdown-item" routerLink="tab-Marcas">Tabla Marcas</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Modelos">Tabla Modelos</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Ordenes">Tabla Ordenes</a></li>
-                            <li><a class="dropdown-item" routerLink="tab-Factura">Tabla Factura</a></li>
+                            <li><a class="dropdown-item" routerLink="tab-Facturas">Tabla Factura</a></li>
+                            <li><a class="dropdown-item" routerLink="reg-Clientes" *ngIf="is_user && !is_client">Registrarse como Cliente</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" style="color: white;" aria-current="page" routerLink="carrito"
                             *ngIf="is_user">Carrito</a>
                     </li>
-                  <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link active" style="color: white;" aria-current="page" routerLink="historial"
                             *ngIf="is_user || is_admin">Historial</a>
                     </li>
-                  <li class="nav-item">
-                    <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="reg-Clientes" *ngIf="is_user && !is_client">Registrarse como Cliente</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="tab-Facturas" *ngIf="is_user">Facturas</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="dropdown-item"  style="color: white; margin-top: 8px; margin-left: 5px" routerLink="tab-Detalles" *ngIf="is_user || is_admin">Detalles</a>
-                  </li>
+                    <li class="nav-item">
+                        <a class="dropdown-item" style="color: white; margin-top: 8px; margin-left: 5px"
+                            routerLink="tab-Facturas" *ngIf="is_user">Facturas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="dropdown-item" style="color: white; margin-top: 8px; margin-left: 5px"
+                            routerLink="tab-Detalles" *ngIf="is_user || is_admin">Detalles</a>
+                    </li>
+
                 </ul>
                 <ul class="navbar-nav" style="margin-left: 40%">
-
+                    <li class="nav-item">
+                        <a class="dropdown-item" style="color: white; margin-top: 8px; margin-right: 5px"
+                            routerLink="edit-clientes" *ngIf="is_user || is_admin">Perfil</a>
+                    </li>
                     <li class="nav-item">
                         <button class="nav-link active" style="color: white;" aria-current="page"
-                                (click)="CerrarSesion()">Cerrar Sesion</button>
+                            (click)="CerrarSesion()">Cerrar Sesion</button>
                     </li>
                 </ul>
             </div>

@@ -8,7 +8,7 @@
   <title>Tabla Catalogo</title>
 </head>
 
-<body>
+<body class="signika">
   <div class="container" style="margin-top: 25px;">
     <table class="table table-bordered" style="text-align: center;">
       <thead>
@@ -25,7 +25,7 @@
           <th scope="row">{{item.name}}</th>
           <th scope="row" *ngIf="is_admin">{{item.status}}</th>
           <th scope="row" *ngIf="is_admin">
-            <a routerLink="/catalogo/{{item.id}}/edit" class="btn btn-warning">Edit</a>
+            <a [routerLink]="['/edit-Catalogo', item.id]" class="btn btn-warning" style="margin-right: 20px;">Modificar</a>
             <button type="button" class="btn btn-danger">Eliminar</button>
           </th>
         </tr>

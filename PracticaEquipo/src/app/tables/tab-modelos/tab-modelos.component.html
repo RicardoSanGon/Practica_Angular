@@ -8,7 +8,7 @@
   <title>Tabla Catalogo</title>
 </head>
 
-<body>
+<body class="signika">
   <div class="container" style="margin-top: 20px;">
     <button type="button" class="btn btn-primary" *ngIf="is_client" (click)="createOrder()">Crear Orden</button>
     <div class="alert alert-warning" role="alert" *ngIf="msg">
@@ -24,6 +24,7 @@
           <th scope="col">Descripcion</th>
           <th scope="col">Marca</th>
           <th scope="col" *ngIf="is_admin">Status</th>
+          <th scope="col" *ngIf="is_admin">Opciones</th>
         </tr>
       </thead>
       <tbody>
@@ -36,7 +37,7 @@
           <th scope="row">{{model.marca}}</th>
           <th scope="row" *ngIf="is_admin">{{model.status}}</th>
           <th scope="row" *ngIf="is_admin">
-            <button type="button" class="btn btn-warning">Modificar</button>
+            <button type="button" class="btn btn-warning" [routerLink]="['/edit-Modelos/', model.id]" style="margin-right: 10px;">Modificar</button>
             <button type="button" class="btn btn-danger">Eliminar</button>
           </th>
           <th scope="row" *ngIf="is_client">

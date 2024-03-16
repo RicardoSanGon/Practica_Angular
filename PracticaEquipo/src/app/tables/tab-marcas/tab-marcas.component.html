@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla Marcas</title>
 </head>
-<body>
+<body class="signika">
     <div class="container" style="margin-top: 25px;">
         <table class="table table-bordered" style="text-align: center;">
           <thead>
@@ -24,7 +24,7 @@
               <th scope="row" *ngIf="is_admin">{{item.brand_status}}</th>
               <th scope="row">{{item.catalogue_id}}</th>
               <th scope="row" *ngIf="is_admin">
-                <button type="button" class="btn btn-warning" style="margin-right: 5px;">Modificar</button>
+                <a type="button" class="btn btn-warning" style="margin-right: 5px;" [routerLink]="['/edit-Marcas/', item.id]">Modificar</a>
                 <button type="button" class="btn btn-danger">Eliminar</button>
               </th>
             </tr>

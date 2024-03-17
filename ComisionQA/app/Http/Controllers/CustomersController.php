@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Exception;
-use App\Http\Controllers\UsersController;
 use App\Models\User;
 class CustomersController extends Controller
 {
@@ -51,6 +51,14 @@ class CustomersController extends Controller
         ],201);
     }
 
+    public function getCurrentCustomer(Request $request){
+        $customer=Customer::where('user_id',UsersController::getUserIdFromToken($request->header('authorization')))->first();
+        if($customer){
+            return response()->json($customer,200);
+        }
+        return response()->json(["msg"=>"El usuario no es cliente"],400);
+    }
+
 
     public function showCustomersTable(Request $request){
        $user=User::findOrfail(UsersController::getUserIdFromToken($request->header('authorization')));
@@ -59,11 +67,12 @@ class CustomersController extends Controller
        return response()->json(["permission"=>false], 401);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $customer = Customer::where('user_id',UsersController::getUserIdFromToken($request->header('Authorization')))->first();
         $validaciones = Validator::make($request->all(), [
             'customer_address' => 'sometimes|required|string|regex:/^[a-zA-Z0-9 ,\-]+$/|max:255|min:3',
-            'customer_phone' => "sometimes|required|unique:customers,customer_phone,$id|string|regex:/^[0-9]+$/|max:10|min:10"
+            'customer_phone' => 'sometimes|required|unique:customers,customer_phone,'.$customer->id.'|string|regex:/^[0-9]+$/|max:10|min:10'
         ]);
 
         if ($validaciones->fails()) {
@@ -71,7 +80,7 @@ class CustomersController extends Controller
         }
 
         try {
-            $customer = Customer::findOrFail($id);
+
 
             if ($request->has('customer_address')) {
                 $customer->customer_address = $request->customer_address;

@@ -29,8 +29,8 @@ class UsersController extends Controller
                 "id"=>$user->id,
                 "name"=>$user->name,
                 "email"=>$user->email,
-                "role_id"=>$user->role->rol,
-                "status"=>$user->status
+                "rol"=>$user->role->rol,
+                "status"=>$user->status?"Activo":"Inactivo",
             ];
         });
         return response()->json(['data'=>$users], 200);
@@ -169,27 +169,17 @@ class UsersController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validaciones = Validator::make($request->all(),[
-            'name' => 'sometimes|string|alpha|max:255|min:3',
-            'email' => 'sometimes|email|regex:/(.*@.{2,}\..{2,3})$/',
-            'password' => 'sometimes|string|min:8|max:255'
-        ]);
-
-        if($validaciones->fails()){
-            return response()->json(["Errores" => $validaciones->errors(), "msg" => "Error en los datos"], 400);
-        }
-
         try {
             $user = User::findOrFail($id);
-            if($request->has('name')) {
-                $user->name = $request->name;
+
+            if($request->has('status')) {
+                if($request->status==='Activo')
+                    $user->status = true;
+                else
+                    $user->status = false;
             }
-            if($request->has('email')) {
-                $user->email = $request->email;
-            }
-            if($request->has('password')) {
-                $user->password = Hash::make($request->password);
-            }
+            if($request->has('rol'))
+                $user->role_id = $request->rol;
             $user->save();
 
 

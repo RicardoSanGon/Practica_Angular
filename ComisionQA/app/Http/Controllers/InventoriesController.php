@@ -19,8 +19,8 @@ class InventoriesController extends Controller
                 "id"=>$inventory->id,
                 "admission_date"=>$inventory->admission_date,
                 "stock"=>$inventory->stock,
-                "vehicle_model_id"=>$inventory->vehicle_model_id,
-                "supplier_id"=>$inventory->supplier_id,
+                "vehicle_model_id"=>$inventory->models->model_name,
+                "supplier_id"=>$inventory->supplier->supplier_name,
             ];
         });
         return response()->json(['data'=>$inventories], 200);
@@ -71,9 +71,9 @@ class InventoriesController extends Controller
     public function update(Request $request, $id)
     {
         $validaciones = Validator::make($request->all(), [
-            'admission_date' => 'sometimes|required|after_or_equal:today|date_format:Y-d-m',
+            'admission_date' => 'sometimes|required|after_or_equal:today',
             'stock' => 'sometimes|required|integer|min:10',
-            'model_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
+            'vehicle_model_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
             'supplier_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
         ]);
 
@@ -92,12 +92,12 @@ class InventoriesController extends Controller
                 $inventory->stock = $request->stock;
             }
 
-            if ($request->has('model_id')) {
-                $model = Vehicle_Model::find($request->model_id);
+            if ($request->has('vehicle_model_id')) {
+                $model = Vehicle_Model::find($request->vehicle_model_id);
                 if (!$model) {
                     return response()->json(["msg" => "El modelo no existe"], 400);
                 }
-                $inventory->vehicle_model_id = $request->model_id;
+                $inventory->vehicle_model_id = $request->vehicle_model_id;
             }
 
             if ($request->has('supplier_id')) {

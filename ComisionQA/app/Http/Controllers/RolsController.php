@@ -10,7 +10,16 @@ use Exception;
 
 class RolsController extends Controller
 {
-    //
+    public function index(){
+        $rols = Rol::all();
+        $rols = $rols->map(function($rol){
+            return[
+                "id"=>$rol->id,
+                "rol"=>$rol->rol,
+            ];
+        });
+        return response()->json(['data'=>$rols], 200);
+    }
 
     public function store(Request $request){
         $validaciones = Validator::make($request->all(),[

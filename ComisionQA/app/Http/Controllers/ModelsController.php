@@ -92,10 +92,10 @@ class ModelsController extends Controller
     public function update(Request $request, $id)
     {
         $validaciones = Validator::make($request->all(), [
-            'model_name' => 'sometimes|required|string|alpha|max:255|min:3',
-            'model_year' => 'sometimes|required|numeric|regex:/^[0-9]+$/|min:4|max:4',
-            'model_description' => 'sometimes|required|string|alpha|max:255|min:3',
-            'model_price' => 'sometimes|required|double',
+            'model_name' => 'sometimes|required|string|max:255|min:3',
+            'model_year' => 'sometimes|required|regex:/^[0-9]+$/|min:4|max:4',
+            'model_description' => 'sometimes|required|string|max:255|min:3',
+            'model_price' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
             'model_stock' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
             'brand_id' => 'sometimes|required|numeric|regex:/^[0-9]+$/',
         ]);
@@ -129,6 +129,13 @@ class ModelsController extends Controller
 
             if ($request->has('brand_id')) {
                 $modelo->brand_id = $request->brand_id;
+            }
+
+            if($request->has('model_status')){
+                if($request->model_status==='Activo')
+                    $modelo->model_status=true;
+                else
+                    $modelo->model_status=false;
             }
 
             $modelo->save();

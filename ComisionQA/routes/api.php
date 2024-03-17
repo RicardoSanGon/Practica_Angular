@@ -9,6 +9,7 @@ use App\Http\Controllers\LogHistoryController;
 use App\Http\Controllers\ModelsController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\RolsController;
 use App\Http\Controllers\SaleHistoriesController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
@@ -68,6 +69,8 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/is_guest',[UsersController::class,'is_guest']);
     Route::get('/is_user',[UsersController::class,'is_user']);
     Route::get('/orders',[OrdersController::class,'index']);
+    Route::get('/rols',[RolsController::class,'index']);
+    Route::get('/user/customer',[CustomersController::class,'getCurrentCustomer']);
 
 
     Route::get('/bills', [BillsController::class, 'index']);
@@ -80,6 +83,10 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::put('/brand/update/{id}', [BrandsController::class, 'update']);
     Route::put('/catalogue/update/{id}', [CataloguesController::class, 'update']);
     Route::put('/supplier/update/{id}', [SuppliersController::class, 'update']);
+    Route::put('/model/update/{id}', [ModelsController::class, 'update']);
+    Route::put('/inventory/update/{id}', [InventoriesController::class, 'update']);
+    Route::put('/customer/update', [CustomersController::class, 'update']);
+    Route::put('/user/update/{id}', [UsersController::class, 'update']);
 
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);

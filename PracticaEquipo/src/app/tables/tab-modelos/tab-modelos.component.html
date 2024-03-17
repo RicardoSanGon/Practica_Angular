@@ -53,7 +53,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Editar Proveedor</h5>
+          <h5 class="modal-title" id="editModalLabel">Editar Modelo</h5>
         </div>
         <div class="modal-body">
           <form>
@@ -84,7 +84,6 @@
             <label  class="form-label signika">Estado</label>
             <select class="form-select" aria-label="Default select example"
                     name="modifyStatus"
-                    [value]="modifyModel.model_status"
                     [(ngModel)]="modifyModel.model_status"
                     (change)="selectedModelStatus($event)"
                     >
@@ -97,10 +96,10 @@
           <div class="mb-3">
             <label  class="form-label signika">Marca</label>
             <select class="form-select" aria-label="Default select example"
-                    name="modifyBrand"
+                    [(ngModel)]="modifyModel.brand_id"
+                    (change)="selectedModelBrand($event)"
                     >
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
+              <option *ngFor="let brand of brandList" name="modifyBrand" [value]="brand.id">{{brand.brand_name}}</option>
             </select>
           </div>
         </div>

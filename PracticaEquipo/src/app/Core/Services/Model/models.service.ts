@@ -18,4 +18,7 @@ export class ModelsService {
   }
   public getModels(): Observable<DataModels>
   {return this.http.get<DataModels>('http://127.0.0.1:8000/api/models')}
+
+  public updateModel(model: Models): Observable<MsgResponse>
+  {return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/model/update/'+model.id, model)}
 }

@@ -11,9 +11,9 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Fecha_Admision</th>
+              <th scope="col">Fecha De Admision</th>
               <th scope="col">Stock</th>
-              <th scope="col">Modelo_vehiculo</th>
+              <th scope="col">Modelo</th>
               <th scope="col">Proveedor</th>
               <th scope="col">Opciones</th>
             </tr>
@@ -26,12 +26,57 @@
               <th scope="row">{{item.vehicle_model_id}}</th>
               <th scope="row">{{item.supplier_id}}</th>
               <th scope="row">
-                <button type="button" class="btn btn-warning" style="margin-right: 5px;" [routerLink]="['/edit-Inventario', item.id]">Modificar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <a (click)="selectedInventory(item)" *ngIf="is_admin" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning" style="margin-right: 20px;">Opciones</a>
               </th>
             </tr>
           </tbody>
         </table>
       </div>
+
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Editar Marca</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label class="form-label signika">Fecha De Admision</label>
+                <input type="date" class="form-control" name="modifyDate" min="today" [(ngModel)]="modifyInventory.admission_date">
+              </div>
+              <div class="mb-3">
+                <label class="form-label signika">Stock Adquirido</label>
+                <input type="number" class="form-control" name="modifyStock" min="10" [(ngModel)]="modifyInventory.stock">
+              </div>
+              <div class="mb-3">
+                <label  class="form-label signika">Proveedor</label>
+                <select class="form-select" aria-label="Default select example"
+                        name="modifySupplier"
+                        [(ngModel)]="modifyInventory.supplier_id"
+                        (change)="selectedSupplier($event)">
+                  <option *ngFor="let supplier of suppliersData" [value]="supplier.id">{{supplier.supplier_name}}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label  class="form-label signika">Modelo</label>
+                <select class="form-select" aria-label="Default select example"
+                        name="modifyModel"
+                        [(ngModel)]="modifyInventory.vehicle_model_id"
+                        (change)="selectedModel($event)">
+                  <option *ngFor="let model of modelsData" [value]="model.id">{{model.modelo}}</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getInventory()" >Cerrar</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateInventory()" >Guardar cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

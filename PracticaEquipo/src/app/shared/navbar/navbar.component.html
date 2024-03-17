@@ -34,6 +34,7 @@
                             <li><a class="dropdown-item" routerLink="tab-Clientes">Tabla Clientes</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Proveedores">Tabla Proveedores</a></li>
                             <li><a class="dropdown-item" routerLink="tab-Inventario">Tabla Inventario</a></li>
+                            <li><a class="dropdown-item" routerLink="tab-Usuarios">Tabla Usuarios</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -63,14 +64,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="dropdown-item" style="color: white; margin-top: 8px; margin-left: 5px"
-                            routerLink="tab-Facturas" *ngIf="is_user">Facturas</a>
+                            routerLink="tab-Facturas" *ngIf="is_user || is_client">Facturas</a>
                     </li>
                     <li class="nav-item">
                 </ul>
                 <ul class="navbar-nav" style="margin-left: 40%">
                     <li class="nav-item">
                         <a class="dropdown-item" style="color: white; margin-top: 8px; margin-right: 5px"
-                            routerLink="edit-clientes" *ngIf="is_user || is_admin">Perfil</a>
+                            routerLink="edit-clientes" *ngIf="is_user || is_client">Perfil</a>
                     </li>
                     <li class="nav-item">
                         <button class="nav-link active" style="color: white;" aria-current="page"

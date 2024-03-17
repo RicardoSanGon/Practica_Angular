@@ -12,6 +12,10 @@ import {IsUser} from "../../Interfaces/is-user";
 import {Code} from "../../Interfaces/code";
 import {IsAuth} from "../../Interfaces/is-auth";
 import {IsCodeVerified} from "../../Interfaces/is-code-verified";
+import {User} from "../../Interfaces/user";
+import {UserData} from "../../Interfaces/user-data";
+import {RolData} from "../../Interfaces/rol-data";
+import {UCustomer} from "../../Interfaces/ucustomer";
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +66,22 @@ export class UsersService {
   is_Auth2():Observable<IsCodeVerified>
   {
     return this.http.get<IsCodeVerified>('http://127.0.0.1:8000/api/is_code_verified');
+  }
+
+  getUsers():Observable<UserData> {
+    return this.http.get<UserData>('http://127.0.0.1:8000/api/users')
+  }
+
+  updateUser(user: User):Observable<MsgResponse> {
+    return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/user/update/'+user.id, user);
+  }
+
+
+  getRols():Observable<RolData> {
+    return this.http.get<RolData>('http://127.0.0.1:8000/api/rols');
+  }
+
+  getOneCustomer():Observable<UCustomer> {
+    return this.http.get<UCustomer>('http://127.0.0.1:8000/api/user/customer');
   }
 }

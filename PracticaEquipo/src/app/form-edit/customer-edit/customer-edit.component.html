@@ -14,14 +14,14 @@
                 <h2 class="text-center amaranth-bold">Actualizar Perfil</h2>
                 <div class="mb-3">
                     <label class="form-label signika">Dirección</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1">
+                    <input type="text" class="form-control" [(ngModel)]="customer.customer_address" name="modifyAddress">
                 </div>
                 <div class="mb-3">
                     <label class="form-label signika">Teléfono</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1">
+                    <input type="number" class="form-control" [(ngModel)]="customer.customer_phone" name="modifyPhone">
                 </div>
                 <div class="mb-3 text-center signika">
-                    <button class="btn btn-primary" style="margin-right: 20px;">Actualizar Perfil</button>
+                    <button class="btn btn-primary" style="margin-right: 20px;" (click)="updateCustomer()">Actualizar Perfil</button>
             <!--<button class="btn btn-danger">Cancelar</button>-->
                 </div>
             </div>

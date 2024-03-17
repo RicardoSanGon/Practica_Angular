@@ -68,7 +68,7 @@ export const routes: Routes = [
       },
       {
         path: 'reg-Clientes',
-        canActivate: [AuthGuard, IsCodeVerifiedGuard,IsClientGuard,IsAdminGuard],
+        canActivate: [AuthGuard, IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/shared/reg-cliente/reg-cliente.component').then(
             (c) => c.RegClienteComponent

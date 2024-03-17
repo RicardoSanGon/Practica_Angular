@@ -2,12 +2,77 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla Usuarios</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla Clientes</title>
 </head>
 
-<body>
+<body class="signika">
+<div class="container" style="margin-top: 25px;">
+  <table class="table table-bordered" style="text-align: center;">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of userList">
+      <th scope="row">{{item.id}}</th>
+      <th scope="row">{{item.name}}</th>
+      <th scope="row">{{item.email}}</th>
+      <th scope="row">{{item.rol}}</th>
+      <th scope="row">{{item.status}}</th>
+      <th scope="row">
+        <a (click)="selectedUser(item)" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning" style="margin-right: 20px;"
+        *ngIf="item.rol!=='admin'">Opciones</a>
+      </th>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editar Usuario</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label  class="form-label signika">Estado</label>
+            <select class="form-select" aria-label="Default select example"
+                    (change)="isStatusChange($event)"
+                    [value]="userModify.status"
+                    name="modifyStatus">
+              <option>Activo</option>
+              <option>Inactivo</option>
+            </select>
+            <label  class="form-label signika">Estado</label>
+            <select class="form-select" aria-label="Default select example"
+                    (change)="selectedRol($event)"
+                    [(ngModel)]="userModify.rol"
+                    name="modifyStatus">
+              <option *ngFor="let rol of rols" [value]="rol.id">{{rol.rol}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getUsers()">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateUser()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 
 </html>

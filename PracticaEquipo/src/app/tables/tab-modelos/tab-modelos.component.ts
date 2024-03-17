@@ -51,7 +51,7 @@ export class TabModelosComponent {
     this.carritoService.agregarAlCarrito(model);
   }
 
-  getModels() {
+  async getModels() {
    this.modelsService.getModels().subscribe(
         (res) => {
           for(let model of res.data)
@@ -118,6 +118,19 @@ export class TabModelosComponent {
   }
 
   updateModel() {
+    this.modelsService.updateModel(this.modifyModel).subscribe(
+      (res) => {
+        this.msg=res.msg;
+        this.model_data=[];
+        this.getModels();
+      },
+      (error) => {
+        if (error.status === 401) {
+          this.router.navigate(['nabvar/tab-Catalogo'])
+        }
+        this.msg=error.error.msg;
+      }
+    );
 
   }
 
@@ -134,11 +147,17 @@ export class TabModelosComponent {
         this.modifyModel.brand_id = brand.id;
       }
     }
-    console.log(this.modifyModel);
   }
 
   selectedModelStatus($event: any) {
     this.modifyModel.model_status=$event.target.value;
-    console.log(this.modifyModel.model_status);
+  }
+
+  selectedModelBrand($event: any) {
+    for (let brand of this.brandList) {
+      if (brand.brand_name === $event.target.value) {
+        this.modifyModel.brand_id = brand.id;
+      }
+    }
   }
 }

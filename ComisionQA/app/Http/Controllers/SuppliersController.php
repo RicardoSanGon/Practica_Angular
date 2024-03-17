@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,7 @@ class SuppliersController extends Controller
                 "supplier_name" => $supplier->supplier_name,
                 "supplier_email" => $supplier->supplier_email,
                 "supplier_phone" => $supplier->supplier_phone,
-                "supplier_status" => $supplier->supplier_status
+                "supplier_status" => $supplier->supplier_status ? "Activo" : "Inactivo"
             ];
         });
         return response()->json(['data' => $suppliers], 200);
@@ -53,9 +54,10 @@ class SuppliersController extends Controller
     public function update(Request $request, $id)
     {
         $validaciones = Validator::make($request->all(), [
-            'supplier_name' => 'required|string|alpha|max:255|min:3',
-            'supplier_email' => 'required|email|unique:suppliers, supplier_email,' . $id . '|regex:/(.*@.{2,}\..{2,3})$/',
-            'supplier_phone' => 'required|numeric|regex:/^[0-9]+$/|unique:suppliers, supplier_phone,' . $id,
+            'supplier_name' => 'sometimes|string|regex:/^[a-zA-Z0-9 ,\-]+$/|max:255|min:3',
+            'supplier_email' => 'sometimes|email|regex:/(.*@.{2,}\..{2,3})$/',
+            'supplier_phone' => 'sometimes|numeric|regex:/^[0-9]+$/',
+            'supplier_status' => 'sometimes|in:Activo,Inactivo'
         ]);
 
         if ($validaciones->fails()) {
@@ -68,15 +70,36 @@ class SuppliersController extends Controller
             return response()->json(["msg" => "El proveedor no existe"], 400);
         }
 
-        $supplier->supplier_name = $request->supplier_name;
-        $supplier->supplier_email = $request->supplier_email;
-        $supplier->supplier_phone = $request->supplier_phone;
-
         try {
-            $supplier->save();
+            if ($request->has('supplier_name') ||
+                $request->has('supplier_email') ||
+                $request->has('supplier_phone') ||
+                $request->has('supplier_status')){
+                if ($request->has('supplier_name')) {
+                    $supplier->supplier_name = $request->supplier_name;
+                }
+                if ($request->has('supplier_email')) {
+                    $supplier->supplier_email = $request->supplier_email;
+                }
+                if ($request->has('supplier_phone')) {
+                    $supplier->supplier_phone = $request->supplier_phone;
+                }
+                if ($request->has('supplier_status')) {
+                   if ($request->supplier_status==='Activo') {
+                       $supplier->supplier_status = 1;
+                   }
+                    if ($request->supplier_status === 'Inactivo') {
+                        $supplier->supplier_status = 0;
+                    }
+                }
 
-            return response()->json(["msg" => "Registro actualizado correctamente"], 200);
-        } catch (Exception $e) {
+
+                $supplier->save();
+
+                return response()->json(["msg" => "Registro actualizado correctamente"], 200);
+            }
+            return response()->json(["msg" => "No se ha actualizado ningún campo"], 400);
+        }catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el proveedor", "Error" => $e], 500);
         }
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use App\Http\Controllers\UsersController;
@@ -19,7 +20,7 @@ class BrandsController extends Controller
             return[
                 "id"=>$brand->id,
                 "brand_name"=>$brand->brand_name,
-                "brand_status"=>$brand->brand_status?"Activo":"Inactivo",
+                "brand_status"=>$brand->brand_status ? "Activo":"Inactivo",
                 "catalogue_id"=>$brand->catalogue->name,
             ];
         });
@@ -58,9 +59,9 @@ class BrandsController extends Controller
     public function update(Request $request, $id)
     {
         $validaciones = Validator::make($request->all(), [
-            "brand_name" => 'sometimes|required|min:3|string|alpha',
+            "brand_name" => 'sometimes|string|regex:/^[a-zA-Z0-9 ]*$/|max:255|min:3',
             "catalogue_id" => 'sometimes|required|numeric|regex:/^[0-9]+$/',
-            "status" => "sometimes|required|in:Activo,Inactivo"
+            "brand_status" => "sometimes|required|in:Activo,Inactivo"
         ]);
 
         if ($validaciones->fails()) {
@@ -68,24 +69,31 @@ class BrandsController extends Controller
         }
 
         try {
-            $brand = Brand::findOrFail($id);
-            if (!$brand) {
-                return response()->json(["msg" => "La marca no existe"], 400);
-            }
-            if ($request->has('brand_name')) {
-                $brand->brand_name = $request->brand_name;
-            }
+            if($request->has('brand_name') || $request->has('catalogue_id') || $request->has('status')){
+                $brand = Brand::findOrFail($id);
+                if (!$brand) {
+                    return response()->json(["msg" => "La marca no existe"], 400);
+                }
+                if ($request->has('brand_name')) {
+                    $brand->brand_name = $request->brand_name;
+                }
 
-            if ($request->has('catalogue_id')) {
-                $brand->catalogue_id = $request->catalogue_id;
-            }
-            if ($request->has('status')) {
-                $brand->brand_status = $request->status;
-            }
+                if ($request->has('catalogue_id')) {
+                    $brand->catalogue_id = $request->catalogue_id;
+                }
+                if ($request->has('brand_status')) {
+                    if ($request->brand_status === "Activo") {
+                        $brand->brand_status = true;
+                    }
+                    if ($request->brand_status === "Inactivo") {
+                        $brand->brand_status = false;
+                    }
+                }
+                $brand->save();
+                return response()->json(["msg" => "Marca actualizada correctamente"], 200);
 
-            $brand->save();
-
-            return response()->json(["msg" => "Marca actualizada correctamente"], 200);
+            }
+            return response()->json(["msg" => "No se ha enviado ningun campo para actualizar"], 400);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar la marca", "Error" => $e], 500);
         }

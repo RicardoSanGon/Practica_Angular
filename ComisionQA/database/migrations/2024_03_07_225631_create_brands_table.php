@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('brand_name');
             $table->boolean('brand_status')->default(true);
             $table->foreignId('catalogue_id')->references('id')->on('catalogues');
-            $table->boolean('status')->default(true);
         });
     }
 

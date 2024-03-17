@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth:jwt'], function () {
 
     Route::put('/brand/update/{id}', [BrandsController::class, 'update']);
     Route::put('/catalogue/update/{id}', [CataloguesController::class, 'update']);
+    Route::put('/supplier/update/{id}', [SuppliersController::class, 'update']);
 
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);

@@ -9,7 +9,6 @@ class Brand extends Model
 {
     use HasFactory;
     public $timestamps = false;
-
     public function models()
     {
         return $this->hasMany(Vehicle_Model::class);

@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LogHistoryController extends Controller
 {
@@ -14,6 +15,9 @@ class LogHistoryController extends Controller
     public function index()
     {
         $logs = LogHistory::all();
+        foreach ($logs as $i => $log) {
+            Log::info($log);
+        }
         $logs=$logs->map(function($log){
             return [
                 "id"=>$log->_id,

@@ -38,9 +38,7 @@
           <th scope="row">{{model.marca}}</th>
           <th scope="row" *ngIf="is_admin">{{model.status}}</th>
           <th scope="row" *ngIf="is_admin">
-            <button type="button" class="btn btn-warning" [routerLink]="['/edit-Modelos/', model.id]"
-              style="margin-right: 10px;">Modificar</button>
-            <button type="button" class="btn btn-danger">Eliminar</button>
+            <a (click)="selectedModel(model)" *ngIf="is_admin" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning" style="margin-right: 20px;">Opciones</a>
           </th>
           <th scope="row" *ngIf="is_client">
             <button type="button" class="btn btn-success" (click)="agregarAlCarrito(model)">Agregar al carrito</button>
@@ -48,6 +46,70 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Editar Proveedor</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label signika">Nombre</label>
+              <input type="text" class="form-control" name="modifyName" [(ngModel)]="modifyModel.model_name" >
+            </div>
+            <div class="mb-3">
+              <label class="form-label signika">Stock</label>
+              <input type="number" class="form-control" name="modifyStock" [(ngModel)]="modifyModel.model_stock" min="10">
+            </div>
+            <div class="mb-3">
+              <label class="form-label signika">Precio</label>
+              <input type="text" class="form-control" name="modifyPrice" [(ngModel)]="modifyModel.model_price">
+            </div>
+            <div class="mb-3">
+              <label class="form-label signika">Año</label>
+              <input type="text" class="form-control" name="modifyYear" [(ngModel)]="modifyModel.model_year">
+            </div>
+            <div class="mb-3">
+              <label class="form-label signika">Descripcion</label>
+              <textarea type="text" class="form-control" name="modifyDescription" [(ngModel)]="modifyModel.model_description"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label  class="form-label signika">Estado</label>
+            <select class="form-select" aria-label="Default select example"
+                    name="modifyStatus"
+                    [value]="modifyModel.model_status"
+                    [(ngModel)]="modifyModel.model_status"
+                    (change)="selectedModelStatus($event)"
+                    >
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label  class="form-label signika">Marca</label>
+            <select class="form-select" aria-label="Default select example"
+                    name="modifyBrand"
+                    >
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getModels()" >Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateModel()" >Guardar cambios</button>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 

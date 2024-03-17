@@ -3,19 +3,28 @@ import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { NgForOf } from '@angular/common';
 import { Supplier } from '../../Core/Interfaces/supplier';
 import { SuppliersService } from '../../Core/Services/Supplier/suppliers.service';
-import { RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-tab-proveedores',
   standalone: true,
-  imports: [NavbarComponent, NgForOf, RouterModule],
+  imports: [NavbarComponent, NgForOf, RouterModule, FormsModule, ReactiveFormsModule],
   templateUrl: './tab-proveedores.component.html',
   styleUrl: './tab-proveedores.component.css',
 })
 export class TabProveedoresComponent {
   suppliersList: Supplier[] = [];
-  
-  constructor(private suppliersService: SuppliersService) {
+  modifySupplier: Supplier = {
+    id: 0,
+    supplier_name: '',
+    supplier_phone: '',
+    supplier_email: '',
+    supplier_status: true,
+  };
+
+  constructor(private suppliersService: SuppliersService,
+              private router:Router) {
     this.getSupplier();
   }
   getSupplier() {
@@ -27,5 +36,28 @@ export class TabProveedoresComponent {
         console.log(error);
       }
     });
+  }
+
+  updateSupplier() {
+    this.suppliersService.updateSupplier(this.modifySupplier).subscribe({
+      next: () => {
+       this.getSupplier();
+      },
+      error: (error) => {
+        console.log(error);
+        if (error.status===401){
+          this.router.navigate(['navbar/tab-Catalogo'])
+        }
+      }
+    });
+
+  }
+
+  selectedSupplier(item: Supplier) {
+    this.modifySupplier = item;
+  }
+
+  SelectedModify($event: any) {
+    this.modifySupplier.supplier_status = $event.target.value;
   }
 }

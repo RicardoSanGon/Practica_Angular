@@ -15,7 +15,7 @@
               <th scope="col">Email</th>
               <th scope="col">Telefono</th>
               <th scope="col">Status</th>
-              <th scope="col">Opciones</th>
+              <th scope="col">Herramientas</th>
             </tr>
           </thead>
           <tbody>
@@ -26,12 +26,59 @@
               <th scope="row">{{item.supplier_phone}}</th>
               <th scope="row">{{item.supplier_status}}</th>
               <th scope="row">
-                <button type="button" class="btn btn-warning" style="margin-right: 5px;" [routerLink]="['/edit-Proveedores', item.id]" routerLinkActive="router-link-active" >Modificar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <a (click)="selectedSupplier(item)" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning" style="margin-right: 20px;">Opciones</a>
               </th>
             </tr>
           </tbody>
         </table>
       </div>
+
+
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Editar Proveedor</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label class="form-label signika">Nombre</label>
+                <input type="text" class="form-control" name="modifyName" [(ngModel)]="modifySupplier.supplier_name" >
+              </div>
+              <div class="mb-3">
+                <label class="form-label signika">Email</label>
+                <input type="text" class="form-control" name="modifyEmail" [(ngModel)]="modifySupplier.supplier_email" >
+              </div>
+              <div class="mb-3">
+                <label class="form-label signika">Telefono</label>
+                <input type="text" class="form-control" name="modifyPhone" [(ngModel)]="modifySupplier.supplier_phone"
+                       minlength="10"
+                      maxlength="10">
+              </div>
+            </form>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label  class="form-label signika">Estado</label>
+              <select class="form-select" aria-label="Default select example"
+                      name="modifyStatus"
+              [(ngModel)]="modifySupplier.supplier_status"
+              [value]="modifySupplier.supplier_status"
+              (change)="SelectedModify($event)">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getSupplier()" >Cerrar</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateSupplier()" >Guardar cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

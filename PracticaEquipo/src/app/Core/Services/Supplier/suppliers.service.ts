@@ -21,4 +21,8 @@ export class SuppliersService {
   public getSuppliers(): Observable<DataSuppliers> {
     return this.http.get<DataSuppliers>('http://127.0.0.1:8000/api/suppliers');
   }
+
+  public updateSupplier(supplier: Supplier): Observable<MsgResponse> {
+    return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/supplier/update/'+supplier.id, supplier);
+  }
 }

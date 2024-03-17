@@ -30,6 +30,7 @@ export class TabOrdenDetalleComponent {
       status:'pendiente',
       delery_date:''
     }
+    erorDate:String|null=null;
 
   constructor(private orderDetails:OrderDetailsService,
               private router:Router,
@@ -58,7 +59,13 @@ export class TabOrdenDetalleComponent {
   {
     this.userServices.isAdmin().subscribe((data) => {
       this.is_admin = data.is_admin;
-    });
+    },
+      (error) =>{
+        if (error.status === 401)
+        {
+          this.router.navigate(['/']);
+        }
+      });
   }
 
 
@@ -68,7 +75,18 @@ export class TabOrdenDetalleComponent {
      this.detalle.status = status;
     this.orderDetails.changeStatus(this.detalle,id).subscribe((data) => {
       this.getDetails();
-    });
+    },
+      (error) =>{
+        if (error.status === 401)
+        {
+          this.router.navigate(['/']);
+        }
+        if(error.error?.Errores?.delery_date!==undefined && error.error.Errores.delery_date!==null)
+        {
+          this.erorDate=error.error.Errores.delery_date;
+        }
+        else {this.erorDate=null;}
+      });
 
   }
 }

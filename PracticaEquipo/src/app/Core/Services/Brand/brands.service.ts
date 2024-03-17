@@ -5,6 +5,7 @@ import {MsgResponse} from "../../Interfaces/MsgResponse";
 import {Brand} from "../../Interfaces/brand";
 import {BrandByCatalogue} from "../../Interfaces/brand-by-catalogue";
 import { DataBrands } from '../../Interfaces/data-brands';
+import {Brands} from "../../Interfaces/brands";
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,10 @@ export class BrandsService {
     return this.http.get<DataBrands>('http://127.0.0.1:8000/api/brands');
   }
 
-  
+  updateBrand(brand:Brands):Observable<MsgResponse>
+  {
+    return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/brand/update/'+brand.id, brand);
+  }
+
+
 }

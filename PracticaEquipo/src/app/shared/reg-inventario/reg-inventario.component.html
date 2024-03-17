@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Stock</label>
-                    <input type="number" class="form-control" name="stock" placeholder="Stock"
+                    <input type="number" class="form-control" name="stock" placeholder="Stock" min="10"
                         [(ngModel)]="inventory.stock">
                     <div *ngIf="errorStock" class="text-danger">{{errorStock}}</div>
                 </div>

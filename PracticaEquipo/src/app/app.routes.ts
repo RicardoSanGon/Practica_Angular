@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './Core/Guards/auth.guard';
 import { IsAdminGuard } from './Core/Guards/is-admin.guard';
 import { IsCodeVerifiedGuard } from './Core/Guards/is-code-verified.guard';
+import {IsClientGuard} from "./Core/Guards/is-client.guard";
 
 export const routes: Routes = [
   {
@@ -35,7 +36,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'reg-Proveedores',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/shared/reg-proveedor/reg-proveedor.component').then(
             (c) => c.RegProveedorComponent
@@ -43,7 +44,7 @@ export const routes: Routes = [
       },
       {
         path: 'reg-Inventario',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/shared/reg-inventario/reg-inventario.component').then(
             (c) => c.RegInventarioComponent
@@ -51,7 +52,7 @@ export const routes: Routes = [
       },
       {
         path: 'reg-Modelos',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/shared/reg-modelo/reg-modelo.component').then(
             (c) => c.RegModeloComponent
@@ -59,7 +60,7 @@ export const routes: Routes = [
       },
       {
         path: 'reg-Marcas',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/shared/reg-marca/reg-marca.component').then(
             (c) => c.RegMarcaComponent
@@ -67,7 +68,7 @@ export const routes: Routes = [
       },
       {
         path: 'reg-Clientes',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, IsCodeVerifiedGuard,IsClientGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/shared/reg-cliente/reg-cliente.component').then(
             (c) => c.RegClienteComponent
@@ -75,7 +76,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Clientes',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/tables/tab-clientes/tab-clientes.component').then(
             (c) => c.TabClientesComponent
@@ -83,7 +84,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Proveedores',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsAdminGuard],
         loadComponent: () =>
           import(
             '../app/tables/tab-proveedores/tab-proveedores.component'
@@ -91,7 +92,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Usuarios',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/tables/tab-usuarios/tab-usuarios.component').then(
             (c) => c.TabUsuariosComponent
@@ -131,14 +132,14 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Inventario',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/tables/tab-inventario/tab-inventario.component').then(
             (c) => c.TabInventarioComponent
           ),
       },
       {
-        path: 'tab-orden-detalle/:id',
+        path: 'tab-orden-detalle',
         loadComponent: () =>
           import(
             '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
@@ -219,5 +220,9 @@ export const routes: Routes = [
         (c) => c.CatalogueEditComponent
       ),
   },
-  
+  {
+    path: '**',
+    redirectTo: 'navbar/tab-Catalogo',
+  }
+
 ];

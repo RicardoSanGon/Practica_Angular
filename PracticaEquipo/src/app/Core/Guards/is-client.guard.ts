@@ -18,7 +18,7 @@ export class IsClientGuard implements CanActivate {
         if (result.is_client) {
           return true;
         } else {
-          this.router.navigate(['/']);
+          this.router.navigate(['navbar/tab-Catalogo']);
           return false;
         }
       })

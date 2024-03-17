@@ -29,7 +29,8 @@ export class RegModeloComponent {
     model_description: '',
     model_price: 0,
     model_stock: 0,
-    brand_id: 0
+    brand_id: 0,
+    model_status: '',
   }
   public catalogue_data:any = [];
   public brand_data:any = [];

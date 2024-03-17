@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Inventory } from '../../Core/Interfaces/inventory';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +33,8 @@ export class RegInventarioComponent {
   constructor(
     private inventoriesService: InventoriesService,
     private suppliersService: SuppliersService,
-    private modelsService: ModelsService
+    private modelsService: ModelsService,
+    private router: Router
   ) {
     this.getSuppliers();
     this.getModels();
@@ -49,7 +50,7 @@ export class RegInventarioComponent {
       },
       (error) => {
         if (error.status === 401) {
-          //refireccionar al login
+          this.router.navigate(['/']);
         }
       }
     );
@@ -67,7 +68,7 @@ export class RegInventarioComponent {
       },
       (error) => {
         if (error.status === 401) {
-          //refireccionar al login
+          this.router.navigate(['/']);
         }
       }
     );
@@ -84,8 +85,8 @@ export class RegInventarioComponent {
       return;
     }
 
-    if (this.inventory.stock <= 0) {
-      this.errorStock = 'El stock debe ser mayor que cero.';
+    if (this.inventory.stock < 10) {
+      this.errorStock = 'El stock minimo es de 10.';
       return;
     }
 
@@ -104,10 +105,12 @@ export class RegInventarioComponent {
       (data) => {
         console.log(data);
         alert('¡El invenatio se añadió correctamente!');
+        this.router.navigate(['navbar/tab-Inventario']);
       },
       (error) => {
+        console.log(error);
         if (error.status === 401) {
-          //redireccionar al login
+          this.router.navigate(['/']);
         }
         if (
           error.error?.Errores?.admission_date !== undefined &&
@@ -147,6 +150,7 @@ export class RegInventarioComponent {
 
   onSupplierSelected($event: any) {
     this.inventory.supplier_id = $event.target.value;
+    console.log(this.inventory.supplier_id)
   }
 
   onModelSelected($event: any) {

@@ -17,6 +17,7 @@ import {Facturacion} from "../../Core/Interfaces/facturacion";
 })
 export class TabFaturacionComponent {
 public facturacionesList: Facturacion[] = [];
+errorBills:String|null=null;
   constructor(private facturacionesService:FacturacionesService,
               private router:Router) {
     this.getFacturaciones();
@@ -28,8 +29,16 @@ public facturacionesList: Facturacion[] = [];
         this.facturacionesList=result.data;
       },
       (error) => {
+        console.log(error);
         if (error.status === 401) {
           this.router.navigate(['/']);
+        }
+        if(error.error?.msg!==undefined && error.error?.msg!==null)
+        {
+          this.errorBills=error.error.msg;
+        }
+        else {
+          this.errorBills = 'Error al cargar las facturaciones';
         }
       }
     );

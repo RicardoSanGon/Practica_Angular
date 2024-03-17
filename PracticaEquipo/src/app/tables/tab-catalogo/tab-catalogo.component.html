@@ -25,12 +25,45 @@
           <th scope="row">{{item.name}}</th>
           <th scope="row" *ngIf="is_admin">{{item.status}}</th>
           <th scope="row" *ngIf="is_admin">
-            <a [routerLink]="['/edit-Catalogo', item.id]" class="btn btn-warning" style="margin-right: 20px;">Modificar</a>
-            <button type="button" class="btn btn-danger">Eliminar</button>
+            <a (click)="selectedCatalogue(item)" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning" style="margin-right: 20px;">Opciones</a>
           </th>
         </tr>
       </tbody>
     </table>
+  </div>
+
+
+
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Editar Catalogo</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label signika">Nombre</label>
+              <input [(ngModel)]="modifyCatalogue.name" type="text" class="form-control" name="modifyName">
+            </div>
+            <div class="mb-3">
+              <label  class="form-label signika">Estado</label>
+              <select class="form-select" aria-label="Default select example"
+                      (change)="isModifyChange($event)"
+                      [value]="modifyCatalogue.status"
+                      name="modifyStatus">
+                <option>Activo</option>
+                <option>Inactivo</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCatalogo()">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateCatalogue()">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>

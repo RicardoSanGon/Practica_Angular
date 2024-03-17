@@ -4,6 +4,7 @@ import {Supplier} from "../../Core/Interfaces/supplier";
 import {SuppliersService} from "../../Core/Services/Supplier/suppliers.service";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-reg-proveedor',
@@ -24,7 +25,8 @@ export class RegProveedorComponent {
   public errorEmail: string | null = null;
   public errorPhone: string | null = null;
 
-  constructor(private supplierService: SuppliersService) { }
+  constructor(private supplierService: SuppliersService,
+              private router:Router) { }
 
   public createSupplier() {
     if (!this.validateForm()) {
@@ -35,6 +37,7 @@ export class RegProveedorComponent {
       (res) => {
         console.log(res);
         alert('¡Proveedor creado correctamente!');
+        this.router.navigate(['navbar/tab-Proveedores'])
       },
       (err) => {
         console.log(err);

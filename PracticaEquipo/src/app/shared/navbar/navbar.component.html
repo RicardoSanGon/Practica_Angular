@@ -58,6 +58,10 @@
                             *ngIf="is_user || is_admin">Historial</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" style="color: white;" aria-current="page" routerLink="tab-orden-detalle"
+                            *ngIf="is_user || is_admin">Detalles</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="dropdown-item" style="color: white; margin-top: 8px; margin-left: 5px"
                             routerLink="tab-Facturas" *ngIf="is_user">Facturas</a>
                     </li>

@@ -1,4 +1,5 @@
 export interface Models {
+  model_status: string;
   id: number;
   model_name: string;
   model_year: number;

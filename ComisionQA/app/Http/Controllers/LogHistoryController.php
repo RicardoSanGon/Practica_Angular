@@ -32,10 +32,6 @@ class LogHistoryController extends Controller
     public static function store(Request $request,$tablas,$data,$id=null){
         try
         {
-            if($request->header('Authorization')!=null){
-                $id = UsersController::getUserIdFromToken($request->header('Authorization'));
-            }
-
             $metodo = $request->method();
             $ruta = $request->path();
             $user_id = $id;

@@ -76,6 +76,10 @@ Route::group(['middleware' => 'auth:jwt'], function () {
 
     Route::get('/log',[LogHistoryController::class,'index']);
 
+
+    Route::put('/brand/update/{id}', [BrandsController::class, 'update']);
+    Route::put('/catalogue/update/{id}', [CataloguesController::class, 'update']);
+
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);
 

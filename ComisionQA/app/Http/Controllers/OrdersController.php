@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
@@ -26,6 +27,7 @@ class OrdersController extends Controller
         }
         $order = new Order();
         $order->customer_id=$customer->id;
+        $order->order_date=Carbon::now('America/Monterrey')->toDateString();
         $order->status='proceso';
 
         try{

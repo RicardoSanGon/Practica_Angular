@@ -86,7 +86,7 @@ class CataloguesController extends Controller
     {
         $validaciones = Validator::make($request->all(), [
             "name" => 'sometimes|required|min:3|max:50|alpha',
-            "status" => 'sometimes|required|boolean',
+            "status" => 'sometimes|required|in:Activo,Inactivo'
         ]);
 
         if ($validaciones->fails()) {
@@ -94,19 +94,22 @@ class CataloguesController extends Controller
         }
 
         try {
-            $catalogue = Catalogue::findOrFail($id);
 
-            if ($request->has('name')) {
-                $catalogue->name = $request->name;
+            if($request->has('name') || $request->has('status')){
+                $catalogue = Catalogue::findOrFail($id);
+                if ($request->has('name')) {
+                    $catalogue->name = $request->name;
+                }
+                if ($request->has('status')) {
+                    if ($request->status === "Activo")
+                        $catalogue->status = true;
+                    if ($request->status === "Inactivo")
+                        $catalogue->status = false;
+                }
+                $catalogue->save();
+                return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
             }
-
-            if ($request->has('status')) {
-                $catalogue->status = $request->status;
-            }
-
-            $catalogue->save();
-
-            return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
+            return response()->json(["msg" => "No se pudo actualizar el catálogo"], 400);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el catálogo", "Error" => $e], 500);
         }

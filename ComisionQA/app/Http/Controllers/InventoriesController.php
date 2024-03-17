@@ -39,7 +39,7 @@ class InventoriesController extends Controller
         if(!$model){
             return response()->json(["model_id"=>"El modelo no existe"],400);
         }
-        $supplier=Supplier::find($request->suppier_id);
+        $supplier=Supplier::where('id',$request->suppier_id);
         if(!$supplier){
             return response()->json(["supplier_id"=>"El proveedor no existe"],400);
         }
@@ -47,7 +47,7 @@ class InventoriesController extends Controller
         $inventory->admission_date = $request->admission_date;
         $inventory->stock = $request->stock;
         $inventory->vehicle_model_id = $request->model_id;
-        $inventory->supplier_id = $request->suppier_id;
+        $inventory->supplier_id = $request->supplier_id;
 
         try{
             $inventory->save();

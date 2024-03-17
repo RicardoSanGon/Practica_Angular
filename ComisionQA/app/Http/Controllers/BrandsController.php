@@ -59,7 +59,8 @@ class BrandsController extends Controller
     {
         $validaciones = Validator::make($request->all(), [
             "brand_name" => 'sometimes|required|min:3|string|alpha',
-            "catalogue_id" => 'sometimes|required|numeric|regex:/^[0-9]+$/'
+            "catalogue_id" => 'sometimes|required|numeric|regex:/^[0-9]+$/',
+            "status" => "sometimes|required|in:Activo,Inactivo"
         ]);
 
         if ($validaciones->fails()) {
@@ -68,13 +69,18 @@ class BrandsController extends Controller
 
         try {
             $brand = Brand::findOrFail($id);
-
+            if (!$brand) {
+                return response()->json(["msg" => "La marca no existe"], 400);
+            }
             if ($request->has('brand_name')) {
                 $brand->brand_name = $request->brand_name;
             }
 
             if ($request->has('catalogue_id')) {
                 $brand->catalogue_id = $request->catalogue_id;
+            }
+            if ($request->has('status')) {
+                $brand->brand_status = $request->status;
             }
 
             $brand->save();

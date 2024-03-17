@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
 
+
+namespace App\Http\Controllers;
+use App\Models\User;
 use App\Mail\SendCode;
 use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 use Illuminate\Support\Facades\Mail;
@@ -92,10 +93,10 @@ class UsersController extends Controller
         $user->save();
         Mail::to($request->email)->send(new SendCode($user->name,$code));
         $data=$request->email.', '.Hash::make($request->password);
+
         LogHistoryController::store($request,'users',$data,$user->id);
         return response()->json(['token'=>$token,
-            'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion',
-            'fecha'=>Carbon::now('America/Monterrey')],202);
+            'msg'=>'Inicio de sesion correcto, se le ha enviado un correo con un codigo de verificacion'],202);
     }
 
     public function logout(Request $request)
@@ -242,8 +243,11 @@ class UsersController extends Controller
 
     public function is_client(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        if(!$user){
+            return response()->json(['is_client'=>false],200);
+        }
         $customer=Customer::where('user_id',$user->id)->first();
-        if($customer){
+        if($customer!=null){
             return response()->json(['is_client'=>true],200);
         }
         return response()->json(['is_client'=>false],200);
@@ -281,3 +285,13 @@ class UsersController extends Controller
         return response()->json(['is_Code_Verified'=>false],200);
     }
 }
+
+/*
+ *      $query = consulta con el modelo
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
+ */

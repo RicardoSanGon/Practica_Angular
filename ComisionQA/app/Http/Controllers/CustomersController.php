@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use App\Models\User;
+use App\Http\Controllers\LogHistoryController;
+
 class CustomersController extends Controller
 {
     public function index(){
+        $userId = UsersController::getUserIdFromToken($request->header('authorization'));
         $customers = Customer::all();
         $customers = $customers->map(function($customer){
             return[
@@ -21,6 +24,14 @@ class CustomersController extends Controller
                 "email"=>$customer->user->email,
             ];
         });
+        $query = Customer::query();
+            $sql = $query->toSql();
+            $bindings = $query->getBindings();
+            foreach ($bindings as $binding) {
+                $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                $sql = preg_replace('/\?/', $value, $sql, 1);
+            }
+            LogHistoryController::store($request, 'customers', $sql, $bindings, $userId);
         return response()->json(['data'=>$customers], 200);
     }
     public function store(Request $request){
@@ -41,6 +52,7 @@ class CustomersController extends Controller
         $Newcustomer->user_id = UsersController::getUserIdFromToken($request->header('authorization'));
         try{
             $Newcustomer->save();
+            LogHistoryController::store($request, 'customers', $request->all());
         }
         catch(Exception $e){
             return response()->json($e,500);
@@ -91,6 +103,7 @@ class CustomersController extends Controller
             }
 
             $customer->save();
+            LogHistoryController::store($request, 'customers', $request->all());
 
             return response()->json(["msg" => "Cliente actualizado correctamente"], 200);
         } catch (Exception $e) {

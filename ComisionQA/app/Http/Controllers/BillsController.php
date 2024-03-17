@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use App\Http\Controllers\LogHistoryController;
+use App\Http\Controllers\UsersController;
 
 class BillsController extends Controller
 {
@@ -27,6 +29,7 @@ class BillsController extends Controller
 
         try{
             $bill->save();
+            LogHistoryController::store($request, 'bills', $request->all());
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -55,6 +58,7 @@ class BillsController extends Controller
                 $bill->total_amount = $request->total_amount;
                 $bill->tax_amount = $request->tax_amount;
                 $bill->save();
+                LogHistoryController::store($request, 'bills', $request->all());
 
                 return response()->json(["msg" => "Factura actualizada correctamente"], 200);
             } else {
@@ -82,6 +86,14 @@ class BillsController extends Controller
                 'tax_amount' => $bill->tax_amount,
             ];
         });
+        $query = Bill::query();
+            $sql = $query->toSql();
+            $bindings = $query->getBindings();
+            foreach ($bindings as $binding) {
+                $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                $sql = preg_replace('/\?/', $value, $sql, 1);
+            }
+            LogHistoryController::store($request, 'bills', $sql, $bindings, $userId);
 
         return response()->json(['data' => $bills], 200);
     }

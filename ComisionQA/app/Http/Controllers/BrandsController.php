@@ -10,11 +10,30 @@ use Exception;
 use App\Http\Controllers\UsersController;
 use App\Models\User;
 use App\Models\Catalogue;
+use App\Http\Controllers\LogHistoryController;
+
+
 class BrandsController extends Controller
 {
     //
     public function index(Request $request){
+
+        $userId = UsersController::getUserIdFromToken($request->header('authorization'));
+
         $brands = Brand::all();
+    
+        $query = Brand::query();
+        $brands = $query->get();
+    
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+    
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
+        LogHistoryController::store($request, 'brands', $sql, $bindings, $userId);
+    
 
         $brands = $brands->map(function($brand){
             return[
@@ -45,6 +64,7 @@ class BrandsController extends Controller
 
         try{
             $brand->save();
+            LogHistoryController::store($request, 'brands', $request->all());
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -90,6 +110,7 @@ class BrandsController extends Controller
                     }
                 }
                 $brand->save();
+                LogHistoryController::store($request, 'brands', $request->all());
                 return response()->json(["msg" => "Marca actualizada correctamente"], 200);
 
             }
@@ -101,6 +122,7 @@ class BrandsController extends Controller
 
     public function updateBrandStatus(Request $request, $id)
     {
+        LogHistoryController::store($request, 'brands', $request->all(), $id);
         return $this->updateStatus($request, 'brands', $id, 'brand_status');
     }
 }

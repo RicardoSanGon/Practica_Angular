@@ -9,10 +9,14 @@ use App\Models\Vehicle_Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use App\Http\Controllers\LogHistoryController;
+use App\Http\Controllers\UsersController;
+
 
 class InventoriesController extends Controller
 {
     public function index(){
+        $userId = UsersController::getUserIdFromToken($request->header('authorization'));
         $inventories = Inventory::all();
         $inventories = $inventories->map(function($inventory){
             return[
@@ -23,6 +27,14 @@ class InventoriesController extends Controller
                 "supplier_id"=>$inventory->supplier->supplier_name,
             ];
         });
+        $query = Inventory::query();
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
+        LogHistoryController::store($request, 'inventories', $sql, $bindings, $userId);
         return response()->json(['data'=>$inventories], 200);
     }
     public function store(Request $request){
@@ -56,6 +68,7 @@ class InventoriesController extends Controller
             return response()->json($e,400);
         }
 
+        LogHistoryController::store($request, 'inventories', $request->all());
         return response()->json([
             "msg" => "Registro correcto"
         ],201);
@@ -109,7 +122,8 @@ class InventoriesController extends Controller
             }
 
             $inventory->save();
-
+            
+            LogHistoryController::store($request, 'inventories', $request->all(), $id);
             return response()->json(["msg" => "Inventario actualizado correctamente"], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el inventario", "Error" => $e], 500);

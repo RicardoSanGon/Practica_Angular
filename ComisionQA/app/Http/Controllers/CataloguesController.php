@@ -9,26 +9,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\LogHistoryController;
 
 class CataloguesController extends Controller
 {
     //
 
-    public function index(Request $request){
-        $catalogues = Catalogue::all();
-        $user=User::find(UsersController::getUserIdFromToken($request->header('authorization')));
-        if ($user->role_id==2 || $user->role_id==3){
-            $catalogues = Catalogue::where('status',true)->get();
-        }
+    public function index(Request $request)
+    {
+        try {
+            $userId = UsersController::getUserIdFromToken($request->header('authorization'));
+            
+            $catalogues = Catalogue::all();
 
-        $catalogues = $catalogues->map(function($catalogue){
-            return[
-                "id"=>$catalogue->id,
-                "name"=>$catalogue->name,
-                "status"=>$catalogue->status ? "Activo" : "Inactivo"
-            ];
-        });
-        return response()->json(['data'=>$catalogues], 200);
+            $user = User::find($userId);
+            if ($user->role_id == 2 || $user->role_id == 3) {
+                $catalogues = Catalogue::where('status', true)->get();
+            }
+
+            $catalogues = $catalogues->map(function ($catalogue) {
+                return [
+                    "id" => $catalogue->id,
+                    "name" => $catalogue->name,
+                    "status" => $catalogue->status ? "Activo" : "Inactivo"
+                ];
+            });
+
+            LogHistoryController::store($request, 'catalogues', $request->all(), $userId);
+            return response()->json(['data' => $catalogues], 200);
+        } catch (Exception $e) {
+            return response()->json(["msg" => "No se pudo obtener la lista de catálogos", "error" => $e], 500);
+        }
     }
     public function store(Request $request){
         $validaciones = Validator::make($request->all(),[
@@ -44,6 +55,7 @@ class CataloguesController extends Controller
 
         try{
             $catalogue->save();
+            LogHistoryController::store($request, 'catalogues', $request->all());
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -107,6 +119,7 @@ class CataloguesController extends Controller
                         $catalogue->status = false;
                 }
                 $catalogue->save();
+                LogHistoryController::store($request, 'catalogues', $request->all());
                 return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
             }
             return response()->json(["msg" => "No se pudo actualizar el catálogo"], 400);
@@ -130,6 +143,7 @@ class CataloguesController extends Controller
             $catalogue = Catalogue::findOrFail($id);
             $catalogue->status = $request->status;
             $catalogue->save();
+            LogHistoryController::store($request, 'catalogues', $request->all());
 
             return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
         } catch (Exception $e) {

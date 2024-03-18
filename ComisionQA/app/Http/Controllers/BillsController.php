@@ -27,9 +27,11 @@ class BillsController extends Controller
         $bill->total_amount=$request->total_amount;
         $bill->tax_amount=$request->tax_amount;
 
+        $data=$request->detail_id.', '.$request->total_amount.', '.$request->tax_amount;
+
         try{
             $bill->save();
-            LogHistoryController::store($request, 'bills', $request->all());
+            LogHistoryController::store($request, 'bills', $data, UsersController::getUserIdFromToken($request->header('authorization')));
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -58,12 +60,13 @@ class BillsController extends Controller
                 $bill->total_amount = $request->total_amount;
                 $bill->tax_amount = $request->tax_amount;
                 $bill->save();
-                LogHistoryController::store($request, 'bills', $request->all());
+                $data = $request->total_amount . ', ' . $request->tax_amount;
+                LogHistoryController::store($request, 'bills', $data, UsersController::getUserIdFromToken($request->header('authorization')));
 
                 return response()->json(["msg" => "Factura actualizada correctamente"], 200);
-            } else {
-                return response()->json(["msg" => "No se encontró la factura con el detail_id proporcionado"], 404);
             }
+            return response()->json(["msg" => "No se encontró la factura con el detail_id proporcionado"], 404);
+
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar la factura", "Error" => $e], 500);
         }
@@ -86,7 +89,7 @@ class BillsController extends Controller
                 'tax_amount' => $bill->tax_amount,
             ];
         });
-        $query = Bill::query();
+        $query = Bill::where('customer_id', $userId)->get();
             $sql = $query->toSql();
             $bindings = $query->getBindings();
             foreach ($bindings as $binding) {

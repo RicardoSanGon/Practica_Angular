@@ -21,9 +21,11 @@ use App\Mail\VerificacionEmail;
 class UsersController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
+        $query = User::query();
+        $sql = $query->toSql();
         $users=$users->map(function($user){
             return[
                 "id"=>$user->id,
@@ -33,6 +35,7 @@ class UsersController extends Controller
                 "status"=>$user->status?"Activo":"Inactivo",
             ];
         });
+        LogHistoryController::store($request,'users',$sql,UsersController::getUserIdFromToken($request->header('Authorization')));
         return response()->json(['data'=>$users], 200);
     }
 
@@ -52,6 +55,7 @@ class UsersController extends Controller
         $user->email=$request->email;
         $user->password=Hash::make($request->password);
         $user->role_id=3;
+        $data=$request->name." ".$request->email." ".Hash::make($request->password);
         try{
             $user->save();
         }catch(Exception $e){
@@ -60,6 +64,7 @@ class UsersController extends Controller
         $token=JWTAuth::fromUser($user);
         $url=URL::temporarySignedRoute('verificar',now()->addMinutes(30),['token'=>$token]);
         Mail::to($request->email)->send(new VerificacionEmail($request->name,$url));
+        LogHistoryController::store($request,'users',$data,$user->id);
         return response()->json(["msg"=>"Registro Correcto"],201);
     }
 
@@ -110,6 +115,8 @@ class UsersController extends Controller
             JWTAuth::invalidate($request->header('Authorization'));
             $user->is_code_verified = false;
             $user->save();
+            $data=$user->is_code_verified;
+            LogHistoryController::store($request,'users',$data,$user->id);
             return response()->json(['msg' => 'Sesion cerrada'], 200);
         } catch (JWTException $e) {
             return response()->json(['msg' => 'Could not close the session'], 500);
@@ -129,18 +136,22 @@ class UsersController extends Controller
             $token=JWTAuth::fromUser($user);
             $user->is_code_verified=true;
             $user->save();
+            $data=$request->code;
+            LogHistoryController::store($request,'users',$data,$user->id);
             return response()->json(["msg"=>"Verificacion Correcta","token"=>$token],200);
         }
         return response()->json(["msg"=>"Codigo incorrecto"],400);
     }
 
-    public function verification_email($token)
+    public function verification_email(Request $request,$token)
     {
         if($token) {
             try {
                 $user = JWTAuth::parseToken()->authenticate();
                 $user->status = 1;
                 $user->save();
+                $data=$user->status;
+                LogHistoryController::store($request,'users',$data,$user->id);
                 return view('email_activated');
             } catch (Exception $e) {
                 return view('email_activation_error');
@@ -160,6 +171,7 @@ class UsersController extends Controller
 
             $token = substr($authorizationHeader, 7);
             $payload = JWTAuth::setToken($token)->getPayload();
+            $data=$authorizationHeader;
         } catch (JWTException $e) {
             return response()->json(['msg' => 'Invalid token']);
         }
@@ -181,8 +193,8 @@ class UsersController extends Controller
             if($request->has('rol'))
                 $user->role_id = $request->rol;
             $user->save();
-
-
+            $data=$request->status.' '.$request->rol;
+            LogHistoryController::store($request,'users',$data,self::getUserIdFromToken($request->header('Authorization')));
             return response()->json(["msg" => "Actualización Correcta"], 200);
         } catch (Exception $e) {
             return response()->json($e, 400);
@@ -206,8 +218,12 @@ class UsersController extends Controller
     {
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
         if($user->role_id==1){
+            $data=$user->role_id;
+            LogHistoryController::store($request,'users',$data,$user->id);
             return response()->json(['permission'=>true],200);
         }
+        $data=$user->role_id;
+        LogHistoryController::store($request,'users',$data,$user->id);
         return response()->json(['permission'=>false],401);
     }
 
@@ -219,37 +235,71 @@ class UsersController extends Controller
     public function is_admin(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
         if($user->role_id==1){
+            $data=$user->role_id;
+            LogHistoryController::store($request,'users',$data,$user->id);
             return response()->json(['is_admin'=>true],200);
         }
+        $data=$user->role_id;
+        LogHistoryController::store($request,'users',$data,$user->id);
         return response()->json(['is_admin'=>false],200);
     }
     public function is_guest(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
         if($user->role_id==3){
+            $data=$user->role_id;
+            LogHistoryController::store($request,'users',$data,$user->id);
             return response()->json(['is_guest'=>true],200);
         }
+        $data=$user->role_id;
+        LogHistoryController::store($request,'users',$data,$user->id);
         return response()->json(['is_guest'=>false],200);
     }
 
     public function is_client(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        $query = User::findOrfail($user->id);
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
+
         if(!$user){
+            LogHistoryController::store($request,'users',$sql,$user->id);
             return response()->json(['is_client'=>false],200);
         }
         $customer=Customer::where('user_id',$user->id)->first();
+        $query2 = Customer::where('user_id',$user->id);
+        $sql2 = $query2->toSql();
+        $bindings2 = $query2->getBindings();
+        foreach ($bindings2 as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql2 = preg_replace('/\?/', $value, $sql2, 1);
+        }
         if($customer!=null){
+            LogHistoryController::store($request,'users',$sql.' '.$sql2,$user->id);
             return response()->json(['is_client'=>true],200);
         }
+        LogHistoryController::store($request,'users',$sql.' '.$sql2,$user->id);
         return response()->json(['is_client'=>false],200);
     }
     public function is_user(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        $query = User::findOrfail($user->id);
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
         if($user->role_id==2){
+            LogHistoryController::store($request,'users',$sql,$user->id);
             return response()->json(['is_user'=>true],200);
         }
+        LogHistoryController::store($request,'users',$sql,$user->id);
         return response()->json(['is_user'=>false],200);
     }
-
     public function is_Auth(Request $request){
 
         try
@@ -269,9 +319,18 @@ class UsersController extends Controller
 
     public function is_Code_Verified(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
+        $query = User::findOrfail($user->id);
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
         if($user->is_code_verified){
+            LogHistoryController::store($request,'users',$sql,$user->id);
             return response()->json(['is_Code_Verified'=>true],200);
         }
+        LogHistoryController::store($request,'users',$sql,$user->id);
         return response()->json(['is_Code_Verified'=>false],200);
     }
 }

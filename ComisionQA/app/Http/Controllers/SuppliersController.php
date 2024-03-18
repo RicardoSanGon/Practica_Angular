@@ -11,9 +11,11 @@ use Exception;
 
 class SuppliersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $suppliers = Supplier::all();
+        $query = Supplier::query();
+        $sql = $query->toSql();
         $suppliers = $suppliers->map(function ($supplier) {
             return [
                 "id" => $supplier->id,
@@ -23,6 +25,7 @@ class SuppliersController extends Controller
                 "supplier_status" => $supplier->supplier_status ? "Activo" : "Inactivo"
             ];
         });
+        LogHistoryController::store($request, 'suppliers', $sql,UsersController::getUserIdFromToken($request->header('authorization')));
         return response()->json(['data' => $suppliers], 200);
     }
     public function store(Request $request){
@@ -38,14 +41,14 @@ class SuppliersController extends Controller
         $supplier->supplier_name=$request->supplier_name;
         $supplier->supplier_email=$request->supplier_email;
         $supplier->supplier_phone=$request->supplier_phone;
-
+        $data=$request->supplier_name." ".$request->supplier_email." ".$request->supplier_phone;
         try{
             $supplier->save();
         }
         catch(Exception $e){
             return response()->json($e,400);
         }
-
+        LogHistoryController::store($request,'suppliers',$data,UsersController::getUserIdFromToken($request->header('authorization')));
         return response()->json([
             "msg" => "Registro correcto"
         ],201);
@@ -93,9 +96,9 @@ class SuppliersController extends Controller
                     }
                 }
 
-
+                $data = $request->supplier_name . " " . $request->supplier_email . " " . $request->supplier_phone . " " . $request->supplier_status;
                 $supplier->save();
-
+LogHistoryController::store($request, 'suppliers', $data, UsersController::getUserIdFromToken($request->header('authorization')));
                 return response()->json(["msg" => "Registro actualizado correctamente"], 200);
             }
             return response()->json(["msg" => "No se ha actualizado ningún campo"], 400);

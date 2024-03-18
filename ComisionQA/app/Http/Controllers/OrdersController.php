@@ -16,6 +16,7 @@ class OrdersController extends Controller
     public function store(Request $request){
 
         $customer=Customer::where('user_id',UsersController::getUserIdFromToken($request->header('authorization')))->first();
+
         if(!$customer){
             return response()->json(["msg"=>"El usuario no esta registrado como cliente"],400);
         }
@@ -29,13 +30,14 @@ class OrdersController extends Controller
         $order->customer_id=$customer->id;
         $order->order_date=Carbon::now('America/Monterrey')->toDateString();
         $order->status='proceso';
-
+        $data= $customer->id.' '.$order->order_date.' '.$order->status;
         try{
             $order->save();
         }
         catch(Exception $e){
             return response()->json($e,400);
         }
+        LogHistoryController::store($request,'orders',$data,UsersController::getUserIdFromToken($request->header('authorization')));
 
         return response()->json([
             "msg" => "Order creada"
@@ -59,10 +61,10 @@ class OrdersController extends Controller
         }
 
         $order->status = $request->status;
-
+        $data = $request->status;
         try {
             $order->save();
-
+            LogHistoryController::store($request, 'orders', $data, UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(["msg" => "Orden actualizada correctamente"], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar la orden", "Error" => $e], 500);

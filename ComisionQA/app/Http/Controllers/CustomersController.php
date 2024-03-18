@@ -46,13 +46,15 @@ class CustomersController extends Controller
         if($customer){
             return response()->json(["msg"=>"El usuario ya esta registrado como cliente"],400);
         }
+        $user_id = UsersController::getUserIdFromToken($request->header('authorization'));
         $Newcustomer = new Customer();
         $Newcustomer->customer_address=$request->customer_address;
         $Newcustomer->customer_phone=$request->customer_phone;
-        $Newcustomer->user_id = UsersController::getUserIdFromToken($request->header('authorization'));
+        $Newcustomer->user_id = $user_id;
+        $data=$request->customer_address.", ".$request->customer_phone.", ".$user_id;
         try{
             $Newcustomer->save();
-            LogHistoryController::store($request, 'customers', $request->all());
+            LogHistoryController::store($request, 'customers', $data, $user_id);
         }
         catch(Exception $e){
             return response()->json($e,500);
@@ -65,7 +67,15 @@ class CustomersController extends Controller
 
     public function getCurrentCustomer(Request $request){
         $customer=Customer::where('user_id',UsersController::getUserIdFromToken($request->header('authorization')))->first();
+        $query = Customer::where('user_id',UsersController::getUserIdFromToken($request->header('authorization')));
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
         if($customer){
+            LogHistoryController::store($request, 'customers', $sql,UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json($customer,200);
         }
         return response()->json(["msg"=>"El usuario no es cliente"],400);
@@ -93,7 +103,7 @@ class CustomersController extends Controller
 
         try {
 
-
+            $data = $customer->customer_address.", ".$customer->customer_phone;
             if ($request->has('customer_address')) {
                 $customer->customer_address = $request->customer_address;
             }
@@ -103,7 +113,7 @@ class CustomersController extends Controller
             }
 
             $customer->save();
-            LogHistoryController::store($request, 'customers', $request->all());
+            LogHistoryController::store($request, 'customers',$data,UsersController::getUserIdFromToken($request->header('Authorization')));
 
             return response()->json(["msg" => "Cliente actualizado correctamente"], 200);
         } catch (Exception $e) {

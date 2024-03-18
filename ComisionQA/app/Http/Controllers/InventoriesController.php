@@ -96,22 +96,27 @@ class InventoriesController extends Controller
 
         try {
             $inventory = Inventory::findOrFail($id);
-
+            $data='';
             if ($request->has('admission_date')) {
                 $inventory->admission_date = $request->admission_date;
+
             }
+            $data=$request->admision_date.', ';
 
             if ($request->has('stock')) {
                 $inventory->stock = $request->stock;
-            }
 
+            }
+            $data.=$request->stock.', ';
             if ($request->has('vehicle_model_id')) {
                 $model = Vehicle_Model::find($request->vehicle_model_id);
                 if (!$model) {
                     return response()->json(["msg" => "El modelo no existe"], 400);
                 }
                 $inventory->vehicle_model_id = $request->vehicle_model_id;
+
             }
+            $data.=$request->vehicle_model_id.', ';
 
             if ($request->has('supplier_id')) {
                 $supplier = Supplier::find($request->supplier_id);
@@ -119,11 +124,13 @@ class InventoriesController extends Controller
                     return response()->json(["msg" => "El proveedor no existe"], 400);
                 }
                 $inventory->supplier_id = $request->supplier_id;
+
             }
+            $data.=$request->supplier_id.', ';
 
             $inventory->save();
-            
-            LogHistoryController::store($request, 'inventories', $request->all(), $id);
+
+            LogHistoryController::store($request, 'inventories', $data, UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(["msg" => "Inventario actualizado correctamente"], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el inventario", "Error" => $e], 500);

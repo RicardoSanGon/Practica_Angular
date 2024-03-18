@@ -19,12 +19,21 @@ class CataloguesController extends Controller
     {
         try {
             $userId = UsersController::getUserIdFromToken($request->header('authorization'));
-            
+
             $catalogues = Catalogue::all();
+            $query =Catalogue::query();
+            $sql = $query->toSql();
 
             $user = User::find($userId);
             if ($user->role_id == 2 || $user->role_id == 3) {
                 $catalogues = Catalogue::where('status', true)->get();
+                $query = Catalogue::where('status', true);
+                $sql = $query->toSql();
+                $bindings = $query->getBindings();
+                foreach ($bindings as $binding) {
+                    $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                    $sql = preg_replace('/\?/', $value, $sql, 1);
+                }
             }
 
             $catalogues = $catalogues->map(function ($catalogue) {
@@ -35,7 +44,7 @@ class CataloguesController extends Controller
                 ];
             });
 
-            LogHistoryController::store($request, 'catalogues', $request->all(), $userId);
+            LogHistoryController::store($request, 'catalogues',$sql, $userId);
             return response()->json(['data' => $catalogues], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo obtener la lista de catálogos", "error" => $e], 500);
@@ -55,7 +64,7 @@ class CataloguesController extends Controller
 
         try{
             $catalogue->save();
-            LogHistoryController::store($request, 'catalogues', $request->all());
+            LogHistoryController::store($request, 'catalogues', $request->name, UsersController::getUserIdFromToken($request->header('authorization')));
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -82,15 +91,23 @@ class CataloguesController extends Controller
     }
 
 
-    public function getBrands($id)
+    public function getBrands(Request $request, $id)
     {
         $brands = Brand::where('catalogue_id', $id)->get();
+        $query = Brand::where('catalogue_id', $id);
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
         $brands = $brands->map(function ($brand) {
             return [
                 "id" => $brand->id,
                 "brand_name" => $brand->brand_name,
             ];
         });
+        LogHistoryController::store($request, 'brands', $sql, UsersController::getUserIdFromToken($request->header('authorization')));
         return response()->json(['data' => $brands], 200);
     }
 
@@ -111,15 +128,22 @@ class CataloguesController extends Controller
                 $catalogue = Catalogue::findOrFail($id);
                 if ($request->has('name')) {
                     $catalogue->name = $request->name;
+                    $data = $request->name;
                 }
                 if ($request->has('status')) {
-                    if ($request->status === "Activo")
+                    if ($request->status === "Activo"){
                         $catalogue->status = true;
+                        $data.= $request->status;
+                    }
                     if ($request->status === "Inactivo")
+                    {
                         $catalogue->status = false;
+                        $data.= $request->status;
+                    }
+
                 }
                 $catalogue->save();
-                LogHistoryController::store($request, 'catalogues', $request->all());
+                LogHistoryController::store($request, 'catalogues', $data, UsersController::getUserIdFromToken($request->header('authorization')));
                 return response()->json(["msg" => "Catálogo actualizado correctamente"], 200);
             }
             return response()->json(["msg" => "No se pudo actualizar el catálogo"], 400);

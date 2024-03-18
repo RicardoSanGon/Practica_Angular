@@ -21,19 +21,14 @@ class BrandsController extends Controller
         $userId = UsersController::getUserIdFromToken($request->header('authorization'));
 
         $brands = Brand::all();
-    
-        $query = Brand::query();
-        $brands = $query->get();
-    
-        $sql = $query->toSql();
-        $bindings = $query->getBindings();
-    
-        foreach ($bindings as $binding) {
-            $value = is_numeric($binding) ? $binding : "'".$binding."'";
-            $sql = preg_replace('/\?/', $value, $sql, 1);
-        }
-        LogHistoryController::store($request, 'brands', $sql, $bindings, $userId);
-    
+
+
+        $query = Brand::query()->toSql();
+        $sql = $query;
+
+
+        LogHistoryController::store($request, 'brands', $sql, $userId);
+
 
         $brands = $brands->map(function($brand){
             return[
@@ -61,10 +56,10 @@ class BrandsController extends Controller
         $brand = new Brand();
         $brand->brand_name = $request->brand_name;
         $brand->catalogue_id=$request->catalogue_id;
-
+        $data=$request->brand_name.', '.$request->catalogue_id;
         try{
             $brand->save();
-            LogHistoryController::store($request, 'brands', $request->all());
+            LogHistoryController::store($request, 'brands', $data,UsersController::getUserIdFromToken($request->header('authorization')));
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -91,26 +86,31 @@ class BrandsController extends Controller
         try {
             if($request->has('brand_name') || $request->has('catalogue_id') || $request->has('status')){
                 $brand = Brand::findOrFail($id);
+                $data='';
                 if (!$brand) {
                     return response()->json(["msg" => "La marca no existe"], 400);
                 }
                 if ($request->has('brand_name')) {
                     $brand->brand_name = $request->brand_name;
+                    $data= $request->brand_name.', ';
                 }
 
                 if ($request->has('catalogue_id')) {
                     $brand->catalogue_id = $request->catalogue_id;
+                    $data.=$brand->catalogue->name;
                 }
                 if ($request->has('brand_status')) {
                     if ($request->brand_status === "Activo") {
                         $brand->brand_status = true;
+                        $data.=', Activo';
                     }
                     if ($request->brand_status === "Inactivo") {
                         $brand->brand_status = false;
+                        $data.=', Inactivo';
                     }
                 }
                 $brand->save();
-                LogHistoryController::store($request, 'brands', $request->all());
+                LogHistoryController::store($request, 'brands', $data, UsersController::getUserIdFromToken($request->header('authorization')));
                 return response()->json(["msg" => "Marca actualizada correctamente"], 200);
 
             }

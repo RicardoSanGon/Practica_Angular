@@ -23,6 +23,19 @@ class ModelsController extends Controller
                             $query->where('status',true);
                         });
                 })->get();
+            $query=Vehicle_Model::where('model_status',true)
+                ->whereHas('brand', function($query) use ($user){
+                    $query->where('brand_status',true)
+                        ->whereHas('catalogue', function($query){
+                            $query->where('status',true);
+                        });
+                });
+            $sql=$query->toSql();
+            $bindings=$query->getBindings();
+            foreach ($bindings as $binding) {
+                $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                $sql = preg_replace('/\?/', $value, $sql, 1);
+            }
             $models = $models->map(function($model){
                 return[
                     "id"=>$model->id,
@@ -37,6 +50,8 @@ class ModelsController extends Controller
             $is_admin=false;
         }
         else{
+            $query=Vehicle_Model::query();
+            $sql=$query->toSql();
             $models = $models->map(function($model){
                 return[
                     "id"=>$model->id,
@@ -51,6 +66,7 @@ class ModelsController extends Controller
             });
             $is_admin=true;
         }
+        LogHistoryController::store($request,'vehicle_models',$sql,UsersController::getUserIdFromToken($request->header('authorization')));
         return response()->json(['data'=>$models,'is_admin'=>$is_admin], 200);
     }
     public function store(Request $request){
@@ -76,9 +92,11 @@ class ModelsController extends Controller
         $modelo->model_price = $request->model_price;
         $modelo->model_stock=$request->model_stock;
         $modelo->brand_id=$request->brand_id;
+        $data=$request->model_name." ".$request->model_year." ".$request->model_description." ".$request->model_price." ".$request->model_stock." ".$request->brand_id;
 
         try{
             $modelo->save();
+            LogHistoryController::store($request,'vehicle_models',$data,UsersController::getUserIdFromToken($request->header('authorization')));
         }
         catch(Exception $e){
             return response()->json($e,400);
@@ -106,30 +124,36 @@ class ModelsController extends Controller
 
         try {
             $modelo = Vehicle_Model::findOrFail($id);
-
+            $data='';
             if ($request->has('model_name')) {
                 $modelo->model_name = $request->model_name;
             }
+            $data.=$request->model_name." ";
 
             if ($request->has('model_year')) {
                 $modelo->model_year = $request->model_year;
             }
+            $data.=$request->model_year." ";
 
             if ($request->has('model_description')) {
                 $modelo->model_description = $request->model_description;
             }
+            $data.=$request->model_description." ";
 
             if ($request->has('model_price')) {
                 $modelo->model_price = $request->model_price;
             }
+            $data.=$request->model_price." ";
 
             if ($request->has('model_stock')) {
                 $modelo->model_stock = $request->model_stock;
             }
+            $data.=$request->model_stock." ";
 
             if ($request->has('brand_id')) {
                 $modelo->brand_id = $request->brand_id;
             }
+            $data.=$request->brand_id.' ';
 
             if($request->has('model_status')){
                 if($request->model_status==='Activo')
@@ -137,9 +161,10 @@ class ModelsController extends Controller
                 else
                     $modelo->model_status=false;
             }
+            $data.=$request->model_status;
 
             $modelo->save();
-
+            LogHistoryController::store($request,'vehicle_models',$data,UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(["msg" => "Modelo actualizado correctamente"], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el modelo", "Error" => $e], 500);

@@ -32,13 +32,13 @@ class SaleHistoriesController extends Controller
         $history->model_id = $request->model_id;
         $history->customer_id = $request->customer_id;
         $history->detail_id = $request->detail_id;
-
+        $data =  $request->sale_date . " " . $request->total_amount . " " . $request->quantity . " " . $request->model_id . " " . $request->customer_id . " " . $request->detail_id;
         try {
             $history->save();
         } catch (Exception $e) {
             return response()->json($e, 400);
         }
-
+        LogHistoryController::store($request, 'sale_histories', $data, UsersController::getUserIdFromToken($request->header('authorization')));
         return response()->json([
             "msg" => "Registro correcto"
         ], 201);
@@ -72,9 +72,10 @@ class SaleHistoriesController extends Controller
         $history->customer_id = $request->customer_id;
         $history->detail_id = $request->detail_id;
 
+        $data= $request->sale_date . " " . $request->total_amount . " " . $request->quantity . " " . $request->model_id . " " . $request->customer_id . " " . $request->detail_id;
         try {
             $history->save();
-
+            LogHistoryController::store($request, 'sale_histories', $data, UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(["msg" => "Registro actualizado correctamente"], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el historial de venta", "Error" => $e], 500);
@@ -84,9 +85,22 @@ class SaleHistoriesController extends Controller
     public function index(Request $request)
     {
         $user=User::find(UsersController::getUserIdFromToken($request->header('authorization')));
-
+        $query = User::find(UsersController::getUserIdFromToken($request->header('authorization')));
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        foreach ($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
         if($user->role_id==1) {
             $sales = Sale_History::all();
+            $query2 = Sale_History::all();
+            $sql2 = $query2->toSql();
+            $bindings2 = $query2->getBindings();
+            foreach ($bindings2 as $binding) {
+                $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                $sql2 = preg_replace('/\?/', $value, $sql2, 1);
+            }
             $sales = $sales->map(function ($sales) {
                 return [
                     "id" => $sales->id,
@@ -98,11 +112,27 @@ class SaleHistoriesController extends Controller
                     "detail_id" => $sales->detail_id,
                 ];
             });
+            $consulta=$sql.' '.$sql2;
+            LogHistoryController::store($request,'sale_histories',$consulta,UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(['data' => $sales], 200);
         }
         if ($user->role_id == 2) {
             $customer = Customer::where('user_id', $user->id)->first();
+            $query2 = Customer::where('user_id', $user->id);
+            $sql2 = $query2->toSql();
+            $bindings2 = $query2->getBindings();
+            foreach ($bindings2 as $binding) {
+                $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                $sql2 = preg_replace('/\?/', $value, $sql2, 1);
+            }
             $sales = Sale_History::where('customer_id', $customer->id)->get();
+            $query3 = Sale_History::where('customer_id', $customer->id);
+            $sql3 = $query3->toSql();
+            $bindings3 = $query3->getBindings();
+            foreach ($bindings3 as $binding) {
+                $value = is_numeric($binding) ? $binding : "'".$binding."'";
+                $sql3 = preg_replace('/\?/', $value, $sql3, 1);
+            }
             $sales = $sales->map(function ($sales) {
                 return [
                     "id" => $sales->id,
@@ -113,6 +143,8 @@ class SaleHistoriesController extends Controller
                     "detail_id" => $sales->detail_id,
                 ];
             });
+            $consultas=$sql.' '.$sql2.' '.$sql3;
+            LogHistoryController::store($request,'sale_histories',$consultas,UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(['data' => $sales], 200);
         }
         return response()->json(['msg' => 'No tienes permisos para ver los historiales de venta'], 401);

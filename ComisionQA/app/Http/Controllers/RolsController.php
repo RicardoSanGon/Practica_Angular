@@ -10,14 +10,17 @@ use Exception;
 
 class RolsController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $rols = Rol::all();
+        $query = Rol::query();
+        $sql = $query->toSql();
         $rols = $rols->map(function($rol){
             return[
                 "id"=>$rol->id,
                 "rol"=>$rol->rol,
             ];
         });
+        LogHistoryController::store($request,"Rols",$sql,UsersController::getUserIdFromToken($request->header('authorization')));
         return response()->json(['data'=>$rols], 200);
     }
 
@@ -39,6 +42,7 @@ class RolsController extends Controller
         catch(Exception $e){
             return response()->json($e,400);
         }
+        LogHistoryController::store($request,"Rols",$request->rol,UsersController::getUserIdFromToken($request->header('authorization')));
 
         return response()->json([
             "msg" => "Registro correcto"
@@ -65,7 +69,7 @@ class RolsController extends Controller
 
         try {
             $rol->save();
-
+            LogHistoryController::store($request, "Rols", $request->rol, UsersController::getUserIdFromToken($request->header('authorization')));
             return response()->json(["msg" => "Registro actualizado correctamente"], 200);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo actualizar el rol", "Error" => $e], 500);

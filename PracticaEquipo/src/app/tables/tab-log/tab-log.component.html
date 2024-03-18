@@ -1,0 +1,23 @@
+
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Método</th>
+    <th scope="col">Ruta</th>
+    <th scope="col">Usuario</th>
+    <th scope="col">Fecha</th>
+    <th scope="col">Tablas</th>
+    <th scope="col">Data</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let log of datalog">
+    <td>{{log.metodo}}</td>
+    <td>{{log.ruta}}</td>
+    <td>{{log.usuario}}</td>
+    <td>{{log.fecha}}</td>
+    <td>{{log.tablas}}</td>
+    <td>{{log.data}}</td>
+  </tr>
+  </tbody>
+</table>

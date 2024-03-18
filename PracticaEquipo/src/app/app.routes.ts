@@ -177,6 +177,14 @@ export const routes: Routes = [
             (c) => c.CustomerEditComponent
           ),
       },
+      {
+        path:'tab-Logs',
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
+        loadComponent: () =>
+          import('../app/tables/tab-log/tab-log.component').then(
+            (c) => c.TabLogComponent
+          ),
+      }
     ],
   },
   //RUTAS DE EDICION

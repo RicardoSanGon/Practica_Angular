@@ -15,7 +15,7 @@ use App\Http\Controllers\UsersController;
 
 class InventoriesController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $userId = UsersController::getUserIdFromToken($request->header('authorization'));
         $inventories = Inventory::all();
         $inventories = $inventories->map(function($inventory){

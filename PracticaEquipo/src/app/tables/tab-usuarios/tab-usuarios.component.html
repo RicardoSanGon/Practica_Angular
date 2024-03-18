@@ -46,21 +46,24 @@
         <h5 class="modal-title" id="editModalLabel">Editar Usuario</h5>
       </div>
       <div class="modal-body">
-        <form>
+        <form #userForm="ngForm">
           <div class="mb-3">
-            <label  class="form-label signika">Estado</label>
+            <label class="form-label signika">Estado</label>
             <select class="form-select" aria-label="Default select example"
                     (change)="isStatusChange($event)"
-                    [value]="userModify.status"
-                    name="modifyStatus">
-              <option>Activo</option>
-              <option>Inactivo</option>
+                    [(ngModel)]="userModify.status"
+                    name="modifyStatus" required>
+              <option value="">Seleccionar estado</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
             </select>
-            <label  class="form-label signika">Estado</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-label signika">Rol</label>
             <select class="form-select" aria-label="Default select example"
                     (change)="selectedRol($event)"
-                    [(ngModel)]="userModify.rol"
-                    name="modifyStatus">
+                   
+                    name="modifyRol" required>
               <option *ngFor="let rol of rols" [value]="rol.id">{{rol.rol}}</option>
             </select>
           </div>
@@ -68,8 +71,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getUsers()">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateUser()">Guardar cambios</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateUser()" [disabled]="!userForm.valid">Guardar cambios</button>
       </div>
+      
     </div>
   </div>
 </div>

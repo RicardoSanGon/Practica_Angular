@@ -42,15 +42,16 @@
             <h5 class="modal-title" id="editModalLabel">Editar Marca</h5>
           </div>
           <div class="modal-body">
-            <form>
+            <form #form="ngForm">
               <div class="mb-3">
                 <label class="form-label signika">Fecha De Admision</label>
                 <input type="date" class="form-control" name="modifyDate" min="today" [(ngModel)]="modifyInventory.admission_date">
               </div>
               <div class="mb-3">
                 <label class="form-label signika">Stock Adquirido</label>
-                <input type="number" class="form-control" name="modifyStock" min="10" [(ngModel)]="modifyInventory.stock">
-              </div>
+                <input type="number" class="form-control" name="modifyStock" min="0" [(ngModel)]="modifyInventory.stock" required>
+                <div *ngIf="form.controls['modifyStock'].invalid && (form.controls['modifyStock'].dirty || form.controls['modifyStock'].touched)" class="text-danger">El stock es requerido y debe ser minimo de 0.</div>
+            </div>
               <div class="mb-3">
                 <label  class="form-label signika">Proveedor</label>
                 <select class="form-select" aria-label="Default select example"
@@ -72,9 +73,9 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getInventory()" >Cerrar</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateInventory()" >Guardar cambios</button>
-          </div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getInventory()">Cerrar</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateInventory()" [disabled]="form.invalid">Guardar cambios</button>
+        </div>
         </div>
       </div>
     </div>

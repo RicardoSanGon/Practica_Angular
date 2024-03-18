@@ -54,14 +54,23 @@ export class TabUsuariosComponent {
   }
 
   updateUser() {
-    this.userService.updateUser(this.userModify).subscribe(data => {
+  // Validar que se haya seleccionado un estado y un rol
+  if (!this.userModify.status || !this.userModify.rol) {
+    console.log("Por favor selecciona un estado y un rol.");
+    return;
+  }
+
+  // Si se han seleccionado ambos, proceder con la actualización
+  this.userService.updateUser(this.userModify).subscribe(
+    data => {
       console.log(data);
       this.getUsers();
     },
-      error => {console.log(error)}
-    );
-  }
-
+    error => {
+      console.log(error);
+    }
+  );
+}
   selectedRol($event: any) {
     this.userModify.rol = $event.target.value;
     console.log(this.userModify.rol);
@@ -70,4 +79,6 @@ export class TabUsuariosComponent {
   selectedUser(item: User) {
     this.userModify = item;
   }
+
+  
 }

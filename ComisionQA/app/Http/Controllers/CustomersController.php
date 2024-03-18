@@ -12,7 +12,7 @@ use App\Http\Controllers\LogHistoryController;
 
 class CustomersController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $userId = UsersController::getUserIdFromToken($request->header('authorization'));
         $customers = Customer::all();
         $customers = $customers->map(function($customer){

@@ -185,15 +185,17 @@ class UsersController extends Controller
             $user = User::findOrFail($id);
 
             if($request->has('status')) {
-                if($request->status==='Activo')
-                    $user->status = true;
-                else
-                    $user->status = false;
+                if($request->status==='Activo'){
+                    $user->status = 1;
+                } 
+                if($request->status==='Inactivo'){
+                    $user->status = 0;
+                }
             }
             if($request->has('rol'))
                 $user->role_id = $request->rol;
             $user->save();
-            $data=$request->status.' '.$request->rol;
+            $data=$request->status." ".$request->rol;
             LogHistoryController::store($request,'users',$data,self::getUserIdFromToken($request->header('Authorization')));
             return response()->json(["msg" => "Actualización Correcta"], 200);
         } catch (Exception $e) {

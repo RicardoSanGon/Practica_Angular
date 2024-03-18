@@ -41,10 +41,16 @@
           <h5 class="modal-title" id="editModalLabel">Editar Catalogo</h5>
         </div>
         <div class="modal-body">
-          <form>
+          <form #editForm="ngForm">
             <div class="mb-3">
               <label class="form-label signika">Nombre</label>
-              <input [(ngModel)]="modifyCatalogue.name" type="text" class="form-control" name="modifyName">
+              <input [(ngModel)]="modifyCatalogue.name" type="text" class="form-control" name="modifyName" required minlength="2">
+              <div *ngIf="editForm.controls['modifyName'].errors?.['required'] && (editForm.controls['modifyName'].dirty || editForm.controls['modifyName'].touched)" class="text-danger">
+                El nombre del catálogo es obligatorio.
+            </div>
+            <div *ngIf="editForm.controls['modifyName'].errors?.['minlength'] && (editForm.controls['modifyName'].dirty || editForm.controls['modifyName'].touched)" class="text-danger">
+              El nombre del catálogo debe tener al menos 2 caracteres.
+          </div>
             </div>
             <div class="mb-3">
               <label  class="form-label signika">Estado</label>
@@ -60,7 +66,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCatalogo()">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateCatalogue()">Guardar cambios</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateCatalogue()" [disabled]="editForm.invalid">Guardar cambios</button>
         </div>
       </div>
     </div>

@@ -31,28 +31,31 @@
         </table>
       </div>
 
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Editar Marca</h5>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label class="form-label signika">Nombre</label>
-                <input type="text" class="form-control" name="modifyName" [(ngModel)]="modifyBrand.brand_name">
-              </div>
-              <div class="mb-3">
-                <label  class="form-label signika">Estado</label>
-                <select class="form-select" aria-label="Default select example"
-                        (change)="isModifyBrand($event)"
-                        [value]="modifyBrand.brand_status"
-                        name="modifyStatus">
-                  <option value="Activo">Activo</option>
-                  <option value="Inactivo">Inactivo</option>
-                </select>
-              </div>
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">Editar Marca</h5>
+            </div>
+            <div class="modal-body">
+              <form #editForm="ngForm" (ngSubmit)="updateBrand()">
+                <div class="mb-3">
+                  <label class="form-label signika">Nombre</label>
+                  <input type="text" class="form-control" name="modifyName" [(ngModel)]="modifyBrand.brand_name" required>
+                  <div *ngIf="editForm.controls['modifyName'].errors?.['required']" class="text-danger">
+                    El nombre de la marca es obligatorio.
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label signika">Estado</label>
+                  <select class="form-select" name="modifyStatus" [(ngModel)]="modifyBrand.brand_status" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                  </select>
+                  <div *ngIf="editForm.controls['modifyStatus'].errors?.['required']" class="text-danger">
+                    El estado de la marca es obligatorio.
+                  </div>
+                </div>
               <div class="mb-3">
                 <label  class="form-label signika">Catalogo</label>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="modifyBrand.catalogue_id"
@@ -65,8 +68,8 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBrands()" >Cerrar</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateBrand()" >Guardar cambios</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBrands()">Cerrar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Guardar cambios</button>
           </div>
         </div>
       </div>

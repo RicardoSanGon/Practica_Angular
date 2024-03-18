@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { Supplier } from '../../Core/Interfaces/supplier';
 import { SuppliersService } from '../../Core/Services/Supplier/suppliers.service';
 import {Router, RouterModule} from '@angular/router';
@@ -9,7 +9,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 @Component({
   selector: 'app-tab-proveedores',
   standalone: true,
-  imports: [NavbarComponent, NgForOf, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [NavbarComponent, NgForOf, RouterModule, FormsModule, ReactiveFormsModule, NgIf],
   templateUrl: './tab-proveedores.component.html',
   styleUrl: './tab-proveedores.component.css',
 })

@@ -56,60 +56,74 @@
           <h5 class="modal-title" id="editModalLabel">Editar Modelo</h5>
         </div>
         <div class="modal-body">
-          <form>
+          <form #editForm="ngForm" (ngSubmit)="updateModel()">
             <div class="mb-3">
               <label class="form-label signika">Nombre</label>
-              <input type="text" class="form-control" name="modifyName" [(ngModel)]="modifyModel.model_name" >
+              <input type="text" class="form-control" name="modifyName" [(ngModel)]="modifyModel.model_name" required>
+              <div *ngIf="editForm.controls['modifyName'].errors?.['required']" class="text-danger">
+                El nombre del modelo es obligatorio.
+              </div>
             </div>
             <div class="mb-3">
               <label class="form-label signika">Stock</label>
-              <input type="number" class="form-control" name="modifyStock" [(ngModel)]="modifyModel.model_stock" min="10">
+              <input type="number" class="form-control" name="modifyStock" [(ngModel)]="modifyModel.model_stock" min="10" required>
+              <div *ngIf="editForm.controls['modifyStock'].errors?.['required']" class="text-danger">
+                El stock del modelo es obligatorio.
+              </div>
+              <div *ngIf="editForm.controls['modifyStock'].errors?.['min']" class="text-danger">
+                El stock del modelo debe ser al menos 10.
+              </div>
             </div>
             <div class="mb-3">
               <label class="form-label signika">Precio</label>
-              <input type="text" class="form-control" name="modifyPrice" [(ngModel)]="modifyModel.model_price">
+              <input type="number" class="form-control" name="modifyPrice" [(ngModel)]="modifyModel.model_price" required>
+              <div *ngIf="editForm.controls['modifyPrice'].errors?.['required']" class="text-danger">
+                El precio del modelo es obligatorio.
+              </div>
             </div>
             <div class="mb-3">
               <label class="form-label signika">Año</label>
-              <input type="text" class="form-control" name="modifyYear" [(ngModel)]="modifyModel.model_year">
+              <input type="number" class="form-control" name="modifyYear" [(ngModel)]="modifyModel.model_year" required>
+              <div *ngIf="editForm.controls['modifyYear'].errors?.['required']" class="text-danger">
+                El año del modelo es obligatorio.
+              </div>
             </div>
             <div class="mb-3">
-              <label class="form-label signika">Descripcion</label>
-              <textarea type="text" class="form-control" name="modifyDescription" [(ngModel)]="modifyModel.model_description"></textarea>
+              <label class="form-label signika">Descripción</label>
+              <textarea class="form-control" name="modifyDescription" [(ngModel)]="modifyModel.model_description" required></textarea>
+              <div *ngIf="editForm.controls['modifyDescription'].errors?.['required']" class="text-danger">
+                La descripción del modelo es obligatoria.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label signika">Estado</label>
+              <select class="form-select" name="modifyStatus" [(ngModel)]="modifyModel.model_status" required>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+              <div *ngIf="editForm.controls['modifyStatus'].errors?.['required']" class="text-danger">
+                El estado del modelo es obligatorio.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label signika">Marca</label>
+              <select class="form-select" name="modifyBrand" [(ngModel)]="modifyModel.brand_id" required>
+                <option *ngFor="let brand of brandList" [value]="brand.id">{{brand.brand_name}}</option>
+              </select>
+              <div *ngIf="editForm.controls['modifyBrand'].errors?.['required']" class="text-danger">
+                La marca del modelo es obligatoria.
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getModels()">Cerrar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Guardar cambios</button>
             </div>
           </form>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label  class="form-label signika">Estado</label>
-            <select class="form-select" aria-label="Default select example"
-                    name="modifyStatus"
-                    [(ngModel)]="modifyModel.model_status"
-                    (change)="selectedModelStatus($event)"
-                    >
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label  class="form-label signika">Marca</label>
-            <select class="form-select" aria-label="Default select example"
-                    [(ngModel)]="modifyModel.brand_id"
-                    (change)="selectedModelBrand($event)"
-                    >
-              <option *ngFor="let brand of brandList" name="modifyBrand" [value]="brand.id">{{brand.brand_name}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getModels()" >Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateModel()" >Guardar cambios</button>
         </div>
       </div>
     </div>
   </div>
+  
 </body>
 
 </html>

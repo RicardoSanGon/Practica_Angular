@@ -76,7 +76,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Clientes',
-        canActivate: [AuthGuard,IsAdminGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/tables/tab-clientes/tab-clientes.component').then(
             (c) => c.TabClientesComponent
@@ -84,7 +84,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Proveedores',
-        canActivate: [AuthGuard,IsAdminGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import(
             '../app/tables/tab-proveedores/tab-proveedores.component'
@@ -92,7 +92,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Usuarios',
-        canActivate: [AuthGuard,IsAdminGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/tables/tab-usuarios/tab-usuarios.component').then(
             (c) => c.TabUsuariosComponent
@@ -100,7 +100,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Ordenes',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/tables/tab-ordenes/tab-ordenes.component').then(
             (c) => c.TabOrdenesComponent
@@ -108,7 +108,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Marcas',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/tables/tab-marcas/tab-marcas.component').then(
             (c) => c.TabMarcasComponent
@@ -116,7 +116,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Modelos',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/tables/tab-modelos/tab-modelos.component').then(
             (c) => c.TabModelosComponent
@@ -124,7 +124,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Catalogo',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/tables/tab-catalogo/tab-catalogo.component').then(
             (c) => c.TabCatalogoComponent
@@ -132,7 +132,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-Inventario',
-        canActivate: [AuthGuard,IsAdminGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard,IsAdminGuard],
         loadComponent: () =>
           import('../app/tables/tab-inventario/tab-inventario.component').then(
             (c) => c.TabInventarioComponent
@@ -140,6 +140,7 @@ export const routes: Routes = [
       },
       {
         path: 'tab-orden-detalle',
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import(
             '../app/tables/tab-orden-detalle/tab-orden-detalle.component'
@@ -147,7 +148,7 @@ export const routes: Routes = [
       },
       {
         path: 'carrito',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/shared/carrito/carrito.component').then(
             (c) => c.CarritoComponent
@@ -155,7 +156,7 @@ export const routes: Routes = [
       },
       {
         path: 'historial',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,IsCodeVerifiedGuard],
         loadComponent: () =>
           import('../app/tables/historial/historial.component').then(
             (c) => c.HistorialComponent

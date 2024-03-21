@@ -11,6 +11,7 @@ use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RolsController;
 use App\Http\Controllers\SaleHistoriesController;
+use App\Http\Controllers\SSEController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -44,24 +45,26 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/users/table/permissions',[UsersController::class,'showUsersTable']);
     Route::post('/verification/code',[UsersController::class,'codeverification']);
     Route::get('/brands',[BrandsController::class,'index']);
-    Route::get('/users',[UsersController::class,'index']);
+    Route::get('/users',[UsersController::class,'index'])->middleware('IsAdmin');
     Route::get('/logout',[UsersController::class,'logout']);
     Route::get('/catalogues',[CataloguesController::class,'index']);
     Route::post('/modify/catalogues',[CataloguesController::class,'modifyCatalogues']);
     Route::get('/models',[ModelsController::class,'index']);
     Route::post('/create/customer',[CustomersController::class,'store']);
     Route::get('/customers/table/permissions',[CustomersController::class,'showCustomersTable']);
-    Route::get('/customers',[CustomersController::class,'index']);
+    Route::get('/customers',[CustomersController::class,'index'])->middleware('IsAdmin');
     Route::post('/create/order',[OrdersController::class,'store']);
-    Route::post('/inventorie/add',[InventoriesController::class,'store']);
+    Route::post('/inventorie/add',[InventoriesController::class,'store'])->middleware('IsAdmin');
     Route::get('/inventorie/permissions',[InventoriesController::class,'showTableAndForm']);
-    Route::get('/inventories',[InventoriesController::class,'index']);
+    Route::get('/inventories',[InventoriesController::class,'index'])->middleware('IsAdmin');
     Route::post('/order/details/create',[OrderDetailsController::class,'store']);
     Route::get('/order/details/{id?}',[OrderDetailsController::class,'index']);
-    Route::put('/order/details/status/{id}',[OrderDetailsController::class,'changeStatusDetail']);
-    Route::post('/create/brand',[BrandsController::class,'store']);
-    Route::post('/create/model',[ModelsController::class,'store']);
-    Route::get('/catalogue/brand/{id}',[CataloguesController::class,'getBrands']);
+    Route::put('/order/details/status/{id}',[OrderDetailsController::class,'changeStatusDetail'])
+        ->middleware('IsAdmin')
+        ->where('id', '[0-9]+');
+    Route::post('/create/brand',[BrandsController::class,'store'])->middleware('IsAdmin');
+    Route::post('/create/model',[ModelsController::class,'store'])->middleware('IsAdmin');
+    Route::get('/catalogue/brand/{id}',[CataloguesController::class,'getBrands'])->where('id', '[0-9]+');
     Route::post('/create/supplier',[SuppliersController::class,'store']);
     Route::get('/suppliers',[SuppliersController::class,'index']);
     Route::get('/is_admin',[UsersController::class,'is_admin']);
@@ -77,23 +80,27 @@ Route::group(['middleware' => 'auth:jwt'], function () {
     Route::get('/history',[SaleHistoriesController::class,'index']);
     Route::get('/is_code_verified',[UsersController::class,'is_Code_Verified']);
 
-    Route::get('/log',[LogHistoryController::class,'index']);
 
-
-    Route::put('/brand/update/{id}', [BrandsController::class, 'update']);
-    Route::put('/catalogue/update/{id}', [CataloguesController::class, 'update']);
-    Route::put('/supplier/update/{id}', [SuppliersController::class, 'update']);
-    Route::put('/model/update/{id}', [ModelsController::class, 'update']);
-    Route::put('/inventory/update/{id}', [InventoriesController::class, 'update']);
     Route::put('/customer/update', [CustomersController::class, 'update']);
-    Route::put('/user/update/{id}', [UsersController::class, 'update']);
+
+    Route::group(['middleware' => 'IsAdmin'], function () {
+        Route::put('/brand/update/{id}', [BrandsController::class, 'update']);
+        Route::put('/catalogue/update/{id}', [CataloguesController::class, 'update']);
+        Route::put('/supplier/update/{id}', [SuppliersController::class, 'update']);
+        Route::put('/model/update/{id}', [ModelsController::class, 'update']);
+        Route::put('/inventory/update/{id}', [InventoriesController::class, 'update']);
+        Route::put('/user/update/{id}', [UsersController::class, 'update']);
+        Route::get('/log',[LogHistoryController::class,'index']);
+    })->where(['id', '[0-9]+']);
+
+    Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);
+    Route::put('/update-status/catalogues/{id}', [CataloguesController::class, 'updateCatalogueStatus']);
+    Route::put('/update-status/suppliers/{id}', [SuppliersController::class, 'updateSupplierStatus']);
+    Route::put('/update-status/users/{id}', [UsersController::class, 'updateUserStatus']);
+    Route::put('/update-status/models/{id}', [ModelsController::class, 'updateModelStatus']);
 
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);
+//Route::get('/see',[SSEController::class,'handleSSE']);
 
 
-Route::put('/update-status/brands/{id}', [BrandsController::class, 'updateBrandStatus']);
-Route::put('/update-status/catalogues/{id}', [CataloguesController::class, 'updateCatalogueStatus']);
-Route::put('/update-status/suppliers/{id}', [SuppliersController::class, 'updateSupplierStatus']);
-Route::put('/update-status/users/{id}', [UsersController::class, 'updateUserStatus']);
-Route::put('/update-status/models/{id}', [ModelsController::class, 'updateModelStatus']);

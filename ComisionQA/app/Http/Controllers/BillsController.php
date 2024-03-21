@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bill;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -75,8 +76,8 @@ class BillsController extends Controller
     public function index(Request $request)
     {
         $userId = UsersController::getUserIdFromToken($request->header('authorization'));
-
-        $bills = Bill::where('customer_id', $userId)->get();
+        $customer = Customer::where('user_id', $userId)->first();
+        $bills = Bill::where('customer_id', $customer->id)->get();
 
         if ($bills->isEmpty()) {
             return response()->json(['msg' => 'No se encontraron facturas para este cliente'], 404);
@@ -89,7 +90,7 @@ class BillsController extends Controller
                 'tax_amount' => $bill->tax_amount,
             ];
         });
-        $query = Bill::where('customer_id', $userId)->get();
+        $query = Bill::where('customer_id', $userId);
             $sql = $query->toSql();
             $bindings = $query->getBindings();
             foreach ($bindings as $binding) {

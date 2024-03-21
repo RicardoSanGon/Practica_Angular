@@ -187,7 +187,7 @@ class UsersController extends Controller
             if($request->has('status')) {
                 if($request->status==='Activo'){
                     $user->status = 1;
-                } 
+                }
                 if($request->status==='Inactivo'){
                     $user->status = 0;
                 }
@@ -321,7 +321,7 @@ class UsersController extends Controller
 
     public function is_Code_Verified(Request $request){
         $user=User::findOrFail(self::getUserIdFromToken($request->header('Authorization')));
-        $query = User::findOrfail($user->id);
+        $query = User::where('id',$user->id);
         $sql = $query->toSql();
         $bindings = $query->getBindings();
         foreach ($bindings as $binding) {

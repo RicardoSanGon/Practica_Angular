@@ -35,7 +35,6 @@ class SSEController extends Controller
             ob_flush();
             flush();
 
-            // Pausa la ejecución del script durante 1 segundo antes de enviar el siguiente evento
             sleep(5);
         }
     }

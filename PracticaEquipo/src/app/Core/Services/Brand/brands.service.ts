@@ -6,6 +6,7 @@ import {Brand} from "../../Interfaces/brand";
 import {BrandByCatalogue} from "../../Interfaces/brand-by-catalogue";
 import { DataBrands } from '../../Interfaces/data-brands';
 import {Brands} from "../../Interfaces/brands";
+import {environment} from "../../../../environments/environments";
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +17,19 @@ export class BrandsService {
 
   createBrand(brand:Brand):Observable<MsgResponse>
   {
-    return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/create/brand',brand);
+    return this.http.post<MsgResponse>(`${environment.apiUrl}/api/create/brand`,brand);
   }
 
   getBrands(id:number):Observable<BrandByCatalogue> {
-    return this.http.get<BrandByCatalogue>('http://127.0.0.1:8000/api/catalogue/brand/'+id);
+    return this.http.get<BrandByCatalogue>(`${environment.apiUrl}/api/catalogue/brand/`+id);
   }
   tabgetBrands(): Observable<DataBrands> {
-    return this.http.get<DataBrands>('http://127.0.0.1:8000/api/brands');
+    return this.http.get<DataBrands>(`${environment.apiUrl}/api/brands`);
   }
 
   updateBrand(brand:Brands):Observable<MsgResponse>
   {
-    return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/brand/update/'+brand.id, brand);
+    return this.http.put<MsgResponse>(`${environment.apiUrl}/api/brand/update/`+brand.id, brand);
   }
 
 

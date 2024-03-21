@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Carrito} from "../../Interfaces/carrito";
 import {Observable} from "rxjs";
 import {MsgResponse} from "../../Interfaces/MsgResponse";
+import {environment} from "../../../../environments/environments";
 
 
 @Injectable({
@@ -54,7 +55,7 @@ export class CarritoService {
 
   enviarCarrito(carrito:Carrito):Observable<MsgResponse>
   {
-    return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/order/details/create', this.carrito)
+    return this.http.post<MsgResponse>(`${environment.apiUrl}/api/order/details/create`, this.carrito)
   }
 
   eliminarCarrito() {

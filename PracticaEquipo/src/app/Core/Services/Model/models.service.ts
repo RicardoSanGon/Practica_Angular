@@ -4,6 +4,7 @@ import {Models} from "../../Interfaces/models";
 import {Observable} from "rxjs";
 import {MsgResponse} from "../../Interfaces/MsgResponse";
 import {DataModels} from "../../Interfaces/data-models";
+import {environment} from "../../../../environments/environments";
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,11 @@ export class ModelsService {
 
   public createModel(model: Models): Observable<MsgResponse>
   {
-    return this.http.post<MsgResponse>('http://127.0.0.1:8000/api/create/model', model);
+    return this.http.post<MsgResponse>(`${environment.apiUrl}/api/create/model`, model);
   }
   public getModels(): Observable<DataModels>
-  {return this.http.get<DataModels>('http://127.0.0.1:8000/api/models')}
+  {return this.http.get<DataModels>(`${environment.apiUrl}/api/models`)}
 
   public updateModel(model: Models): Observable<MsgResponse>
-  {return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/model/update/'+model.id, model)}
+  {return this.http.put<MsgResponse>(`${environment.apiUrl}/api/model/update/`+model.id, model)}
 }

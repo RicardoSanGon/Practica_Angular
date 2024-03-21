@@ -26,12 +26,13 @@ export class LogInComponent {
     email: '',
     password: '',
   };
+  isLoading: boolean =false;
 
   public submitForm() {
     if (!this.validateForm()) {
       return;
     }
-
+    this.isLoading = true;
     this.userService.LogInUser(this.user).subscribe(
       (response) => {
         localStorage.setItem('token', response.token);
@@ -40,6 +41,7 @@ export class LogInComponent {
       },
       (error) => {
         console.log(error);
+        this.isLoading=false;
         if (error.error?.Errores?.email !== undefined) {
           this.errorEmail = error.error.Errores.email;
         } else {

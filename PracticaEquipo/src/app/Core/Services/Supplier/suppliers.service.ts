@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { MsgResponse } from '../../Interfaces/MsgResponse';
 import { Supplier } from '../../Interfaces/supplier';
 import { DataSuppliers } from '../../Interfaces/data-suppliers';
+import {environment} from "../../../../environments/environments";
 
 @Injectable({
   providedIn: 'root',
@@ -13,16 +14,16 @@ export class SuppliersService {
 
   public createSupplier(supplier: Supplier): Observable<MsgResponse> {
     return this.http.post<MsgResponse>(
-      'http://127.0.0.1:8000/api/create/supplier',
+      `${environment.apiUrl}/api/create/supplier`,
       supplier
     );
   }
 
   public getSuppliers(): Observable<DataSuppliers> {
-    return this.http.get<DataSuppliers>('http://127.0.0.1:8000/api/suppliers');
+    return this.http.get<DataSuppliers>(`${environment.apiUrl}/api/suppliers`);
   }
 
   public updateSupplier(supplier: Supplier): Observable<MsgResponse> {
-    return this.http.put<MsgResponse>('http://127.0.0.1:8000/api/supplier/update/'+supplier.id, supplier);
+    return this.http.put<MsgResponse>(`${environment.apiUrl}/api/supplier/update/`+supplier.id, supplier);
   }
 }

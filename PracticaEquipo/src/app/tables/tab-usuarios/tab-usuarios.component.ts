@@ -31,6 +31,7 @@ export class TabUsuariosComponent implements OnInit{
   is_admin: boolean = false;
 
   constructor(private userService: UsersService) {
+    this.IsAdmin()
     this.getUsers()
     this.getRols()
   }
@@ -91,9 +92,7 @@ export class TabUsuariosComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.is_admin) {
       this.refreshUserList();
-    }
   }
 
   refreshUserList(): void {

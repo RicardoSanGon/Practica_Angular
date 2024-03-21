@@ -5,6 +5,7 @@ import { DataCustomer } from '../../Interfaces/data-customer';
 import { Observable } from 'rxjs';
 import {UCustomer} from "../../Interfaces/ucustomer";
 import {MsgResponse} from "../../Interfaces/MsgResponse";
+import {environment} from "../../../../environments/environments";
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +15,13 @@ export class CustomersService {
 
   public createCustomer(customer: Customerstore) {
     return this.http.post(
-      'http://127.0.0.1:8000/api/create/customer',
+      `${environment.apiUrl}/api/create/customer`,
       customer
     );
   }
 
   public getCustomer(): Observable<DataCustomer> {
-    return this.http.get<DataCustomer>('http://127.0.0.1:8000/api/customers');
+    return this.http.get<DataCustomer>(`${environment.apiUrl}/api/customers`);
   }
 
   updateCustomer(customer: UCustomer): Observable<MsgResponse> {

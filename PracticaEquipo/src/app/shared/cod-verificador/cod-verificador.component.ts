@@ -17,12 +17,14 @@ import {NgIf} from "@angular/common";
 export class CodVerificadorComponent {
   verificationCode: number=0;
   errorCode:String|null=null;
+  isLoading: boolean =false;
 
   constructor(private userService: UsersService,
     private router: Router) {
 }
 
 submitCode() {
+    this.isLoading = true;
 this.userService.CodeVerification({code: this.verificationCode}).subscribe(
 (data) => {
 console.log(data);

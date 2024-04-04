@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ChatEvent;
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\CataloguesController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\SaleHistoriesController;
 use App\Http\Controllers\SSEController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,5 +104,10 @@ Route::group(['middleware' => 'auth:jwt'], function () {
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);
 //Route::get('/see',[SSEController::class,'handleSSE']);
+Route::post('/send/message',function (Request $request){
+    event(new ChatEvent($request->message));
+    return response()->json(['message'=>'Mensaje enviado']);
+});
+
 
 

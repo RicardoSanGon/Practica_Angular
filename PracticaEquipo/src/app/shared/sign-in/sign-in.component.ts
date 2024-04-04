@@ -14,6 +14,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './sign-in.component.css',
 })
 export class SignInComponent {
+  isLoading: boolean =false;
   user: UserForm = {
     name: '',
     email: '',
@@ -26,6 +27,7 @@ export class SignInComponent {
               private router:Router) {}
 
   submitForm() {
+    this.isLoading = true;
     if (!this.validateForm()) {
       return;
     }

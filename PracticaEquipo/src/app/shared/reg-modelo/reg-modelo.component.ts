@@ -21,6 +21,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   styleUrl: './reg-modelo.component.css'
 })
 export class RegModeloComponent {
+  isLoading: boolean =false;
   public model:Models=
   {
     id: 0,
@@ -79,6 +80,7 @@ export class RegModeloComponent {
   }
 
   submitForm() {
+    this.isLoading = true;
     if (!this.validateForm()) {
       return;
     }

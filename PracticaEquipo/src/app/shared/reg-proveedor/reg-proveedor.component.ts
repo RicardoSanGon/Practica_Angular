@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
   styleUrl: './reg-proveedor.component.css'
 })
 export class RegProveedorComponent {
+  isLoading: boolean =false;
   public supplier: Supplier = {
     id: null,
     supplier_name: '',
@@ -29,6 +30,7 @@ export class RegProveedorComponent {
               private router:Router) { }
 
   public createSupplier() {
+    this.isLoading = true;
     if (!this.validateForm()) {
       return;
     }

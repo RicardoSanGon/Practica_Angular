@@ -14,9 +14,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './reg-cliente.component.css',
 })
 export class RegClienteComponent {
+  isLoading: boolean =false;
+
   public customer: Customerstore = {
     customer_address: '',
     customer_phone: '',
+    
   };
 
   public errorAddress: String | null = null;
@@ -28,6 +31,7 @@ export class RegClienteComponent {
   ) {}
 
   public createCustomer() {
+    this.isLoading = true;
     this.customerService.createCustomer(this.customer).subscribe(
       (response) => {
         console.log(response);

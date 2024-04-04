@@ -18,6 +18,7 @@ import { MapModels } from '../../Core/Interfaces/map-models';
   styleUrl: './reg-inventario.component.css',
 })
 export class RegInventarioComponent {
+  isLoading: boolean =false;
   public inventory: Inventory = {
     admission_date: '',
     stock: 0,
@@ -41,6 +42,7 @@ export class RegInventarioComponent {
   }
 
   private getSuppliers() {
+    this.isLoading = true;
     this.suppliersService.getSuppliers().subscribe(
       (data) => {
         this.supplier_data = data.data;

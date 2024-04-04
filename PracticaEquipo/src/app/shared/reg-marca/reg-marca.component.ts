@@ -21,6 +21,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
   styleUrl: './reg-marca.component.css'
 })
 export class RegMarcaComponent {
+  isLoading: boolean =false;
   public brand:Brand={
     brand_name:null,
     catalogue_id:null
@@ -51,6 +52,7 @@ export class RegMarcaComponent {
   }
 
   public submitForm() {
+    this.isLoading = true;
     this.errorName = null;
     this.errorCatalogue = null;
   

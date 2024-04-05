@@ -6,20 +6,20 @@ use App\Models\Customer;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SSEController extends Controller
 {
     public function handleSSE($token)
     {
-
         try{
             header('Content-Type: text/event-stream');
             header('Cache-Control: no-cache');
             header('Connection: keep-alive');
             header('Access-Control-Allow-Origin: http://localhost:4200');
-            $id=UsersController::getUserIdFromToken($token);
-            $customer = Customer::where('user_id',$id)->first();
-            Log::info($customer);
+            $user=JWTAuth::parseToken()->authenticate($token);
+            Log::info($user);
+            $customer = Customer::where('user_id',$user->id)->first();
             if($customer)
             {
                 $notification = Notification::where('customer_id',$customer->id)
@@ -27,7 +27,11 @@ class SSEController extends Controller
                     ->first();
                 if($notification)
                 {
-                    echo "data: ".$notification->message."\n\n status: ".$notification->detail_status."\n\n";
+                    $data = [
+                        'message' => $notification->message,
+                        'detail_status' => $notification->detail_status
+                    ];
+                    echo "data: ".json_encode($data)."\n\n";
                     $notification->is_send = true;
                     $notification->save();
                 }

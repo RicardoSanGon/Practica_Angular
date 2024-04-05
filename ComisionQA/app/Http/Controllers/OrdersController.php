@@ -28,7 +28,7 @@ class OrdersController extends Controller
         }
         $order = new Order();
         $order->customer_id=$customer->id;
-        $order->order_date=Carbon::now('America/Monterrey')->toDateString();
+        $order->order_date=Carbon::now('America/Monterrey')->toDateTimeString();
         $order->status='proceso';
         $data= $customer->id.' '.$order->order_date.' '.$order->status;
         try{

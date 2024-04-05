@@ -1,4 +1,4 @@
-import {Component, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {Component, NgModule, NgZone, OnDestroy, OnInit} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../../Core/Services/User/users.service';
 import {NgForOf, NgIf} from '@angular/common';
@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit,OnDestroy {
   private echo:any;
   constructor(private userService: UsersService,
               private router: Router,
-              private sseService: SseService,)
+              private zone: NgZone)
   {
   }
   ngOnInit(): void {
@@ -43,14 +43,7 @@ export class NavbarComponent implements OnInit,OnDestroy {
     this.is_Client();
     const token=localStorage.getItem('token') || '';
     let url = `http://127.0.0.1:8000/api/sse/${token}`;
-    this.sseService.getServerSentEvent(url).subscribe(
-      (res) => {
-        this.notification(res.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.connectSSE(url);
   }
 
   is_Admin() {
@@ -150,12 +143,29 @@ export class NavbarComponent implements OnInit,OnDestroy {
     );
   }
 
-
-
-  notification(msg:string)
+  connectSSE(url:string)
   {
-    this.toastSv.success(msg);
+   var source = new EventSource(url);
+    source.onmessage = (event) => {
+      if(event.data!==''){
+        let data=JSON.parse(event.data);
+        console.log(data)
+        console.log(data.detail_status)
+        this.zone.run(() => {
+          if(data.detail_status===1)
+          {
+            this.toastSv.success(data.message);
+          }
+          else
+          {
+            this.toastSv.error(data.message);
+          }
+        });
+      }
+    };
   }
+
+
 
   ngOnDestroy(): void {
     this.echo.disconnect();

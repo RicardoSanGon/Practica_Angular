@@ -37,12 +37,4 @@ export class TabClientesComponent implements OnInit {
   }
 }
 
-/*
- this.sseService.getServerSentEvent('http://127.0.0.1:8000/api/see').subscribe(
-      event => {
-        this.customersList = JSON.parse(event.data);
-        this.changeDetector.detectChanges();
-      },
-      error => console.error(error)
-    );
- */
+

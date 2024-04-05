@@ -1,39 +1,39 @@
-import { Injectable } from '@angular/core';
-import { Observable, Observer } from 'rxjs';
+import {Injectable, NgZone} from '@angular/core';
+import {Observable, Observer, Subscriber} from 'rxjs';
+import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SseService {
-  constructor() { }
+
+
+  private eventSource: EventSource|null = null;
+
+  constructor(private zone: NgZone) {}
 
   getServerSentEvent(url: string): Observable<any> {
     return new Observable(observer => {
       const eventSource = this.getEventSource(url);
+
       eventSource.onmessage = event => {
-        this.safeObserverNext(observer, event);
+        observer.next(event);
       };
+
       eventSource.onerror = error => {
-        this.safeObserverError(observer, error);
+        if (eventSource.readyState === 0) {
+          console.log('The stream has been closed by the server.');
+          eventSource.close();
+          observer.complete();
+        } else {
+          console.log(error)
+          observer.error(error);
+        }
       };
     });
   }
 
   private getEventSource(url: string): EventSource {
     return new EventSource(url);
-  }
-
-  private safeObserverNext(observer: Observer<MessageEvent>, event: MessageEvent) {
-    if (!observer) {
-      return;
-    }
-    observer.next(event);
-  }
-
-  private safeObserverError(observer: Observer<MessageEvent>, error: any) {
-    if (!observer) {
-      return;
-    }
-    observer.error(error);
   }
 }

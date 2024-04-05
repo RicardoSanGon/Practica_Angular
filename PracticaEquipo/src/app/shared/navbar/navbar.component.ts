@@ -1,26 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../../Core/Services/User/users.service';
-import { NgIf } from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+import {environment} from "../../../environments/environments";
+import {MessageUser} from "../../Core/Interfaces/message-user";
+import {FormsModule} from "@angular/forms";
+import {ToastrService} from "ngx-toastr";
+import {  inject } from '@angular/core';
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import {SseService} from "../../Core/Services/See/see.service";
+(window as any).Pusher = Pusher;
+
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, NgIf],
+  imports: [RouterModule, NgIf, NgForOf, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit,OnDestroy {
   is_admin: boolean = false;
   is_user: boolean = false;
   is_guest: boolean = false;
   is_client: boolean = false;
-  constructor(private userService: UsersService, private router: Router) {}
+  chat:MessageUser[] = [];
+  message:String='';
+  private toastSv=inject(ToastrService);
+  private echo:any;
+  constructor(private userService: UsersService,
+              private router: Router,
+              private sseService: SseService,)
+  {
+  }
   ngOnInit(): void {
+    this.ConnectWebSocket()
     this.is_Admin();
     this.is_User();
     this.is_Guest();
     this.is_Client();
+    const token=localStorage.getItem('token') || '';
+    let url = `http://127.0.0.1:8000/api/sse/${token}`;
+    this.sseService.getServerSentEvent(url).subscribe(
+      (res) => {
+        this.notification(res.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   is_Admin() {
@@ -74,15 +104,60 @@ export class NavbarComponent implements OnInit {
       }
     );
   }
+  ConnectWebSocket()
+  {
+    this.echo = new Echo({
+      broadcaster: 'pusher',
+      key: '123',
+      wsHost: environment.wsHost,
+      wsPort: environment.wsPort,
+      disableStats: true,
+      forceTLS: false,
+      cluster: 'mt1',
+    });
+    this.echo.channel('chat').listen('ChatEvent', (e:any) => {
+      this.chat.push({msg:e.msg, user:e.user});
+    })
+  }
 
   CerrarSesion() {
     this.userService.LogOut().subscribe(
-      (res) => {
+      () => {
         this.router.navigate(['/']);
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  sendMessage(){
+    const msg=this.message;
+    this.message='';
+    if(msg.trim()=='')
+    {
+      this.toastSv.error('No puedes enviar mensajes vacios');
+      return;
+    }
+    this.userService.sendMessage(msg).subscribe(
+      (res) => {
+
+        this.toastSv.success(res.msg);
+      },
+      (error) => {
+        this.toastSv.error(error.msg)
+      }
+    );
+  }
+
+
+
+  notification(msg:string)
+  {
+    this.toastSv.success(msg);
+  }
+
+  ngOnDestroy(): void {
+    this.echo.disconnect();
   }
 }

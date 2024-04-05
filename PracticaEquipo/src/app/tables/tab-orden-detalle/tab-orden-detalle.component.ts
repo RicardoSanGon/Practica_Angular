@@ -77,6 +77,7 @@ export class TabOrdenDetalleComponent {
       this.getDetails();
     },
       (error) =>{
+      console.log(error)
         if (error.status === 401)
         {
           this.router.navigate(['/']);

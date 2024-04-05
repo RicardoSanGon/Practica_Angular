@@ -207,6 +207,12 @@ class OrderDetailsController extends Controller
             $model->save();
             $consulta=$sql.' '.$sql2;
             LogHistoryController::store($request, 'order_details, vehicle_models', $consulta, UsersController::getUserIdFromToken($request->header('authorization')));
+            if ($request->status === 'aceptado') {
+                NotificationsController::store($detail->order_id, true);
+            }
+            else{
+                NotificationsController::store($detail->order_id, false);
+            }
             return response()->json(["msg" => "Registro correcto"], 201);
         } catch (Exception $e) {
             return response()->json(["msg" => "No se pudo cambiar el estado del detalle", "Error" => $e], 500);

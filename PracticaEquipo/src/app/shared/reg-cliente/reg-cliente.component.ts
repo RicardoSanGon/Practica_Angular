@@ -19,7 +19,7 @@ export class RegClienteComponent {
   public customer: Customerstore = {
     customer_address: '',
     customer_phone: '',
-    
+
   };
 
   public errorAddress: String | null = null;
@@ -34,7 +34,9 @@ export class RegClienteComponent {
     this.isLoading = true;
     this.customerService.createCustomer(this.customer).subscribe(
       (response) => {
+        this.isLoading = false;
         console.log(response);
+        this.router.navigate(['navbar/tab-Catalogo']);
       },
       (error) => {
         if (error.status === 401) {

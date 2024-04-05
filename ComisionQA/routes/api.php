@@ -16,6 +16,7 @@ use App\Http\Controllers\SSEController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -103,11 +104,17 @@ Route::group(['middleware' => 'auth:jwt'], function () {
 
 });
 Route::get('/is_auth',[UsersController::class,'is_Auth']);
-//Route::get('/see',[SSEController::class,'handleSSE']);
+Route::get('/sse/{token}',[SSEController::class,'handleSSE']);
 Route::post('/send/message',function (Request $request){
-    event(new ChatEvent($request->message));
-    return response()->json(['message'=>'Mensaje enviado']);
-});
+    try{
+        $user= auth()->user();
+        Log::info($user);
+        event(new ChatEvent($request->message,$user->name));
+        return response()->json(['msg'=>'Mensaje enviado']);
+    }catch(Exception $e){
+        return response()->json(['msg'=>'Error al enviar mensaje']);
+    }
+})->middleware('auth:jwt');
 
 
 

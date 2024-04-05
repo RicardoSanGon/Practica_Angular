@@ -85,4 +85,8 @@ export class UsersService {
   getOneCustomer():Observable<UCustomer> {
     return this.http.get<UCustomer>(`${environment.apiUrl}/api/user/customer`);
   }
+
+  sendMessage(message:String):Observable<MsgResponse> {
+    return this.http.post<MsgResponse>(`${environment.apiUrl}/api/send/message`, {message:message});
+  }
 }

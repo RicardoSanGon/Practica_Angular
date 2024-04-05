@@ -1,4 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.137.4:8000'
+  apiUrl: 'http://localhost:8000',
+  wsHost:'localhost',
+  wsPort:6001,
 };

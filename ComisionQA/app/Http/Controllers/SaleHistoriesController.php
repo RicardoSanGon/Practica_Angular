@@ -82,7 +82,7 @@ class SaleHistoriesController extends Controller
         }
     }
 
-    public function index(Request $request)
+    /*public function index(Request $request)
     {
         $user=User::find(UsersController::getUserIdFromToken($request->header('authorization')));
         $query = User::find(UsersController::getUserIdFromToken($request->header('authorization')));
@@ -148,5 +148,36 @@ class SaleHistoriesController extends Controller
             return response()->json(['data' => $sales], 200);
         }
         return response()->json(['msg' => 'No tienes permisos para ver los historiales de venta'], 401);
+    }*/
+
+    public function index(Request $request)
+{
+    $userId = UsersController::getUserIdFromToken($request->header('authorization'));
+    $sales = Sale_History::all();
+    
+    $sales = $sales->map(function ($sale) {
+        return [
+            "id" => $sale->id,
+            "sale_date" => $sale->sale_date,
+            "total_amount" => $sale->total_amount,
+            "quantity" => $sale->quantity,
+            "vehicle_model" => $sale->model->model_name,
+            "customer" => $sale->customer->user->name,
+            "detail_id" => $sale->detail_id,
+        ];
+    });
+
+    $query = Sale_History::query();
+    $sql = $query->toSql();
+    $bindings = $query->getBindings();
+    foreach ($bindings as $binding) {
+        $value = is_numeric($binding) ? $binding : "'" . $binding . "'";
+        $sql = preg_replace('/\?/', $value, $sql, 1);
     }
+
+    LogHistoryController::store($request, 'sale_histories', $sql, $bindings, $userId);
+    
+    return response()->json(['data' => $sales], 200);
+}
+
 }

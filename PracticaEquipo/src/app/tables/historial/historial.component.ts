@@ -26,6 +26,7 @@ export class HistorialComponent {
               private userServices:UsersService,
               private router:Router) {
     this.getHistoriales();
+    this.isAdmin()
     }
 
 
